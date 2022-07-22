@@ -16,6 +16,7 @@
     "@trpc/next": "^9.26.2",
     "@trpc/react": "^9.26.2",
     "@trpc/server": "^9.26.2",
+    "argon2": "^0.28.7",
     "next": "12.2.1",
     "next-auth": "^4.10.2",
     "react": "18.2.0",
