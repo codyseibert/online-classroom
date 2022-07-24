@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Header from '../components/Header';
 import feynman from '../assets/richard-feynman.jpeg';
 import student from '../assets/student.jpeg';
+import Button from '../components/Button';
 
 const Welcome: NextPage = () => {
   return (
@@ -35,10 +36,14 @@ const Welcome: NextPage = () => {
 
           <div className='hidden sm:grid grid-cols-2 gap-8 w-full'>
             <div className='relative rounded flex flex-col items-center justify-center'>
-              <button className='bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded mx-auto my-4'>Im a teacher</button>
+              <Button>
+                I&apos;m a teacher
+              </Button>
             </div>
             <div className='relative rounded flex flex-col items-center justify-center'>
-              <button className='bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded mx-auto my-4'>Im a student</button>
+              <Button>
+                I&apos;m a student
+              </Button>
             </div>
           </div>
 
@@ -50,7 +55,9 @@ const Welcome: NextPage = () => {
               className='object-cover object-top'
               src={feynman}
               alt='A picture of Richard Feynman(well known physics professor) teaching' />
-            <button className='mb-12 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded mx-auto my-4'>Im a teacher</button>
+            <Button>
+              I&apos;m a teacher
+            </Button>
 
             <Image
               height={150}
@@ -58,7 +65,11 @@ const Welcome: NextPage = () => {
               className='object-cover'
               src={student}
               alt="A person studying" />
-            <button className='bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded mx-auto my-4'>Im a student</button>
+
+            <Button>
+              I&apos;m a student
+            </Button>
+
           </div>
         </div>
       </main>
