@@ -5,8 +5,19 @@ import Header from '../components/Header';
 import feynman from '../assets/richard-feynman.jpeg';
 import student from '../assets/student.jpeg';
 import Button from '../components/Button';
+import { trpc } from '../utils/trpc';
+import { useRouter } from 'next/router';
+import { getSession, useSession } from 'next-auth/react';
 
 const Welcome: NextPage = () => {
+  const router = useRouter();
+  const { mutateAsync: setRoleAsTeacher } = trpc.useMutation('auth.setRoleAsTeacher')
+
+  const setTeacherRole = async () => {
+    await setRoleAsTeacher();
+    router.push('/teacher-wizard')
+  }
+
   return (
     <>
       <Head>
@@ -36,7 +47,10 @@ const Welcome: NextPage = () => {
 
           <div className='hidden sm:grid grid-cols-2 gap-8 w-full'>
             <div className='relative rounded flex flex-col items-center justify-center'>
-              <Button>
+              <Button
+                onClick={setTeacherRole}
+
+              >
                 I&apos;m a teacher
               </Button>
             </div>
@@ -55,7 +69,9 @@ const Welcome: NextPage = () => {
               className='object-cover object-top'
               src={feynman}
               alt='A picture of Richard Feynman(well known physics professor) teaching' />
-            <Button>
+            <Button
+              onClick={setTeacherRole}
+            >
               I&apos;m a teacher
             </Button>
 
@@ -78,3 +94,18 @@ const Welcome: NextPage = () => {
 }
 
 export default Welcome;
+
+export async function getServerSideProps(context: any) {
+
+  const session = await getSession();
+
+  if (!session?.user?.role) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false
+      }
+    }
+  }
+
+}

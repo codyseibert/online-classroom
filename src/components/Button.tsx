@@ -1,6 +1,9 @@
 import React, { FC, ReactNode } from 'react'
 
-const Button: FC<{ children: ReactNode }> =
+const Button: FC<{
+  children: ReactNode,
+  [x: string]: any;
+}> =
   ({ children, ...props }) => {
     return (
       <button

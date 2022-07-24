@@ -11,9 +11,10 @@ const Header = () => {
   const session = useSession();
 
   const isLoggedIn = session.data;
-  const hasRole = session.data?.user?.role
+  const hasRole = !!session.data?.user?.role
   const name = session.data ? session.data.user?.name : ''
   const image = session.data?.user?.image;
+  const role = session.data?.user?.role
   const openNavigateMenuRef = useRef<HTMLButtonElement>();
   const openProfileMenuRef = useRef<HTMLButtonElement>();
 
@@ -81,7 +82,7 @@ const Header = () => {
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             {isLoggedIn && <>
               <div className='mr-3 text-white'>
-                {name}
+                {name} {role}
               </div>
 
 
