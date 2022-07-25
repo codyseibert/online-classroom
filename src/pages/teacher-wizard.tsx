@@ -16,7 +16,7 @@ const TeacherWizard: NextPage = () => {
         Teacher Wizard
       </main>
     </>
-  )
-}
+  );
+};
 
 export default TeacherWizard;

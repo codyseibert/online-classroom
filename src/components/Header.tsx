@@ -1,20 +1,20 @@
 import { signIn, signOut, useSession } from 'next-auth/react';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react';
 import { registerCustom } from 'superjson';
-import { useTheme } from 'next-themes'
+import { useTheme } from 'next-themes';
 
 const Header = () => {
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme } = useTheme();
 
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const session = useSession();
 
   const isLoggedIn = session.data;
-  const hasRole = !!session.data?.user?.role
-  const name = session.data ? session.data.user?.name : ''
+  const hasRole = !!session.data?.user?.role;
+  const name = session.data ? session.data.user?.name : '';
   const image = session.data?.user?.image;
-  const role = session.data?.user?.role
+  const role = session.data?.user?.role;
   const openNavigateMenuRef = useRef<HTMLButtonElement>();
   const openProfileMenuRef = useRef<HTMLButtonElement>();
 
@@ -24,14 +24,14 @@ const Header = () => {
       if (openProfileMenuRef.current?.contains(e.target)) return;
       setShowAccountMenu(false);
       setShowMobileMenu(false);
-    }
+    };
 
-    document.addEventListener('click', hideMenusCb)
+    document.addEventListener('click', hideMenusCb);
 
     return () => {
-      document.removeEventListener('click', hideMenusCb)
-    }
-  }, [])
+      document.removeEventListener('click', hideMenusCb);
+    };
+  }, []);
 
   return (
     <nav className="bg-primary text-bgPrimary">
@@ -41,7 +41,7 @@ const Header = () => {
             <button
               ref={openNavigateMenuRef}
               onClick={() => {
-                setShowMobileMenu(!showMobileMenu)
+                setShowMobileMenu(!showMobileMenu);
               }}
               type="button"
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
@@ -130,7 +130,7 @@ const Header = () => {
                     <a href="#" className="block px-4 py-2 text-sm link-primary" role="menuitem" tabIndex={-1} id="user-menu-item-0">Your Profile</a>
                     <a href="#" className="block px-4 py-2 text-sm link-primary" role="menuitem" tabIndex={-1} id="user-menu-item-1">Settings</a>
                     <a onClick={() => {
-                      signOut()
+                      signOut();
                     }} href="#" className="block px-4 py-2 text-sm link-primary" role="menuitem" tabIndex={-1} id="user-menu-item-2">Sign out</a>
                   </div>
                 }
@@ -140,7 +140,7 @@ const Header = () => {
               <div className="ml-3 relative">
                 <a
                   onClick={() => {
-                    signIn()
+                    signIn();
                   }}
                   href="#"
                   className="link-secondary px-3 py-2 rounded-md text-sm font-medium"
@@ -173,7 +173,7 @@ const Header = () => {
         </div>
       }
     </nav>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

@@ -11,12 +11,12 @@ import { getSession, useSession } from 'next-auth/react';
 
 const Welcome: NextPage = () => {
   const router = useRouter();
-  const { mutateAsync: setRoleAsTeacher } = trpc.useMutation('auth.setRoleAsTeacher')
+  const { mutateAsync: setRoleAsTeacher } = trpc.useMutation('auth.setRoleAsTeacher');
 
   const setTeacherRole = async () => {
     await setRoleAsTeacher();
-    router.push('/teacher-wizard')
-  }
+    router.push('/teacher-wizard');
+  };
 
   return (
     <>
@@ -90,13 +90,12 @@ const Welcome: NextPage = () => {
         </div>
       </main>
     </>
-  )
-}
+  );
+};
 
 export default Welcome;
 
 export async function getServerSideProps(context: any) {
-
   const session = await getSession();
 
   if (!session?.user?.role) {
@@ -105,7 +104,8 @@ export async function getServerSideProps(context: any) {
         destination: '/dashboard',
         permanent: false
       }
-    }
+    };
+  } else {
+    return { props: {} };
   }
-
 }

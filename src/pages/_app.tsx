@@ -1,11 +1,11 @@
 // src/pages/_app.tsx
-import { withTRPC } from "@trpc/next";
-import type { AppRouter } from "../server/router";
-import type { AppType } from "next/dist/shared/lib/utils";
-import superjson from "superjson";
-import { SessionProvider } from "next-auth/react";
-import "../styles/globals.css";
-import { ThemeProvider } from 'next-themes'
+import { withTRPC } from '@trpc/next';
+import type { AppRouter } from '../server/router';
+import type { AppType } from 'next/dist/shared/lib/utils';
+import superjson from 'superjson';
+import { SessionProvider } from 'next-auth/react';
+import '../styles/globals.css';
+import { ThemeProvider } from 'next-themes';
 
 const MyApp: AppType = ({
   Component,
@@ -21,8 +21,8 @@ const MyApp: AppType = ({
 };
 
 const getBaseUrl = () => {
-  if (typeof window !== "undefined") {
-    return "";
+  if (typeof window !== 'undefined') {
+    return '';
   }
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
 

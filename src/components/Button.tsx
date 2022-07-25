@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react'
+import React, { FC, ReactNode } from 'react';
 
 const Button: FC<{
   children: ReactNode,
@@ -12,7 +12,7 @@ const Button: FC<{
       >
         {children}
       </button>
-    )
-  }
+    );
+  };
 
-export default Button
+export default Button;
