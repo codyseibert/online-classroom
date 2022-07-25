@@ -101,7 +101,7 @@ export async function getServerSideProps(context: any) {
   if (!session?.user?.role) {
     return {
       redirect: {
-        destination: '/dashboard',
+        destination: '/',
         permanent: false
       }
     };
