@@ -7,7 +7,10 @@ const TeacherWizard: NextPage = () => {
     <>
       <Head>
         <title>sign up</title>
-        <meta name="description" content="sign up now for a teacher or a student account in order to access the website" />
+        <meta
+          name="description"
+          content="sign up now for a teacher or a student account in order to access the website"
+        />
       </Head>
 
       <Header />

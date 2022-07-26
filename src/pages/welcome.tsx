@@ -7,7 +7,9 @@ import student from '../assets/student.jpeg';
 import Button from '../components/Button';
 import { trpc } from '../utils/trpc';
 import { useRouter } from 'next/router';
-import { getSession, useSession } from 'next-auth/react';
+import { unstable_getServerSession } from 'next-auth';
+import { authOptions } from './api/auth/[...nextauth]';
+import { reloadSession } from '../utils/reloadSession';
 
 const Welcome: NextPage = () => {
   const router = useRouter();
@@ -15,6 +17,7 @@ const Welcome: NextPage = () => {
 
   const setTeacherRole = async () => {
     await setRoleAsTeacher();
+    reloadSession();
     router.push('/teacher-wizard');
   };
 
@@ -22,7 +25,10 @@ const Welcome: NextPage = () => {
     <>
       <Head>
         <title>sign up</title>
-        <meta name="description" content="sign up now for a teacher or a student account in order to access the website" />
+        <meta
+          name="description"
+          content="sign up now for a teacher or a student account in order to access the website"
+        />
       </Head>
 
       <Header />
@@ -37,19 +43,20 @@ const Welcome: NextPage = () => {
               height="300"
               className='object-cover'
               src={feynman}
-              alt='A picture of Richard Feynman(well known physics professor) teaching' />
+              alt='A picture of Richard Feynman(well known physics professor) teaching'
+            />
             <Image
               height="300"
               className='object-cover'
               src={student}
-              alt="A person studying" />
+              alt="A person studying"
+            />
           </div>
 
           <div className='hidden sm:grid grid-cols-2 gap-8 w-full'>
             <div className='relative rounded flex flex-col items-center justify-center'>
               <Button
                 onClick={setTeacherRole}
-
               >
                 I&apos;m a teacher
               </Button>
@@ -68,7 +75,8 @@ const Welcome: NextPage = () => {
               width={300}
               className='object-cover object-top'
               src={feynman}
-              alt='A picture of Richard Feynman(well known physics professor) teaching' />
+              alt='A picture of Richard Feynman(well known physics professor) teaching'
+            />
             <Button
               onClick={setTeacherRole}
             >
@@ -80,7 +88,8 @@ const Welcome: NextPage = () => {
               width={300}
               className='object-cover'
               src={student}
-              alt="A person studying" />
+              alt="A person studying"
+            />
 
             <Button>
               I&apos;m a student
@@ -96,12 +105,12 @@ const Welcome: NextPage = () => {
 export default Welcome;
 
 export async function getServerSideProps(context: any) {
-  const session = await getSession();
+  const session = await unstable_getServerSession(context.req, context.res, authOptions);
 
-  if (!session?.user?.role) {
+  if (session?.user?.role) {
     return {
       redirect: {
-        destination: '/',
+        destination: '/dashboard',
         permanent: false
       }
     };

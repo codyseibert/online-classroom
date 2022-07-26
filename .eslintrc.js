@@ -22,10 +22,13 @@ module.exports = {
     '@typescript-eslint'
   ],
   'rules': {
+    'react/jsx-first-prop-new-line': [1, 'multiline'],
+    'react/jsx-max-props-per-line': [1, { 'maximum': 1 }],
     'indent': [
       'error',
       2
     ],
+    'react/jsx-closing-bracket-location': [1, 'tag-aligned'],
     'linebreak-style': [
       'error',
       'unix'

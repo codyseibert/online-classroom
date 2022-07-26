@@ -1,18 +1,8 @@
 import type { NextPage } from 'next';
-import { useSession } from 'next-auth/react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import Header from '../components/Header';
 
 const Home: NextPage = () => {
-
-  const router = useRouter();
-  const session = useSession();
-
-  if (session.data && !session.data?.user?.role) {
-    router.push('/welcome');
-  }
-
   return (
     <>
       <Head>
@@ -23,7 +13,7 @@ const Home: NextPage = () => {
 
       <Header />
       <main className="container mx-auto flex flex-col items-center justify-center h-screen p-4">
-        {session.data && <div>Role: {session.data.user?.role}</div>}
+        <div className="text-4xl">TODO: Make ME Landing Page</div>
       </main>
     </>
   );

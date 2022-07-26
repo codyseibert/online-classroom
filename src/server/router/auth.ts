@@ -1,5 +1,6 @@
 import { TRPCError } from '@trpc/server';
 import { createRouter } from './context';
+import z from 'zod';
 
 enum Roles {
   Teacher = 'teacher',
@@ -14,6 +15,7 @@ export const authRouter = createRouter()
     return next();
   })
   .mutation('setRoleAsTeacher', {
+    input: z.object({}).nullish(),
     async resolve({ ctx }) {
       if (ctx.session?.user?.role) {
         throw new TRPCError({ code: 'BAD_REQUEST', message: 'you can not change your role once it has been set' });
