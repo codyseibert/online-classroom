@@ -6,7 +6,7 @@ import Head from 'next/head';
 import { FC, useMemo, useState } from 'react';
 
 type TWrapper = {
-  View: FC<object>,
+  View: FC<any>,
   controller: (render: () => void) => object,
   title: string,
 }

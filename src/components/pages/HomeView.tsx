@@ -4,22 +4,39 @@ import Header from '../Header';
 import { HomeProps } from './homeController';
 
 export const HomeView: FC<HomeProps> =
-  ({ state, actions }) => {
+  ({ state, actions, computeds }) => {
     return (
       <>
         <Header />
         <main className="container mx-auto flex flex-col items-center justify-center h-screen p-4">
-          <div className="text-4xl">TODO: Make ME Landing Page</div>
+          <div className="text-4xl">TODO LIST MVC</div>
           <Button
             variant={Variant.PRIMARY}
             onClick={actions.createBlankItem}
-          >create item</Button>
+          >Create Item</Button>
           {state.items.map(item =>
             <div
               className="flex items-center space-x-4"
               key={item.id}
             >
-              <div>{item.name}</div>
+              {computeds.isEditMode(item.id) ?
+                <input
+                  onChange={(e) =>
+                    actions.updateItemName(item.id, e.target.value)
+                  }
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      actions.saveItem(item.id);
+                    }
+                  }}
+                  value={item.name}
+                >
+                </input> :
+                <div onClick={() => actions.setEditing(item.id)}>
+                  {item.name}
+                </div>
+              }
+
               <Button
                 variant={Variant.DANGER}
                 onClick={() => actions.deleteItemById(item.id)}
