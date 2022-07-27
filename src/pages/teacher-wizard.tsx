@@ -6,7 +6,7 @@ const TeacherWizard: NextPage = () => {
   return (
     <>
       <Head>
-        <title>sign up</title>
+        <title>Sign Up | Online Classroom</title>
         <meta
           name="description"
           content="sign up now for a teacher or a student account in order to access the website"
@@ -15,9 +15,7 @@ const TeacherWizard: NextPage = () => {
 
       <Header />
 
-      <main className="container m-auto">
-        Teacher Wizard
-      </main>
+      <main className="container m-auto">Teacher Wizard</main>
     </>
   );
 };
