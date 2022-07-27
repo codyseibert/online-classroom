@@ -2,7 +2,7 @@
 
 module.exports = {
   darkMode: 'class',
-  content: ["./src/**/*.{js,ts,jsx,tsx}"],
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {},
     colors: {
@@ -15,7 +15,9 @@ module.exports = {
       'bgPrimary': '#E1E2E1',
       'bgPrimaryDark': '#AFB0AF',
       'bgSecondary': '#F5F5F6',
-      'bgSecondaryDark': '#C2C2C3'
+      'bgSecondaryDark': '#C2C2C3',
+      'bgDanger': '#FF0000',
+      'bgDangerLight': '#AA0000',
     }
   },
   plugins: [],
