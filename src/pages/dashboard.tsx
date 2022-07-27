@@ -7,7 +7,6 @@ import Header from '../components/Header';
 import { authOptions } from './api/auth/[...nextauth]';
 
 const Dashboard: NextPage = () => {
-
   return (
     <>
       <Head>
@@ -20,9 +19,7 @@ const Dashboard: NextPage = () => {
 
       <Header />
 
-      <main className="container m-auto">
-        Dashboard
-      </main>
+      <main className="container m-auto">Dashboard</main>
     </>
   );
 };
@@ -36,15 +33,15 @@ export async function getServerSideProps(context: any) {
     return {
       redirect: {
         destination: '/',
-        permanent: false
-      }
+        permanent: false,
+      },
     };
   } else if (!session.user?.role) {
     return {
       redirect: {
         destination: '/welcome',
-        permanent: false
-      }
+        permanent: false,
+      },
     };
   } else {
     return { props: {} };

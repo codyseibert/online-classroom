@@ -15,9 +15,7 @@ const TeacherWizard: NextPage = () => {
 
       <Header />
 
-      <main className="container m-auto">
-        Teacher Wizard
-      </main>
+      <main className="container m-auto">Teacher Wizard</main>
     </>
   );
 };
