@@ -1,35 +1,43 @@
 import { signIn, signOut, useSession } from 'next-auth/react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { MouseEvent, useEffect, useRef, useState } from 'react';
 import { useTheme } from 'next-themes';
+import Link from 'next/link';
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
+  const session = useSession();
 
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const session = useSession();
 
-  const isLoggedIn = session.data;
-  const hasRole = !!session.data?.user?.role;
-  const name = session.data ? session.data.user?.name : '';
-  const image = session.data?.user?.image;
-  const role = session.data?.user?.role;
-  const openNavigateMenuRef = useRef<HTMLButtonElement>();
-  const openProfileMenuRef = useRef<HTMLButtonElement>();
+  const user = session.data?.user;
+  const isLoggedIn = user,
+    hasRole = !!user?.role,
+    name = user?.name,
+    image = user?.image,
+    role = user?.role;
+
+  const openNavigateMenuRef = useRef<HTMLButtonElement | null>(null);
+  const openProfileMenuRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
-    const hideMenusCb = (e: any) => {
-      if (openNavigateMenuRef.current?.contains(e.target)) return;
-      if (openProfileMenuRef.current?.contains(e.target)) return;
+    const hideMenusCb = (ev: MouseEventInit | MouseEvent) => {
+      const e = ev as MouseEvent;
+      const target = e.target as Node;
+
+      if (
+        openNavigateMenuRef.current?.contains(target) ||
+        openProfileMenuRef.current?.contains(target)
+      ) {
+        return;
+      }
+
       setShowAccountMenu(false);
       setShowMobileMenu(false);
     };
 
     document.addEventListener('click', hideMenusCb);
-
-    return () => {
-      document.removeEventListener('click', hideMenusCb);
-    };
+    return () => document.removeEventListener('click', hideMenusCb);
   }, []);
 
   return (
@@ -39,9 +47,7 @@ const Header = () => {
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <button
               ref={openNavigateMenuRef}
-              onClick={() => {
-                setShowMobileMenu(!showMobileMenu);
-              }}
+              onClick={() => setShowMobileMenu((m) => !m)}
               type="button"
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
               aria-controls="mobile-menu"
@@ -57,7 +63,11 @@ const Header = () => {
                 stroke="currentColor"
                 aria-hidden="true"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
               <svg
                 className="hidden h-6 w-6"
@@ -68,7 +78,11 @@ const Header = () => {
                 stroke="currentColor"
                 aria-hidden="true"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
@@ -91,45 +105,48 @@ const Header = () => {
                   <>
                     {hasRole && (
                       <>
-                        <a
+                        <Link
                           href="#"
                           className="link-secondary px-3 py-2 rounded-md text-sm font-medium"
                           aria-current="page"
                         >
                           Dashboard
-                        </a>
-                        <a
+                        </Link>
+                        <Link
                           href="#"
                           className="link-secondary px-3 py-2 rounded-md text-sm font-medium"
                         >
                           Assignments
-                        </a>
-                        <a
+                        </Link>
+                        <Link
                           href="#"
                           className="link-secondary px-3 py-2 rounded-md text-sm font-medium"
                         >
                           Students
-                        </a>
+                        </Link>
                       </>
                     )}
                     {!hasRole && (
                       <>
-                        <a
+                        <Link
                           href="/welcome"
                           className="link-secondary px-3 py-2 rounded-md text-sm font-medium"
                           aria-current="page"
                         >
                           Finish Setup
-                        </a>
+                        </Link>
                       </>
                     )}
                   </>
                 )}
                 {!isLoggedIn && (
                   <>
-                    <a href="#" className="link-secondary px-3 py-2 rounded-md text-sm font-medium">
+                    <Link
+                      href="#"
+                      className="link-secondary px-3 py-2 rounded-md text-sm font-medium"
+                    >
                       Pricing
-                    </a>
+                    </Link>
                   </>
                 )}
               </div>
@@ -202,7 +219,7 @@ const Header = () => {
                   <div>
                     <button
                       ref={openProfileMenuRef}
-                      onClick={() => setShowAccountMenu(!showAccountMenu)}
+                      onClick={() => setShowAccountMenu((m) => !m)}
                       type="button"
                       className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                       id="user-menu-button"
@@ -221,13 +238,13 @@ const Header = () => {
 
                   {showAccountMenu && (
                     <div
-                      className="z-10 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-bgSecondary ring-1 ring-black ring-opacity-5 focus:outline-none"
+                      className="flex flex-col z-10 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-bgSecondary ring-1 ring-black ring-opacity-5 focus:outline-none"
                       role="menu"
                       aria-orientation="vertical"
                       aria-labelledby="user-menu-button"
                       tabIndex={-1}
                     >
-                      <a
+                      <Link
                         href="#"
                         className="block px-4 py-2 text-sm link-primary"
                         role="menuitem"
@@ -235,8 +252,8 @@ const Header = () => {
                         id="user-menu-item-0"
                       >
                         Your Profile
-                      </a>
-                      <a
+                      </Link>
+                      <Link
                         href="#"
                         className="block px-4 py-2 text-sm link-primary"
                         role="menuitem"
@@ -244,19 +261,18 @@ const Header = () => {
                         id="user-menu-item-1"
                       >
                         Settings
-                      </a>
-                      <a
+                      </Link>
+                      <button
                         onClick={() => {
                           signOut();
                         }}
-                        href="#"
                         className="block px-4 py-2 text-sm link-primary"
                         role="menuitem"
                         tabIndex={-1}
                         id="user-menu-item-2"
                       >
                         Sign out
-                      </a>
+                      </button>
                     </div>
                   )}
                 </div>
@@ -264,18 +280,15 @@ const Header = () => {
             )}
             {!isLoggedIn && (
               <div className="ml-3 relative">
-                <a
-                  onClick={() => {
-                    signIn();
-                  }}
-                  href="#"
+                <button
+                  onClick={() => signIn()}
                   className="link-secondary px-3 py-2 rounded-md text-sm font-medium"
                   role="menuitem"
                   tabIndex={-1}
                   id="user-menu-item-2"
                 >
                   Register / Sign in
-                </a>
+                </button>
               </div>
             )}
           </div>
@@ -283,54 +296,57 @@ const Header = () => {
       </div>
 
       {showMobileMenu && (
-        <div className="sm:hidden" id="mobile-menu">
+        <div
+          className="sm:hidden"
+          id="mobile-menu"
+        >
           <div className="px-2 pt-2 pb-3 space-y-1">
             {isLoggedIn && (
               <>
                 {hasRole && (
                   <>
-                    <a
+                    <Link
                       href="#"
                       className="link-secondary block px-3 py-2 rounded-md text-base font-medium"
                       aria-current="page"
                     >
                       Dashboard
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                       href="#"
                       className="link-secondary block px-3 py-2 rounded-md text-base font-medium"
                     >
                       Assignments
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                       href="#"
                       className="link-secondary block px-3 py-2 rounded-md text-base font-medium"
                     >
                       Students
-                    </a>
+                    </Link>
                   </>
                 )}
                 {!hasRole && (
                   <>
-                    <a
+                    <Link
                       href="/welcome"
                       className="link-secondary block px-3 py-2 rounded-md text-base font-medium"
                       aria-current="page"
                     >
                       Finish Setup
-                    </a>
+                    </Link>
                   </>
                 )}
               </>
             )}
             {!isLoggedIn && (
               <>
-                <a
+                <Link
                   href="#"
                   className="link-secondary block px-3 py-2 rounded-md text-base font-medium"
                 >
                   Pricing
-                </a>
+                </Link>
               </>
             )}
           </div>

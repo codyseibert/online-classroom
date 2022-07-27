@@ -1,9 +1,10 @@
-import React, { FC, ReactNode } from 'react';
+import React, { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 
-const Button: FC<{
+type ButtonProps = {
   children: ReactNode;
-  [x: string]: any;
-}> = ({ children, ...props }) => {
+} & ComponentPropsWithoutRef<'button'>;
+
+const Button: FC<ButtonProps> = ({ children, ...props }) => {
   return (
     <button
       {...props}

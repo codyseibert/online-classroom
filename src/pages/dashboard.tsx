@@ -1,10 +1,10 @@
-import type { NextPage } from 'next';
+import type { GetServerSidePropsContext, GetServerSidePropsResult, NextPage } from 'next';
 import { unstable_getServerSession } from 'next-auth';
-import { getSession, useSession } from 'next-auth/react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import Header from '../components/Header';
 import { authOptions } from './api/auth/[...nextauth]';
+
+type PageProps = Record<string, unknown>;
 
 const Dashboard: NextPage = () => {
   return (
@@ -26,7 +26,9 @@ const Dashboard: NextPage = () => {
 
 export default Dashboard;
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(
+  context: GetServerSidePropsContext
+): Promise<GetServerSidePropsResult<PageProps>> {
   const session = await unstable_getServerSession(context.req, context.res, authOptions);
 
   if (!session) {

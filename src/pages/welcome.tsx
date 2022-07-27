@@ -1,4 +1,4 @@
-import type { NextPage } from 'next';
+import type { GetServerSidePropsContext, GetServerSidePropsResult, NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Header from '../components/Header';
@@ -10,6 +10,8 @@ import { useRouter } from 'next/router';
 import { unstable_getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 import { reloadSession } from '../utils/reloadSession';
+
+type PageProps = Record<string, unknown>;
 
 const Welcome: NextPage = () => {
   const router = useRouter();
@@ -24,7 +26,7 @@ const Welcome: NextPage = () => {
   return (
     <>
       <Head>
-        <title>sign up</title>
+        <title>Welcome | Online Classroom</title>
         <meta
           name="description"
           content="sign up now for a teacher or a student account in order to access the website"
@@ -45,7 +47,12 @@ const Welcome: NextPage = () => {
               src={feynman}
               alt="A picture of Richard Feynman(well known physics professor) teaching"
             />
-            <Image height="300" className="object-cover" src={student} alt="A person studying" />
+            <Image
+              height="300"
+              className="object-cover"
+              src={student}
+              alt="A person studying"
+            />
           </div>
 
           <div className="hidden sm:grid grid-cols-2 gap-8 w-full">
@@ -85,7 +92,9 @@ const Welcome: NextPage = () => {
 
 export default Welcome;
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(
+  context: GetServerSidePropsContext
+): Promise<GetServerSidePropsResult<PageProps>> {
   const session = await unstable_getServerSession(context.req, context.res, authOptions);
 
   if (session?.user?.role) {
