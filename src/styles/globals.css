@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.link-primary {
+  @apply text-primary hover:text-primaryDark hover:underline
+}
+
+.link-secondary {
+  @apply text-bgPrimary hover:text-bgSecondary hover:underline
+}
