@@ -16,11 +16,18 @@ type PageProps = Record<string, unknown>;
 const Welcome: NextPage = () => {
   const router = useRouter();
   const { mutateAsync: setRoleAsTeacher } = trpc.useMutation('auth.setRoleAsTeacher');
+  const { mutateAsync: setRoleAsStudent } = trpc.useMutation('auth.setRoleAsStudent');
 
-  const setTeacherRole = async () => {
+  const handleSetRoleAsTeacher = async () => {
     await setRoleAsTeacher();
     reloadSession();
     router.push('/teacher-wizard');
+  };
+
+  const handleSetRoleAsStudent = async () => {
+    await setRoleAsStudent();
+    reloadSession();
+    router.push('/student-wizard');
   };
 
   return (
@@ -57,10 +64,10 @@ const Welcome: NextPage = () => {
 
           <div className="hidden sm:grid grid-cols-2 gap-8 w-full">
             <div className="relative rounded flex flex-col items-center justify-center">
-              <Button onClick={setTeacherRole}>I&apos;m a teacher</Button>
+              <Button onClick={handleSetRoleAsTeacher}>I&apos;m a teacher</Button>
             </div>
             <div className="relative rounded flex flex-col items-center justify-center">
-              <Button>I&apos;m a student</Button>
+              <Button onClick={handleSetRoleAsStudent}>I&apos;m a student</Button>
             </div>
           </div>
 
@@ -72,7 +79,7 @@ const Welcome: NextPage = () => {
               src={feynman}
               alt="A picture of Richard Feynman(well known physics professor) teaching"
             />
-            <Button onClick={setTeacherRole}>I&apos;m a teacher</Button>
+            <Button onClick={setRoleAsTeacher}>I&apos;m a teacher</Button>
 
             <Image
               height={150}

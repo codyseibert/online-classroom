@@ -20,6 +20,6 @@ export const createContext = async (opts?: trpcNext.CreateNextContextOptions) =>
   };
 };
 
-type Context = trpc.inferAsyncReturnType<typeof createContext>;
+export type Context = trpc.inferAsyncReturnType<typeof createContext>;
 
 export const createRouter = () => trpc.router<Context>();
