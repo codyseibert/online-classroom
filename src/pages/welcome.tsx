@@ -1,15 +1,15 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import Header from '../components/Header';
 import feynman from '../assets/richard-feynman.jpeg';
 import student from '../assets/student.jpeg';
-import Button from '../components/Button';
 import { trpc } from '../utils/trpc';
 import { useRouter } from 'next/router';
 import { unstable_getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 import { reloadSession } from '../utils/reloadSession';
+import { Header } from 'components/common/Header/Header';
+import Button, { Variant } from 'components/Button';
 
 const Welcome: NextPage = () => {
   const router = useRouter();
@@ -56,13 +56,16 @@ const Welcome: NextPage = () => {
           <div className='hidden sm:grid grid-cols-2 gap-8 w-full'>
             <div className='relative rounded flex flex-col items-center justify-center'>
               <Button
+                variant={Variant.PRIMARY}
                 onClick={setTeacherRole}
               >
                 I&apos;m a teacher
               </Button>
             </div>
             <div className='relative rounded flex flex-col items-center justify-center'>
-              <Button>
+              <Button
+                variant={Variant.PRIMARY}
+              >
                 I&apos;m a student
               </Button>
             </div>
@@ -78,6 +81,7 @@ const Welcome: NextPage = () => {
               alt='A picture of Richard Feynman(well known physics professor) teaching'
             />
             <Button
+              variant={Variant.PRIMARY}
               onClick={setTeacherRole}
             >
               I&apos;m a teacher
@@ -91,7 +95,8 @@ const Welcome: NextPage = () => {
               alt="A person studying"
             />
 
-            <Button>
+            <Button
+              variant={Variant.PRIMARY}>
               I&apos;m a student
             </Button>
 

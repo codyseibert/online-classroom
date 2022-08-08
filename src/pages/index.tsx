@@ -1,9 +1,19 @@
-import { homeController } from '../components/pages/homeController';
-import { HomeView } from '../components/pages/HomeView';
-import { NextReactWrapper } from '../utils/NextReactWrapper';
+import { Header } from 'components/common/Header/Header';
+import { HomeContent } from 'components/pages/home/HomeContent';
+import Head from 'next/head';
 
-export default NextReactWrapper({
-  View: HomeView,
-  controller: homeController,
-  title: 'Home'
-});
+export default function HomePage() {
+  return (
+    <>
+      <Head>
+        <title>mvc</title>
+        <link
+          rel="icon"
+          href="/favicon.ico"
+        />
+      </Head>
+      <Header />
+      <HomeContent />
+    </>
+  );
+}
