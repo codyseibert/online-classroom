@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body, document, #__next {
+  @apply h-full
+}
+
 .link-primary {
   @apply text-primary hover:text-primaryDark hover:underline
 }

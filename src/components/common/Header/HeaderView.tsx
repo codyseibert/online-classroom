@@ -1,15 +1,15 @@
 import React, { FC, useEffect } from 'react';
-import { MobileMenu } from './MobileMenu';
-import { LoggedInLinks } from './LoggedInLinks';
-import MobileMenuButton from './MobileMenuButton';
-import Logo from './Logo';
-import LoggedOutLinks from './LoggedOutLinks';
-import LoggedOutSection from './LoggedOutSection';
+import { MobileMenu } from './components/MobileMenu';
+import { LoggedInLinks } from './components/LoggedInLinks';
+import MobileMenuButton from './components/MobileMenuButton';
+import Logo from './components/Logo';
+import LoggedOutLinks from './components/LoggedOutLinks';
+import LoggedOutSection from './components/LoggedOutSection';
 import { HeaderControllerProps } from './headerController';
-import ThemeButton from './ThemeButton';
-import { LoggedInSection } from './LoggedInSection';
+import ThemeButton from './components/ThemeButton';
+import { LoggedInSection } from './components/LoggedInSection';
 
-export const HeaderView: FC<HeaderControllerProps> = ({ state, actions, computeds, refs }) => {
+export const HeaderView: FC<HeaderControllerProps> = ({ model, actions, computeds, refs }) => {
   const isLoggedIn = computeds.isLoggedIn();
   const userMetadata = computeds.getUserMetadata();
 
@@ -34,7 +34,7 @@ export const HeaderView: FC<HeaderControllerProps> = ({ state, actions, computed
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <MobileMenuButton
               openNavigateMenuRef={refs.openNavigationMenuButtonRef}
-              showMobileMenu={state.isMobileMenuOpen}
+              showMobileMenu={model.isMobileMenuOpen}
               setShowMobileMenu={actions.toggleMobileMenu}
             />
           </div>
@@ -52,14 +52,14 @@ export const HeaderView: FC<HeaderControllerProps> = ({ state, actions, computed
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <ThemeButton
-              isDarkMode={computeds.isDarkMode}
+              isDarkMode={computeds.isDarkMode()}
               toggleTheme={actions.toggleTheme} />
 
             {isLoggedIn ?
               <LoggedInSection
                 name={userMetadata?.name}
                 image={userMetadata?.image}
-                isAccountMenuOpen={state.isAccountMenuOpen}
+                isAccountMenuOpen={model.isAccountMenuOpen}
                 openAccountMenu={actions.toggleAccountMenu}
                 openAccountMenuButtonRef={refs.openAccountMenuButtonRef}
                 signOut={actions.signOut}
@@ -69,7 +69,7 @@ export const HeaderView: FC<HeaderControllerProps> = ({ state, actions, computed
           </div>
         </div>
       </div>
-      {state.isMobileMenuOpen && <MobileMenu
+      {model.isMobileMenuOpen && <MobileMenu
         isLoggedIn={isLoggedIn}
         hasRole={false}
       />}

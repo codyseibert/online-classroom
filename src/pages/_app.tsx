@@ -13,7 +13,7 @@ const MyApp: AppType = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <ThemeProvider>
+      <ThemeProvider attribute="class">
         <Component {...pageProps} />
       </ThemeProvider>
     </SessionProvider>

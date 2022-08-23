@@ -41,6 +41,7 @@ module.exports = {
     'semi': [
       'error',
       'always'
-    ]
+    ],
+    'function-paren-newline': ['error', 'multiline']
   }
 };

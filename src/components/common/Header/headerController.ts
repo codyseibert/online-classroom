@@ -1,41 +1,36 @@
-import { HeaderControllerGetContext } from './Header';
+import { HeaderControllerGetContext, HeaderModel } from './Header';
 
 export enum Themes {
   Dark = 'dark',
   Light = 'light'
 }
 
-export const headerController = (render: () => void, getContext: HeaderControllerGetContext) => {
-  const state = {
-    isMobileMenuOpen: false,
-    isAccountMenuOpen: false
-  };
+export const headerController = (
+  model: HeaderModel,
+  getContext: HeaderControllerGetContext
+) => {
 
   function toggleMobileMenu() {
-    state.isMobileMenuOpen = !state.isMobileMenuOpen;
-    render();
+    model.isMobileMenuOpen = !model.isMobileMenuOpen;
   }
 
   function toggleAccountMenu() {
-    state.isAccountMenuOpen = !state.isAccountMenuOpen;
-    render();
+    model.isAccountMenuOpen = !model.isAccountMenuOpen;
   }
 
   function closeAllMenus() {
-    state.isAccountMenuOpen = false;
-    state.isMobileMenuOpen = false;
-    render();
+    model.isAccountMenuOpen = false;
+    model.isMobileMenuOpen = false;
   }
 
   function toggleTheme() {
     getContext().setTheme(isDarkMode() ? Themes.Light : Themes.Dark);
-    render();
   }
 
   function isDarkMode() { return getContext().theme === Themes.Dark; }
 
   return {
-    state,
+    model,
     actions: {
       toggleMobileMenu,
       toggleAccountMenu,

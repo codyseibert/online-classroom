@@ -7,6 +7,11 @@ import { HeaderView } from './HeaderView';
 import { signIn, signOut } from 'next-auth/react';
 import { useRef } from 'react';
 
+export type HeaderModel = {
+  isMobileMenuOpen: boolean
+  isAccountMenuOpen: boolean
+}
+
 const getContext = () => {
   const { theme, setTheme } = useTheme();
   const session = useSession();
@@ -29,5 +34,9 @@ export type HeaderControllerGetContext = typeof getContext
 export const Header = MVCWrapper({
   view: HeaderView,
   controller: headerController,
+  model: {
+    isMobileMenuOpen: false,
+    isAccountMenuOpen: false
+  },
   getContext,
 });

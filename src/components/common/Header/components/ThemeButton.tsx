@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-const ThemeButton = ({ isDarkMode, toggleTheme }) => {
+type Props = {
+  isDarkMode: boolean,
+  toggleTheme: () => void,
+}
+
+const ThemeButton: FC<Props> = ({ isDarkMode, toggleTheme }) => {
   return (
     <button onClick={toggleTheme}>
       {isDarkMode ? <svg
