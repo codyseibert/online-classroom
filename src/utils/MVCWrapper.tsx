@@ -7,14 +7,11 @@
 import { useRouter } from 'next/router';
 import { FC, useMemo, useRef, useState } from 'react';
 
-
 const withRouter = (WrappedComponent) => {
   return () => {
     const router = useRouter();
 
-    return <>
-      {router.isReady && <WrappedComponent />}
-    </>;
+    return <>{router.isReady && <WrappedComponent />}</>;
   };
 };
 
@@ -24,10 +21,10 @@ export function MVCWrapper({
   model,
   getContext,
 }: {
-  view: FC<any>,
-  controller: any,
-  model: object,
-  getContext?: () => object,
+  view: FC<any>;
+  controller: any;
+  model: object;
+  getContext?: () => object;
 }) {
   const View = view;
 
@@ -44,23 +41,15 @@ export function MVCWrapper({
           Object.assign(target, { [key]: value });
           setState({ ...target });
           return true;
-        }
+        },
       });
     }, []);
 
     const control = useMemo(
-      () =>
-        controller(
-          proxyModel,
-          () => ref.current
-        )
-      , []
+      () => controller(proxyModel, () => ref.current),
+      []
     );
 
-    return (
-      <View
-        {...control}
-      />
-    );
+    return <View {...control} />;
   });
 }

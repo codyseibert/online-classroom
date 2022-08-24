@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Header from '../components/Header';
+import { Header } from '../components/common/Header/Header';
 
 const TeacherWizard: NextPage = () => {
   return (
@@ -15,9 +15,7 @@ const TeacherWizard: NextPage = () => {
 
       <Header />
 
-      <main className="container m-auto">
-        Teacher Wizard
-      </main>
+      <main className="container m-auto">Teacher Wizard</main>
     </>
   );
 };

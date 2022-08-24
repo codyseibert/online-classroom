@@ -1,42 +1,71 @@
-import React, { FC } from 'react';
-import { Modal, Button } from 'react-daisyui';
-import { TeacherDashboardControllerProps } from '../teacherDashboardController';
+import React from 'react';
+import { Modal, Button, Input, Textarea } from 'react-daisyui';
 
-type Props = {
-  controller: TeacherDashboardControllerProps
-}
-
-export const CreateAssignmentModal: FC<Props> = ({ controller }) => {
-  const { actions } = controller;
-
+export const CreateAssignmentModal = ({
+  setFormValue,
+  errors,
+  form,
+  createAssignment,
+  closeCreateAssignmentModal,
+}: {
+  setFormValue: ({
+    key,
+    value,
+  }: {
+    key: 'name' | 'description';
+    value: string;
+  }) => void;
+  errors: Record<'name' | 'description', string>;
+  form: Record<'name' | 'description', string>;
+  createAssignment: () => void;
+  closeCreateAssignmentModal: () => void;
+}) => {
   return (
     <div className="font-sans">
-      <Modal
-        open={true}>
+      <Modal open={true}>
         <Modal.Header className="font-bold">
-          Congratulations random Interner user!
+          Create Assignment Modal
         </Modal.Header>
         <form
-          onSubmit={e => {
+          onSubmit={(e) => {
             e.preventDefault();
-            actions.createAssignment();
+            createAssignment();
           }}
         >
           <Modal.Body>
-            <div className="flex flex-col">
-              <input
-                placeholder="name"
-                onChange={e => actions.setFormValue({
-                  key: 'name',
-                  value: e.target.value
-                })} />
-              <input
-
-                placeholder="description"
-                onChange={e => actions.setFormValue({
-                  key: 'description',
-                  value: e.target.value
-                })} />
+            <div className="flex flex-col gap-4">
+              <label className="flex flex-col gap-2">
+                <div>Name:</div>
+                <Input
+                  placeholder="name"
+                  value={form.name}
+                  onChange={(e) =>
+                    setFormValue({
+                      key: 'name',
+                      value: e.target.value,
+                    })
+                  }
+                />
+                {errors.name && (
+                  <div className="text-red-500">{errors.name}</div>
+                )}
+              </label>
+              <label className="flex flex-col gap-2">
+                <div>Description:</div>
+                <Textarea
+                  placeholder="description"
+                  value={form.description}
+                  onChange={(e) =>
+                    setFormValue({
+                      key: 'description',
+                      value: e.target.value,
+                    })
+                  }
+                />
+                {errors.description && (
+                  <div className="text-red-500">{errors.description}</div>
+                )}
+              </label>
             </div>
           </Modal.Body>
 
@@ -44,20 +73,20 @@ export const CreateAssignmentModal: FC<Props> = ({ controller }) => {
             <Button
               type="button"
               onClick={() => {
-                actions.closeCreateAssignmentModal();
-              }}>
+                closeCreateAssignmentModal();
+              }}
+            >
               Cancel
             </Button>
             <Button
-              color='primary'
+              color="primary"
               type="submit"
             >
               Create
             </Button>
           </Modal.Actions>
         </form>
-
       </Modal>
-    </div >
+    </div>
   );
 };

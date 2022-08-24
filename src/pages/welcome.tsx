@@ -8,12 +8,14 @@ import { useRouter } from 'next/router';
 import { unstable_getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 import { reloadSession } from '../utils/reloadSession';
-import { Header } from 'components/common/Header/Header';
-import Button, { Variant } from 'components/Button';
+import { Header } from '../components/common/Header/Header';
+import Button, { Variant } from '../components/Button';
 
 const Welcome: NextPage = () => {
   const router = useRouter();
-  const { mutateAsync: setRoleAsTeacher } = trpc.useMutation('auth.setRoleAsTeacher');
+  const { mutateAsync: setRoleAsTeacher } = trpc.useMutation(
+    'auth.setRoleAsTeacher'
+  );
 
   const setTeacherRole = async () => {
     await setRoleAsTeacher();
@@ -34,27 +36,29 @@ const Welcome: NextPage = () => {
       <Header />
 
       <main className="container m-auto">
-        <div className='mx-auto flex flex-col items-center justify-center p-4 h-full'>
-          <p className='text-gray-900'>Welcome to classroom!</p>
-          <p className='text-gray-900'>Before we start, click what type of user you want to be:</p>
+        <div className="mx-auto flex flex-col items-center justify-center p-4 h-full">
+          <p className="text-gray-900">Welcome to classroom!</p>
+          <p className="text-gray-900">
+            Before we start, click what type of user you want to be:
+          </p>
 
-          <div className='hidden sm:grid sm:grid-cols-2 gap-8 mt-10'>
+          <div className="hidden sm:grid sm:grid-cols-2 gap-8 mt-10">
             <Image
               height="300"
-              className='object-cover'
+              className="object-cover"
               src={feynman}
-              alt='A picture of Richard Feynman(well known physics professor) teaching'
+              alt="A picture of Richard Feynman(well known physics professor) teaching"
             />
             <Image
               height="300"
-              className='object-cover'
+              className="object-cover"
               src={student}
               alt="A person studying"
             />
           </div>
 
-          <div className='hidden sm:grid grid-cols-2 gap-8 w-full'>
-            <div className='relative rounded flex flex-col items-center justify-center'>
+          <div className="hidden sm:grid grid-cols-2 gap-8 w-full">
+            <div className="relative rounded flex flex-col items-center justify-center">
               <Button
                 variant={Variant.PRIMARY}
                 onClick={setTeacherRole}
@@ -62,23 +66,18 @@ const Welcome: NextPage = () => {
                 I&apos;m a teacher
               </Button>
             </div>
-            <div className='relative rounded flex flex-col items-center justify-center'>
-              <Button
-                variant={Variant.PRIMARY}
-              >
-                I&apos;m a student
-              </Button>
+            <div className="relative rounded flex flex-col items-center justify-center">
+              <Button variant={Variant.PRIMARY}>I&apos;m a student</Button>
             </div>
           </div>
 
-
-          <div className='sm:hidden flex flex-col mt-8'>
+          <div className="sm:hidden flex flex-col mt-8">
             <Image
               height={150}
               width={300}
-              className='object-cover object-top'
+              className="object-cover object-top"
               src={feynman}
-              alt='A picture of Richard Feynman(well known physics professor) teaching'
+              alt="A picture of Richard Feynman(well known physics professor) teaching"
             />
             <Button
               variant={Variant.PRIMARY}
@@ -90,16 +89,12 @@ const Welcome: NextPage = () => {
             <Image
               height={150}
               width={300}
-              className='object-cover'
+              className="object-cover"
               src={student}
               alt="A person studying"
             />
 
-            <Button
-              variant={Variant.PRIMARY}>
-              I&apos;m a student
-            </Button>
-
+            <Button variant={Variant.PRIMARY}>I&apos;m a student</Button>
           </div>
         </div>
       </main>
@@ -110,14 +105,18 @@ const Welcome: NextPage = () => {
 export default Welcome;
 
 export async function getServerSideProps(context: any) {
-  const session = await unstable_getServerSession(context.req, context.res, authOptions);
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
 
   if (session?.user?.role) {
     return {
       redirect: {
         destination: '/dashboard',
-        permanent: false
-      }
+        permanent: false,
+      },
     };
   } else {
     return { props: {} };

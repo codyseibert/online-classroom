@@ -9,14 +9,21 @@ import { HeaderControllerProps } from './headerController';
 import ThemeButton from './components/ThemeButton';
 import { LoggedInSection } from './components/LoggedInSection';
 
-export const HeaderView: FC<HeaderControllerProps> = ({ model, actions, computeds, refs }) => {
+export const HeaderView: FC<HeaderControllerProps> = ({
+  model,
+  actions,
+  computeds,
+  refs,
+}) => {
   const isLoggedIn = computeds.isLoggedIn();
   const userMetadata = computeds.getUserMetadata();
 
   useEffect(() => {
     const hideMenusCb = (e: MouseEvent) => {
-      if (refs.openAccountMenuButtonRef.current?.contains(e.target as Node)) return;
-      if (refs.openNavigationMenuButtonRef.current?.contains(e.target as Node)) return;
+      if (refs.openAccountMenuButtonRef.current?.contains(e.target as Node))
+        return;
+      if (refs.openNavigationMenuButtonRef.current?.contains(e.target as Node))
+        return;
       actions.closeAllMenus();
     };
 
@@ -44,18 +51,21 @@ export const HeaderView: FC<HeaderControllerProps> = ({ model, actions, computed
             </div>
             <div className="hidden sm:block sm:ml-6">
               <div className="flex space-x-4">
-                {computeds.isLoggedIn() ?
-                  <LoggedInLinks hasRole={computeds.getUserMetadata()?.role} /> :
-                  <LoggedOutLinks />}
+                {computeds.isLoggedIn() ? (
+                  <LoggedInLinks hasRole={computeds.getUserMetadata()?.role} />
+                ) : (
+                  <LoggedOutLinks />
+                )}
               </div>
             </div>
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <ThemeButton
               isDarkMode={computeds.isDarkMode()}
-              toggleTheme={actions.toggleTheme} />
+              toggleTheme={actions.toggleTheme}
+            />
 
-            {isLoggedIn ?
+            {isLoggedIn ? (
               <LoggedInSection
                 name={userMetadata?.name}
                 image={userMetadata?.image}
@@ -63,16 +73,19 @@ export const HeaderView: FC<HeaderControllerProps> = ({ model, actions, computed
                 openAccountMenu={actions.toggleAccountMenu}
                 openAccountMenuButtonRef={refs.openAccountMenuButtonRef}
                 signOut={actions.signOut}
-              /> :
+              />
+            ) : (
               <LoggedOutSection signIn={actions.signIn} />
-            }
+            )}
           </div>
         </div>
       </div>
-      {model.isMobileMenuOpen && <MobileMenu
-        isLoggedIn={isLoggedIn}
-        hasRole={false}
-      />}
-    </nav >
+      {model.isMobileMenuOpen && (
+        <MobileMenu
+          isLoggedIn={isLoggedIn}
+          hasRole={false}
+        />
+      )}
+    </nav>
   );
 };

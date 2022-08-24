@@ -2,14 +2,13 @@ import { HeaderControllerGetContext, HeaderModel } from './Header';
 
 export enum Themes {
   Dark = 'dark',
-  Light = 'light'
+  Light = 'light',
 }
 
 export const headerController = (
   model: HeaderModel,
   getContext: HeaderControllerGetContext
 ) => {
-
   function toggleMobileMenu() {
     model.isMobileMenuOpen = !model.isMobileMenuOpen;
   }
@@ -27,7 +26,9 @@ export const headerController = (
     getContext().setTheme(isDarkMode() ? Themes.Light : Themes.Dark);
   }
 
-  function isDarkMode() { return getContext().theme === Themes.Dark; }
+  function isDarkMode() {
+    return getContext().theme === Themes.Dark;
+  }
 
   return {
     model,
@@ -46,10 +47,9 @@ export const headerController = (
     computeds: {
       isDarkMode,
       isLoggedIn: () => !!getContext().session.data,
-      getUserMetadata: () =>
-        getContext().session.data?.user
-    }
+      getUserMetadata: () => getContext().session.data?.user,
+    },
   };
 };
 
-export type HeaderControllerProps = ReturnType<typeof headerController>
+export type HeaderControllerProps = ReturnType<typeof headerController>;

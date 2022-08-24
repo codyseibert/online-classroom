@@ -1,6 +1,6 @@
-import { Header } from 'components/common/Header/Header';
-import { HomeContent } from 'components/pages/home/HomeContent';
 import Head from 'next/head';
+import { Header } from '../components/common/Header/Header';
+import { HomeContent } from '../components/pages/home/HomeContent';
 
 export default function HomePage() {
   return (

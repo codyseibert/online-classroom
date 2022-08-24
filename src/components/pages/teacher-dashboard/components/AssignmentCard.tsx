@@ -1,12 +1,12 @@
 import { Assignment } from '@prisma/client';
 import React, { FC } from 'react';
 import { Card, Button } from 'react-daisyui';
-import { TeacherDashboardControllerProps } from '../teacherDashboardController';
+import { TeacherDashboardControllerProps } from '../TeacherDashboard';
 
 type Props = {
-  assignment: Assignment,
-  controller: TeacherDashboardControllerProps
-}
+  assignment: Assignment;
+  controller: TeacherDashboardControllerProps;
+};
 
 export const AssignmentCard: FC<Props> = ({ assignment, controller }) => {
   return (
@@ -15,20 +15,24 @@ export const AssignmentCard: FC<Props> = ({ assignment, controller }) => {
         src="https://api.lorem.space/image/shoes?w=400&h=225"
         alt="Shoes"
       />
-      <Card.Body className='bg-white'>
+      <Card.Body className="bg-white">
         <Card.Title tag="h2">{assignment.name}</Card.Title>
         <p>{assignment.description}</p>
         <Card.Actions className="justify-end">
-          deleteAssignment
           <Button
             variant="link"
             color="warning"
             className="text-bgDanger"
             onClick={() => controller.actions.deleteAssignment(assignment.id)}
-          >Remove</Button>
+          >
+            Remove
+          </Button>
           <Button
             variant="link"
-            color="primary">View</Button>
+            color="primary"
+          >
+            View
+          </Button>
         </Card.Actions>
       </Card.Body>
     </Card>

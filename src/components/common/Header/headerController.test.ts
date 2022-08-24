@@ -1,60 +1,69 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { Session } from 'next-auth';
-import { HeaderControllerGetContext } from './Header';
+import { RefObject } from 'react';
+import { HeaderControllerGetContext, HeaderModel } from './Header';
 import { headerController } from './headerController';
 
 describe('headerController', () => {
-  const noop = () => { };
+  let mockModel: HeaderModel;
+
+  beforeEach(() => {
+    mockModel = {
+      isAccountMenuOpen: false,
+      isMobileMenuOpen: false,
+    };
+  });
 
   const getContextMock: HeaderControllerGetContext = () => {
     return {
       theme: 'light',
-      setTheme: () => { },
+      setTheme: () => undefined,
       session: {
         data: {
           user: {
-            id: '123'
+            id: '123',
           },
           expires: '',
         } as Session,
-        status: 'authenticated'
+        status: 'authenticated',
       },
-      signIn: async () => { },
-      signOut: async () => { },
-      openAccountMenuButtonRef: {},
-      openNavigationMenuButtonRef: {},
+      signIn: async () => undefined,
+      signOut: async () => undefined,
+      openAccountMenuButtonRef: {} as RefObject<HTMLButtonElement>,
+      openNavigationMenuButtonRef: {} as RefObject<HTMLButtonElement>,
     };
   };
 
   describe('actions.toggleMobileMenu', () => {
     it('should set the isMobileMenuOpen state to true', () => {
-      const controller = headerController(noop, getContextMock);
+      const controller = headerController(mockModel, getContextMock);
       controller.actions.toggleMobileMenu();
-      expect(controller.state.isMobileMenuOpen).toBeTruthy();
+      expect(controller.model.isMobileMenuOpen).toBeTruthy();
       controller.actions.toggleMobileMenu();
-      expect(controller.state.isMobileMenuOpen).toBeFalsy();
+      expect(controller.model.isMobileMenuOpen).toBeFalsy();
     });
   });
 
   describe('actions.toggleAccountMenu', () => {
     it('should set the isAccountMenuOpen state to true', () => {
-      const controller = headerController(noop, () => ({}));
+      const controller = headerController(mockModel, getContextMock);
       controller.actions.toggleAccountMenu();
-      expect(controller.state.isAccountMenuOpen).toBeTruthy();
+      expect(controller.model.isAccountMenuOpen).toBeTruthy();
       controller.actions.toggleAccountMenu();
-      expect(controller.state.isAccountMenuOpen).toBeFalsy();
+      expect(controller.model.isAccountMenuOpen).toBeFalsy();
     });
   });
 
   describe('onClickOutside', () => {
     it('should close all menus when clicking outside the menus', () => {
-      const controller = headerController(noop, () => ({}));
+      const controller = headerController(mockModel, getContextMock);
       controller.actions.toggleAccountMenu();
       controller.actions.toggleMobileMenu();
-      expect(controller.state.isAccountMenuOpen).toBeTruthy();
-      expect(controller.state.isMobileMenuOpen).toBeTruthy();
+      expect(controller.model.isAccountMenuOpen).toBeTruthy();
+      expect(controller.model.isMobileMenuOpen).toBeTruthy();
       controller.actions.closeAllMenus();
-      expect(controller.state.isAccountMenuOpen).toBeFalsy();
-      expect(controller.state.isMobileMenuOpen).toBeFalsy();
+      expect(controller.model.isAccountMenuOpen).toBeFalsy();
+      expect(controller.model.isMobileMenuOpen).toBeFalsy();
     });
   });
 });

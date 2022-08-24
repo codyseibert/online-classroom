@@ -1,9 +1,13 @@
 import React, { FC } from 'react';
+import Button, { Variant } from '../../Button';
 
-import Button, { Variant } from 'components/Button';
-import { HomeProps } from './HomeController';
+import { HomeControllerProps } from './homeController';
 
-export const HomeView: FC<HomeProps> = ({ state, actions, computeds }) => {
+export const HomeView: FC<HomeControllerProps> = ({
+  model,
+  actions,
+  computeds,
+}) => {
   return (
     <>
       <main className="container mx-auto flex flex-col items-center justify-center h-screen p-4">
@@ -11,13 +15,15 @@ export const HomeView: FC<HomeProps> = ({ state, actions, computeds }) => {
         <Button
           variant={Variant.PRIMARY}
           onClick={actions.createBlankItem}
-        >Create Item</Button>
-        {state.items.map(item =>
+        >
+          Create Item
+        </Button>
+        {model.items.map((item) => (
           <div
             className="flex items-center space-x-4"
             key={item.id}
           >
-            {computeds.isEditMode(item.id) ?
+            {computeds.isEditMode(item.id) ? (
               <input
                 onChange={(e) =>
                   actions.updateItemName(item.id, e.target.value)
@@ -28,12 +34,10 @@ export const HomeView: FC<HomeProps> = ({ state, actions, computeds }) => {
                   }
                 }}
                 value={item.name}
-              >
-              </input> :
-              <div onClick={() => actions.setEditing(item.id)}>
-                {item.name}
-              </div>
-            }
+              ></input>
+            ) : (
+              <div onClick={() => actions.setEditing(item.id)}>{item.name}</div>
+            )}
 
             <Button
               variant={Variant.DANGER}
@@ -42,7 +46,7 @@ export const HomeView: FC<HomeProps> = ({ state, actions, computeds }) => {
               Delete
             </Button>
           </div>
-        )}
+        ))}
       </main>
     </>
   );
