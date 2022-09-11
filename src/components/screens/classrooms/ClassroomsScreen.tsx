@@ -5,6 +5,7 @@ import { trpc } from '../../../utils/trpc';
 import teacherImage from '../../../assets/teacher.svg';
 import { Button, Card } from 'react-daisyui';
 import { CreateClassroomModal } from './CreateClassroomModal';
+import Link from 'next/link';
 
 const NoClassroomsComponent = ({ openClassroomModal }) => {
   return (
@@ -37,7 +38,9 @@ const ClassroomCard = ({ classroom }) => {
         <Card.Title tag="h2">{classroom.name}</Card.Title>
         <p>...</p>
         <Card.Actions className="justify-end">
-          <Button color="primary">Manage Classroom</Button>
+          <Link href={`/classrooms/${classroom.id}`}>
+            <Button color="primary">Manage Classroom</Button>
+          </Link>
         </Card.Actions>
       </Card.Body>
     </Card>
@@ -67,7 +70,7 @@ const ClassroomsView = ({ openClassroomModal, classrooms }) => {
   );
 };
 
-export const ClassroomScreen = () => {
+export const ClassroomsScreen = () => {
   const [showCreateClassroomModal, setShowCreateClassroomModal] =
     useState(false);
 

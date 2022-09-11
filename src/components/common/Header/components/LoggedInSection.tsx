@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { RefObject, useRef, useState } from 'react';
-import { useClickOutside } from '../../../hooks/useClickOutside';
+import { useClickOutside } from '../hooks/useClickOutside';
 import AccountMenu from './AccountMenu';
 
 export const LoggedInSection = ({
