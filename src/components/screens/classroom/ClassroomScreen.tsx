@@ -3,12 +3,13 @@ import React, { useState } from 'react';
 import { ThreeDots } from 'react-loader-spinner';
 import { trpc } from '../../../utils/trpc';
 import assignmentsImage from '../../../assets/assignments.svg';
-import { Button } from 'react-daisyui';
+import { Button, Table } from 'react-daisyui';
 import { CreateAssignmentModal } from './CreateAssignmentModal';
+import { Assignment } from '@prisma/client';
 
 const NoAssignments = ({ openAssignmentModal }) => {
   return (
-    <div className="flex flex-col justify-center gap-8">
+    <div className="flex flex-col gap-8">
       <Image
         width="300"
         height="300"
@@ -28,8 +29,49 @@ const NoAssignments = ({ openAssignmentModal }) => {
   );
 };
 
-const Assignments = () => {
-  return <div>Assignments</div>;
+const Assignments = ({
+  assignments,
+  openAssignmentModal,
+}: {
+  assignments: Assignment[];
+  openAssignmentModal: () => void;
+}) => {
+  const totalAssignments = assignments.length;
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex gap-8 items-center">
+        <h3 className="text-2xl">
+          Your Assignments ({totalAssignments} total)
+        </h3>
+        <Button
+          onClick={openAssignmentModal}
+          color="primary"
+          size="sm"
+        >
+          Create An Assignment
+        </Button>
+      </div>
+      <div className="overflow-x-auto">
+        <Table zebra={true}>
+          <Table.Head>
+            <span>Assignment Number</span>
+            <span>Name</span>
+            <span>Description</span>
+          </Table.Head>
+
+          <Table.Body>
+            {assignments.map((assignment, idx) => (
+              <Table.Row key={assignment.id}>
+                <span>{idx + 1}</span>
+                <span>{assignment.name}</span>
+                <span>{assignment.description}</span>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </div>
+    </div>
+  );
 };
 
 export const ClassroomScreen = ({ classroomId }) => {
@@ -39,21 +81,16 @@ export const ClassroomScreen = ({ classroomId }) => {
   // TODO: fetch the classroom data <-----
   // TODO: ability to create new assignments
   // TODO: view the students currently enrolled
-  const { data: assignments, isLoading: isLoadingAssignments } = trpc.useQuery([
-    'classroom.getAssignments',
-    { classroomId },
-  ]);
+  const {
+    data: assignments,
+    isLoading: isLoadingAssignments,
+    refetch: refetchAssignments,
+  } = trpc.useQuery(['classroom.getAssignments', { classroomId }]);
 
   const { data: classroom } = trpc.useQuery([
     'classroom.getClassroom',
     { classroomId },
   ]);
-
-  const {
-    data: classrooms,
-    isLoading,
-    refetch: refetchClassrooms,
-  } = trpc.useQuery(['classroom.getClassroomsForTeacher']);
 
   const closeAssignmentModal = () => {
     setShowCreateAssignmentModal(false);
@@ -64,7 +101,7 @@ export const ClassroomScreen = ({ classroomId }) => {
   };
 
   const handleAssignmentModalComplete = () => {
-    refetchClassrooms();
+    refetchAssignments();
     closeAssignmentModal();
   };
 
@@ -75,7 +112,7 @@ export const ClassroomScreen = ({ classroomId }) => {
 
   return (
     <>
-      <div className="container m-auto flex flex-col gap-4">
+      <div className="container m-auto flex flex-col gap-8">
         <h1 className="text-4xl mt-8">
           Manage your <b>{classroom?.name}</b>
         </h1>
@@ -94,7 +131,12 @@ export const ClassroomScreen = ({ classroomId }) => {
           {showEmptyState && (
             <NoAssignments openAssignmentModal={openAssignmentModal} />
           )}
-          {showAssignments && <Assignments />}
+          {showAssignments && (
+            <Assignments
+              assignments={assignments}
+              openAssignmentModal={openAssignmentModal}
+            />
+          )}
         </div>
       </div>
 
