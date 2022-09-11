@@ -1,6 +1,6 @@
 import Head from 'next/head';
-import { Header } from '../components/common/Header/Header';
 import { HomeContent } from '../components/pages/home/HomeContent';
+import { HeaderLayout } from '../layouts/HeaderLayout';
 
 export default function HomePage() {
   return (
@@ -12,8 +12,10 @@ export default function HomePage() {
           href="/favicon.ico"
         />
       </Head>
-      <Header />
-      <HomeContent />
+
+      <HeaderLayout>
+        <HomeContent />
+      </HeaderLayout>
     </>
   );
 }

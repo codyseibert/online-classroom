@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import { useClickOutside } from '../hooks/useClickOutside';
 
-const MobileMenuButton = ({ openNavigateMenuRef, showMobileMenu, setShowMobileMenu }) => {
+const MobileMenuButton = ({ setIsMobileMenuOpen }) => {
+  const openNavigationMenuButtonRef = useRef<HTMLButtonElement>(null);
+
+  function toggleMobileMenu() {
+    setIsMobileMenuOpen((isOpen) => !isOpen);
+  }
+
+  function closeMobileMenu() {
+    setIsMobileMenuOpen(false);
+  }
+
+  useClickOutside({
+    ref: openNavigationMenuButtonRef,
+    onClose: closeMobileMenu,
+  });
+
   return (
     <button
-      ref={openNavigateMenuRef}
-      onClick={() => {
-        setShowMobileMenu(!showMobileMenu);
-      }}
+      ref={openNavigationMenuButtonRef}
+      onClick={toggleMobileMenu}
       type="button"
       className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
       aria-controls="mobile-menu"

@@ -1,6 +1,7 @@
+import { signOut } from 'next-auth/react';
 import React from 'react';
 
-const AccountMenu = ({ signOut }: { signOut: () => void }) => {
+const AccountMenu = () => {
   return (
     <div
       className="z-10 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-bgSecondary ring-1 ring-black ring-opacity-5 focus:outline-none"
@@ -15,22 +16,28 @@ const AccountMenu = ({ signOut }: { signOut: () => void }) => {
         role="menuitem"
         tabIndex={-1}
         id="user-menu-item-0"
-      >Your Profile</a>
+      >
+        Your Profile
+      </a>
       <a
         href="#"
         className="block px-4 py-2 text-sm link-primary"
         role="menuitem"
         tabIndex={-1}
         id="user-menu-item-1"
-      >Settings</a>
+      >
+        Settings
+      </a>
       <a
-        onClick={signOut}
+        onClick={() => signOut()}
         href="#"
         className="block px-4 py-2 text-sm link-primary"
         role="menuitem"
         tabIndex={-1}
         id="user-menu-item-2"
-      >Sign out</a>
+      >
+        Sign out
+      </a>
     </div>
   );
 };

@@ -27,6 +27,8 @@
     "react": "18.2.0",
     "react-daisyui": "^2.3.2",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.35.0",
+    "react-loader-spinner": "^5.3.4",
     "react-query": "^3.39.2",
     "superjson": "^1.9.1",
     "use-immer": "^0.7.0",

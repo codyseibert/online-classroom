@@ -9,7 +9,7 @@ import { unstable_getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 import { reloadSession } from '../utils/reloadSession';
 import { Header } from '../components/common/Header/Header';
-import Button, { Variant } from '../components/Button';
+import { Button } from 'react-daisyui';
 
 const Welcome: NextPage = () => {
   const router = useRouter();
@@ -20,7 +20,7 @@ const Welcome: NextPage = () => {
   const setTeacherRole = async () => {
     await setRoleAsTeacher();
     reloadSession();
-    router.push('/teacher-wizard');
+    router.push('/dashboard');
   };
 
   return (
@@ -59,15 +59,10 @@ const Welcome: NextPage = () => {
 
           <div className="hidden sm:grid grid-cols-2 gap-8 w-full">
             <div className="relative rounded flex flex-col items-center justify-center">
-              <Button
-                variant={Variant.PRIMARY}
-                onClick={setTeacherRole}
-              >
-                I&apos;m a teacher
-              </Button>
+              <Button onClick={setTeacherRole}>I&apos;m a teacher</Button>
             </div>
             <div className="relative rounded flex flex-col items-center justify-center">
-              <Button variant={Variant.PRIMARY}>I&apos;m a student</Button>
+              <Button>I&apos;m a student</Button>
             </div>
           </div>
 
@@ -79,12 +74,7 @@ const Welcome: NextPage = () => {
               src={feynman}
               alt="A picture of Richard Feynman(well known physics professor) teaching"
             />
-            <Button
-              variant={Variant.PRIMARY}
-              onClick={setTeacherRole}
-            >
-              I&apos;m a teacher
-            </Button>
+            <Button onClick={setTeacherRole}>I&apos;m a teacher</Button>
 
             <Image
               height={150}
@@ -94,7 +84,7 @@ const Welcome: NextPage = () => {
               alt="A person studying"
             />
 
-            <Button variant={Variant.PRIMARY}>I&apos;m a student</Button>
+            <Button>I&apos;m a student</Button>
           </div>
         </div>
       </main>

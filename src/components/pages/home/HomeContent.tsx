@@ -1,16 +1,7 @@
-import { MVCWrapper } from '../../../utils/MVCWrapper';
-import { homeController, homeControllerModel } from './homeController';
-import { HomeView } from './HomeView';
+import React from 'react';
 
-const getContext = () => {
-  return {};
+type Props = {};
+
+export const HomeContent = (props: Props) => {
+  return <div>HomeContent</div>;
 };
-
-export const HomeContent = MVCWrapper({
-  view: HomeView,
-  controller: homeController,
-  model: homeControllerModel,
-  getContext,
-});
-
-export type HomeControllerGetContext = typeof getContext;

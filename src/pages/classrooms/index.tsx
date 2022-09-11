@@ -1,28 +1,29 @@
 import type { NextPage } from 'next';
 import { unstable_getServerSession } from 'next-auth';
 import Head from 'next/head';
-import { Header } from '../components/common/Header/Header';
-import { authOptions } from './api/auth/[...nextauth]';
+import { HeaderLayout } from '../../layouts/HeaderLayout';
+import { authOptions } from '../api/auth/[...nextauth]';
+import { ClassroomScreen } from '../../components/pages/classrooms/ClassroomScreen';
 
-const Dashboard: NextPage = () => {
+const Classrooms: NextPage = () => {
   return (
     <>
       <Head>
-        <title>sign up</title>
+        <title>Classrooms</title>
         <meta
           name="description"
-          content="sign up now for a teacher or a student account in order to access the website"
+          content="all of the classrooms you've created as a teacher"
         />
       </Head>
 
-      <Header />
-
-      <main className="container m-auto">Dashboard</main>
+      <HeaderLayout>
+        <ClassroomScreen />
+      </HeaderLayout>
     </>
   );
 };
 
-export default Dashboard;
+export default Classrooms;
 
 export async function getServerSideProps(context: any) {
   const session = await unstable_getServerSession(

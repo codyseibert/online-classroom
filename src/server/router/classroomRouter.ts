@@ -7,7 +7,22 @@ export const classroomRouter = createRouter()
     if (!ctx.session) {
       throw new TRPCError({ code: 'UNAUTHORIZED' });
     }
-    return next();
+    return next({
+      ctx: {
+        ...ctx,
+        session: ctx.session,
+      },
+    });
+  })
+  .query('getClassroomsForTeacher', {
+    async resolve({ ctx }) {
+      const classrooms = await ctx.prisma.classroom.findMany({
+        where: {
+          userId: ctx.session.user?.id,
+        },
+      });
+      return classrooms;
+    },
   })
   .query('getAssignments', {
     input: z.object({
@@ -16,7 +31,7 @@ export const classroomRouter = createRouter()
     async resolve({ input, ctx }) {
       const assignments = await ctx.prisma.assignment.findMany({
         where: {
-          classroomId: input.classroomId
+          classroomId: input.classroomId,
         },
       });
       return assignments;
@@ -29,8 +44,8 @@ export const classroomRouter = createRouter()
     async resolve({ input, ctx }) {
       await ctx.prisma.assignment.delete({
         where: {
-          id: input.assignmentId
-        }
+          id: input.assignmentId,
+        },
       });
     },
   })
@@ -46,7 +61,7 @@ export const classroomRouter = createRouter()
           name: input.name,
           description: input.description,
           classroomId: input.classroomId,
-        }
+        },
       });
       return assignment;
     },
