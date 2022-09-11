@@ -21,8 +21,6 @@ export const classroomRouter = createRouter()
           userId: ctx.session.user?.id,
         },
       });
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
       return classrooms;
     },
   })

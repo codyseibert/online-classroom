@@ -3,7 +3,7 @@ import { unstable_getServerSession } from 'next-auth';
 import Head from 'next/head';
 import { HeaderLayout } from '../../layouts/HeaderLayout';
 import { authOptions } from '../api/auth/[...nextauth]';
-import { ClassroomScreen } from '../../components/pages/classrooms/ClassroomScreen';
+import { ClassroomScreen } from '../../components/screens/classrooms/ClassroomScreen';
 
 const Classrooms: NextPage = () => {
   return (

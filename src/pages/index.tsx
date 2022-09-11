@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { HomeContent } from '../components/pages/home/HomeContent';
+import { HomeContent } from '../components/screens/home/HomeContent';
 import { HeaderLayout } from '../layouts/HeaderLayout';
 
 export default function HomePage() {

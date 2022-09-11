@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useClickOutside } from '../hooks/useClickOutside';
+import { useClickOutside } from '../../../hooks/useClickOutside';
 
 const MobileMenuButton = ({ setIsMobileMenuOpen }) => {
   const openNavigationMenuButtonRef = useRef<HTMLButtonElement>(null);
