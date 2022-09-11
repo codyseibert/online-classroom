@@ -1,20 +1,37 @@
-import React, { useState } from 'react';
-import { Modal, Button, Input, Textarea } from 'react-daisyui';
+import React from 'react';
+import { Modal, Button, Input } from 'react-daisyui';
 import { useForm } from 'react-hook-form';
+import { trpc } from '../../../utils/trpc';
 
-export const CreateClassroomModal = ({ onCancel }) => {
+type CreateClassroomForm = {
+  name: string;
+};
+
+export const CreateClassroomModal = ({
+  onCancel,
+  onComplete,
+}: {
+  onCancel: () => void;
+  onComplete: () => void;
+}) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
-  const onSubmit = (data) => console.log(data);
+  } = useForm<CreateClassroomForm>();
+
+  const createClassroom = trpc.useMutation('classroom.createClassroom');
+
+  const onSubmit = handleSubmit(async (data) => {
+    await createClassroom.mutateAsync({ name: data.name });
+    onComplete();
+  });
 
   return (
     <div className="font-sans">
       <Modal open={true}>
         <Modal.Header className="font-bold">Create Classroom</Modal.Header>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={onSubmit}>
           <Modal.Body>
             <div className="flex flex-col gap-4">
               <label className="flex flex-col gap-2">
@@ -27,7 +44,7 @@ export const CreateClassroomModal = ({ onCancel }) => {
               {errors.name?.type === 'required' && (
                 <div className="text-red-500">Name is required</div>
               )}
-              <label className="flex flex-col gap-2">
+              {/* <label className="flex flex-col gap-2">
                 <div>Description:</div>
                 <Textarea
                   {...register('description', { required: true })}
@@ -36,7 +53,7 @@ export const CreateClassroomModal = ({ onCancel }) => {
                 {errors.description?.type === 'required' && (
                   <div className="text-red-500">Description is required</div>
                 )}
-              </label>
+              </label> */}
             </div>
           </Modal.Body>
 

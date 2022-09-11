@@ -7,14 +7,30 @@ import { Button } from 'react-daisyui';
 import { CreateClassroomModal } from './CreateClassroomModal';
 
 export const ClassroomScreen = () => {
-  const { data: classrooms, isLoading } = trpc.useQuery([
-    'classroom.getClassroomsForTeacher',
-  ]);
+  const [showCreateClassroomModal, setShowCreateClassroomModal] =
+    useState(false);
+
+  const {
+    data: classrooms,
+    isLoading,
+    refetch: refetchClassrooms,
+  } = trpc.useQuery(['classroom.getClassroomsForTeacher']);
+
+  const closeClassroomModal = () => {
+    setShowCreateClassroomModal(false);
+  };
+
+  const openClassroomModal = () => {
+    setShowCreateClassroomModal(true);
+  };
+
+  const handleClassroomModalComplete = () => {
+    refetchClassrooms();
+    closeClassroomModal();
+  };
 
   const showEmptyState = !isLoading && classrooms && classrooms.length === 0;
   const showClassrooms = !isLoading && classrooms && classrooms.length > 0;
-  const [showCreateClassroomModal, setShowCreateClassroomModal] =
-    useState(false);
 
   return (
     <div>
@@ -41,7 +57,7 @@ export const ClassroomScreen = () => {
             />
             <div className="text-2xl">You have no classrooms yet!</div>
             <Button
-              onClick={() => setShowCreateClassroomModal(true)}
+              onClick={openClassroomModal}
               color="primary"
             >
               Create A Classroom
@@ -50,8 +66,14 @@ export const ClassroomScreen = () => {
         )}
         {showClassrooms && (
           <div>
+            <Button
+              onClick={openClassroomModal}
+              color="primary"
+            >
+              Create A Classroom
+            </Button>
             {classrooms?.map((classroom) => (
-              <>{classroom.name}</>
+              <div key={classroom.id}>{classroom.name}</div>
             ))}
           </div>
         )}
@@ -59,7 +81,8 @@ export const ClassroomScreen = () => {
 
       {showCreateClassroomModal && (
         <CreateClassroomModal
-          onCancel={() => setShowCreateClassroomModal(false)}
+          onCancel={closeClassroomModal}
+          onComplete={handleClassroomModalComplete}
         />
       )}
     </div>

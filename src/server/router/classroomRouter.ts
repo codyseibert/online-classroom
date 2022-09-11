@@ -21,6 +21,8 @@ export const classroomRouter = createRouter()
           userId: ctx.session.user?.id,
         },
       });
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       return classrooms;
     },
   })
@@ -35,6 +37,26 @@ export const classroomRouter = createRouter()
         },
       });
       return assignments;
+    },
+  })
+  // TODO: this should only be allowed user teacher roles
+  .mutation('createClassroom', {
+    input: z.object({
+      name: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      const user = ctx.session.user;
+      if (!user || !user.id) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
+      const classroom = await ctx.prisma.classroom.create({
+        data: {
+          name: input.name,
+          userId: user.id,
+        },
+      });
+
+      return classroom;
     },
   })
   .mutation('deleteAssignment', {

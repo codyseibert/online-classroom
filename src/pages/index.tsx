@@ -6,7 +6,7 @@ export default function HomePage() {
   return (
     <>
       <Head>
-        <title>mvc</title>
+        <title>Welcome to the Online Classroom</title>
         <link
           rel="icon"
           href="/favicon.ico"
