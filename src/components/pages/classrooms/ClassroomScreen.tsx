@@ -79,12 +79,11 @@ export const ClassroomScreen = () => {
         )}
       </div>
 
-      {showCreateClassroomModal && (
-        <CreateClassroomModal
-          onCancel={closeClassroomModal}
-          onComplete={handleClassroomModalComplete}
-        />
-      )}
+      <CreateClassroomModal
+        onCancel={closeClassroomModal}
+        onComplete={handleClassroomModalComplete}
+        isOpen={showCreateClassroomModal}
+      />
     </div>
   );
 };

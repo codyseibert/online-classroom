@@ -10,13 +10,16 @@ type CreateClassroomForm = {
 export const CreateClassroomModal = ({
   onCancel,
   onComplete,
+  isOpen,
 }: {
   onCancel: () => void;
   onComplete: () => void;
+  isOpen: boolean;
 }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<CreateClassroomForm>();
 
@@ -24,12 +27,18 @@ export const CreateClassroomModal = ({
 
   const onSubmit = handleSubmit(async (data) => {
     await createClassroom.mutateAsync({ name: data.name });
+    reset();
     onComplete();
   });
 
+  const handleCancel = () => {
+    reset();
+    onCancel();
+  };
+
   return (
     <div className="font-sans">
-      <Modal open={true}>
+      <Modal open={isOpen}>
         <Modal.Header className="font-bold">Create Classroom</Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Body>
@@ -59,7 +68,7 @@ export const CreateClassroomModal = ({
 
           <Modal.Actions>
             <Button
-              onClick={onCancel}
+              onClick={handleCancel}
               type="button"
             >
               Cancel
