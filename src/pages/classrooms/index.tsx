@@ -1,9 +1,9 @@
 import type { NextPage } from 'next';
-import { unstable_getServerSession } from 'next-auth';
 import Head from 'next/head';
 import { HeaderLayout } from '../../layouts/HeaderLayout';
 import { authOptions } from '../api/auth/[...nextauth]';
 import { ClassroomsScreen } from '../../components/screens/classrooms/ClassroomsScreen';
+import { unstable_getServerSession } from '../../libs/unstable_getServerSession';
 
 const Classrooms: NextPage = () => {
   return (

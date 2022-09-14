@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
-import { unstable_getServerSession } from 'next-auth';
 import Head from 'next/head';
 import { Header } from '../components/common/Header/Header';
+import { unstable_getServerSession } from '../libs/unstable_getServerSession';
 import { authOptions } from './api/auth/[...nextauth]';
 
 const Dashboard: NextPage = () => {

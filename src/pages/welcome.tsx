@@ -5,11 +5,11 @@ import feynman from '../assets/richard-feynman.jpeg';
 import student from '../assets/student.jpeg';
 import { trpc } from '../utils/trpc';
 import { useRouter } from 'next/router';
-import { unstable_getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 import { reloadSession } from '../utils/reloadSession';
 import { Header } from '../components/common/Header/Header';
 import { Button } from 'react-daisyui';
+import { unstable_getServerSession } from '../libs/unstable_getServerSession';
 
 const Welcome: NextPage = () => {
   const router = useRouter();

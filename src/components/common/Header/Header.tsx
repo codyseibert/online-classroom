@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useSession } from 'next-auth/react';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import React from 'react';
@@ -11,6 +10,7 @@ import LoggedOutLinks from './components/LoggedOutLinks';
 import LoggedOutSection from './components/LoggedOutSection';
 import ThemeButton from './components/ThemeButton';
 import { LoggedInSection } from './components/LoggedInSection';
+import { useSession } from '../../../libs/useSession';
 
 export const Header = () => {
   const session = useSession();
