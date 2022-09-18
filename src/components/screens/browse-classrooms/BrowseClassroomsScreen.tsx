@@ -5,18 +5,15 @@ import studentImage from '../../../assets/student.jpeg';
 import { Button } from 'react-daisyui';
 import Link from 'next/link';
 
-export const BrowseClassrooms = () => {
+export const BrowseClassroomsScreen = () => {
   const findClassroom = trpc.useQuery(['classroom.findClassroom']);
 
   return (
     <section>
       <div className="my-8">Filters</div>
       {findClassroom.data?.map((classroom) => (
-        <>
-          <article
-            key={classroom.id}
-            className="flex gap-8"
-          >
+        <div key={classroom.id}>
+          <article className="flex gap-8">
             <figure>
               <Image
                 width="300"
@@ -33,13 +30,13 @@ export const BrowseClassrooms = () => {
             </div>
 
             <div>
-              <Link href={`/classrooms/${classroom.id}`}>
+              <Link href={`/classrooms/${classroom.id}/overview`}>
                 <Button color="primary">View Classroom</Button>
               </Link>
             </div>
           </article>
           <hr className="border-gray-600 my-8" />
-        </>
+        </div>
       ))}
     </section>
   );

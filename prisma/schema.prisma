@@ -46,7 +46,8 @@ model User {
   role          String?
   accounts      Account[]
   sessions      Session[]
-  classrooms    Classroom[]
+  classrooms    Classroom[] @relation("Classroom")
+  enrolledIn    Classroom[] @relation("EnrolledIn")
 }
 
 model VerificationToken {
@@ -60,8 +61,9 @@ model VerificationToken {
 model Classroom {
   id          String       @id @default(cuid())
   name        String
-  teacher     User         @relation(fields: [userId], references: [id])
+  teacher     User         @relation("Classroom", fields: [userId], references: [id])
   userId      String
+  students    User[] @relation("EnrolledIn")
   assignments Assignment[]
   description String @default("no description provided")
 }

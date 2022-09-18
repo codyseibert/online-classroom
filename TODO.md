@@ -9,3 +9,5 @@
 - check out https://www.ponicode.com/
 - check out trpc-openapi
 - investigate https://github.com/streamich/react-use
+- potentially remove react-daisyui and make own components (or checking chakra or mantine)
+- https://flowbite.com/docs/components/buttons/

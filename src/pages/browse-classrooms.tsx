@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { Header } from '../components/common/Header/Header';
-import { BrowseClassrooms } from '../components/screens/browse-classrooms/BrowseClassrooms';
+import { BrowseClassroomsScreen } from '../components/screens/browse-classrooms/BrowseClassroomsScreen';
 
 const BrowseClassroomsPage: NextPage = () => {
   return (
@@ -17,7 +17,7 @@ const BrowseClassroomsPage: NextPage = () => {
       <Header />
 
       <main className="container m-auto">
-        <BrowseClassrooms />
+        <BrowseClassroomsScreen />
       </main>
     </>
   );
