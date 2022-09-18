@@ -50,7 +50,29 @@ export const classroomRouter = createRouter()
       return classroom;
     },
   })
-  // TODO: this should only be allowed user teacher roles
+  .query('findClassroom', {
+    input: z
+      .object({
+        name: z.string().nullish(),
+      })
+      .nullish(),
+    async resolve({ input, ctx }) {
+      type TWhere = {
+        name?: string;
+      };
+      const where: TWhere = {};
+      if (input?.name) {
+        where.name = input.name;
+      }
+      const classrooms = await ctx.prisma.classroom.findMany({
+        where,
+        include: {
+          teacher: true,
+        },
+      });
+      return classrooms;
+    },
+  })
   .mutation('createClassroom', {
     input: z.object({
       name: z.string(),
@@ -97,5 +119,24 @@ export const classroomRouter = createRouter()
         },
       });
       return assignment;
+    },
+  })
+  .mutation('editClassroom', {
+    input: z.object({
+      name: z.string(),
+      description: z.string(),
+      classroomId: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      const classroom = await ctx.prisma.classroom.update({
+        where: {
+          id: input.classroomId,
+        },
+        data: {
+          name: input.name,
+          description: input.description,
+        },
+      });
+      return classroom;
     },
   });

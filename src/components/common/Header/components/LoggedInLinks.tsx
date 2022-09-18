@@ -1,16 +1,16 @@
 import Link from 'next/link';
 
-type Link = {
+type TLink = {
   href: string;
   title: string;
 };
 
 export const LoggedInLinks = ({ role }: { role: string }) => {
-  const linksByRole: Record<string, Link[]> = {
+  const linksByRole: Record<string, TLink[]> = {
     student: [
       {
         title: 'Find a Classroom',
-        href: '/browse',
+        href: '/browse-classrooms',
       },
     ],
     teacher: [

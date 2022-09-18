@@ -63,6 +63,7 @@ model Classroom {
   teacher     User         @relation(fields: [userId], references: [id])
   userId      String
   assignments Assignment[]
+  description String @default("no description provided")
 }
 
 model Assignment {

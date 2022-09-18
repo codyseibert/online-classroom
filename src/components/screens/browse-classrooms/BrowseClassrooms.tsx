@@ -1,0 +1,46 @@
+import Image from 'next/image';
+import React from 'react';
+import { trpc } from '../../../utils/trpc';
+import studentImage from '../../../assets/student.jpeg';
+import { Button } from 'react-daisyui';
+import Link from 'next/link';
+
+export const BrowseClassrooms = () => {
+  const findClassroom = trpc.useQuery(['classroom.findClassroom']);
+
+  return (
+    <section>
+      <div className="my-8">Filters</div>
+      {findClassroom.data?.map((classroom) => (
+        <>
+          <article
+            key={classroom.id}
+            className="flex gap-8"
+          >
+            <figure>
+              <Image
+                width="300"
+                height="300"
+                src={studentImage}
+                alt="no classrooms found"
+              />
+            </figure>
+
+            <div>
+              <h3 className="font-bold">{classroom.name}</h3>
+              <h3 className="">{classroom.description}</h3>
+              <h3 className="">{classroom.teacher.name}</h3>
+            </div>
+
+            <div>
+              <Link href={`/classrooms/${classroom.id}`}>
+                <Button color="primary">View Classroom</Button>
+              </Link>
+            </div>
+          </article>
+          <hr className="border-gray-600 my-8" />
+        </>
+      ))}
+    </section>
+  );
+};
