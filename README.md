@@ -18,8 +18,8 @@ If you want to contribute, fork this project and ask Cody (Web Dev Junkie) what 
 
 To test this project out locally with various user roles, set the following environment variable inside your .env file
 
-- NEXT_PUBLIC_MOCK_NEXT_AUTH=teacher
-- NEXT_PUBLIC_MOCK_NEXT_AUTH=student
-- NEXT_PUBLIC_MOCK_NEXT_AUTH=unathenticated
+- `NEXT_PUBLIC_MOCK_NEXT_AUTH=teacher`
+- `NEXT_PUBLIC_MOCK_NEXT_AUTH=student`
+- `NEXT_PUBLIC_MOCK_NEXT_AUTH=unathenticated`
 
 comment out this env variable if you plan to have the local app connect to a real OAUTH provider, such as github or google.
