@@ -6,6 +6,8 @@ import superjson from 'superjson';
 import { SessionProvider } from 'next-auth/react';
 import '../styles/globals.css';
 import { ThemeProvider } from 'next-themes';
+import NextNProgress from 'nextjs-progressbar';
+import daisyuiColors from 'daisyui/src/colors/themes';
 
 const MyApp: AppType = ({
   Component,
@@ -14,6 +16,10 @@ const MyApp: AppType = ({
   return (
     <SessionProvider session={session}>
       <ThemeProvider attribute="class">
+        <NextNProgress
+          color={daisyuiColors['[data-theme=light]'].secondary}
+          options={{ showSpinner: false }}
+        />
         <Component {...pageProps} />
       </ThemeProvider>
     </SessionProvider>
