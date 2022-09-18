@@ -1,8 +1,7 @@
 import Head from 'next/head';
 import { HomeContent } from '../components/screens/home/HomeContent';
-import { HeaderLayout } from '../layouts/HeaderLayout';
 
-export default function HomePage() {
+export default function HomePage(props) {
   return (
     <>
       <Head>
@@ -13,9 +12,7 @@ export default function HomePage() {
         />
       </Head>
 
-      <HeaderLayout>
-        <HomeContent />
-      </HeaderLayout>
+      <HomeContent />
     </>
   );
 }

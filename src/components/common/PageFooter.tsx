@@ -3,7 +3,7 @@ import { Footer } from 'react-daisyui';
 
 export const PageFooter = () => {
   return (
-    <Footer className="p-10 bg-neutral text-neutral-content">
+    <Footer className="inset-x-0 bottom-0 p-10 mt-12 bg-neutral text-neutral-content">
       <div>
         <Footer.Title>Services</Footer.Title>
         <a className="link link-hover">Branding</a>

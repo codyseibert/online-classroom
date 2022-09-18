@@ -1,22 +1,20 @@
-import type { NextPage } from 'next';
+import type { NextPage, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
-import { Header } from '../components/common/Header/Header';
 import { unstable_getServerSession } from '../libs/unstable_getServerSession';
 import { authOptions } from './api/auth/[...nextauth]';
 
-const Dashboard: NextPage = () => {
+const Dashboard: NextPage = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
   return (
     <>
       <Head>
-        <title>sign up</title>
+        <title>Dashboard</title>
         <meta
-          name="description"
+          name="Dashboard"
           content="sign up now for a teacher or a student account in order to access the website"
         />
       </Head>
-
-      <Header />
-
       <main className="container m-auto">Dashboard</main>
     </>
   );

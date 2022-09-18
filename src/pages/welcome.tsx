@@ -1,4 +1,4 @@
-import type { NextPage } from 'next';
+import type { NextPage, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import feynman from '../assets/richard-feynman.jpeg';
@@ -7,11 +7,13 @@ import { trpc } from '../utils/trpc';
 import { useRouter } from 'next/router';
 import { authOptions } from './api/auth/[...nextauth]';
 import { reloadSession } from '../utils/reloadSession';
-import { Header } from '../components/common/Header/Header';
+
 import { Button } from 'react-daisyui';
 import { unstable_getServerSession } from '../libs/unstable_getServerSession';
 
-const Welcome: NextPage = () => {
+const Welcome: NextPage = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
   const router = useRouter();
   const { mutateAsync: setRoleAsTeacher } = trpc.useMutation(
     'auth.setRoleAsTeacher'
@@ -33,16 +35,14 @@ const Welcome: NextPage = () => {
         />
       </Head>
 
-      <Header />
-
       <main className="container m-auto">
-        <div className="mx-auto flex flex-col items-center justify-center p-4 h-full">
+        <div className="flex flex-col items-center justify-center h-full p-4 mx-auto">
           <p className="text-gray-900">Welcome to classroom!</p>
           <p className="text-gray-900">
             Before we start, click what type of user you want to be:
           </p>
 
-          <div className="hidden sm:grid sm:grid-cols-2 gap-8 mt-10">
+          <div className="hidden gap-8 mt-10 sm:grid sm:grid-cols-2">
             <Image
               height="300"
               className="object-cover"
@@ -57,16 +57,16 @@ const Welcome: NextPage = () => {
             />
           </div>
 
-          <div className="hidden sm:grid grid-cols-2 gap-8 w-full">
-            <div className="relative rounded flex flex-col items-center justify-center">
+          <div className="hidden w-full grid-cols-2 gap-8 sm:grid">
+            <div className="relative flex flex-col items-center justify-center rounded">
               <Button onClick={setTeacherRole}>I&apos;m a teacher</Button>
             </div>
-            <div className="relative rounded flex flex-col items-center justify-center">
+            <div className="relative flex flex-col items-center justify-center rounded">
               <Button>I&apos;m a student</Button>
             </div>
           </div>
 
-          <div className="sm:hidden flex flex-col mt-8">
+          <div className="flex flex-col mt-8 sm:hidden">
             <Image
               height={150}
               width={300}
