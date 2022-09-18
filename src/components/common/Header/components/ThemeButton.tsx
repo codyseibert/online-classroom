@@ -1,5 +1,4 @@
 import { useTheme } from 'next-themes';
-import React from 'react';
 
 export enum Themes {
   Dark = 'dark',
@@ -19,7 +18,7 @@ const ThemeButton = () => {
       {isDarkMode ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
+          className="w-6 h-6"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -34,7 +33,7 @@ const ThemeButton = () => {
       ) : (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
+          className="w-6 h-6"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

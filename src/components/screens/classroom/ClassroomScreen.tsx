@@ -39,7 +39,7 @@ const Assignments = ({
   const totalAssignments = assignments.length;
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex gap-8 items-center">
+      <div className="flex items-center gap-8">
         <h3 className="text-2xl">
           Your Assignments ({totalAssignments} total)
         </h3>
@@ -112,8 +112,8 @@ export const ClassroomScreen = ({ classroomId }) => {
 
   return (
     <>
-      <div className="container m-auto flex flex-col gap-8">
-        <h1 className="text-4xl mt-8">
+      <div className="container flex flex-col gap-8 m-auto">
+        <h1 className="mt-8 text-4xl">
           Manage your <b>{classroom?.name}</b>
         </h1>
 
