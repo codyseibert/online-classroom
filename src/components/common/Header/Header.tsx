@@ -32,7 +32,7 @@ export const Header = () => {
             <div className="hidden sm:block sm:ml-6">
               <div className="flex space-x-4">
                 {isLoggedIn ? (
-                  <LoggedInLinks hasRole={userMetadata?.role} />
+                  <LoggedInLinks role={userMetadata?.role} />
                 ) : (
                   <LoggedOutLinks />
                 )}
