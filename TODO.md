@@ -8,3 +8,4 @@
 
 - check out https://www.ponicode.com/
 - check out trpc-openapi
+- investigate https://github.com/streamich/react-use

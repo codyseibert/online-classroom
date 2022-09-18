@@ -7,33 +7,10 @@ import { PencilSquare } from '../../common/Icons/PencilSquare';
 import { NoAssignments } from './NoAssignments';
 import { Assignments } from './Assignments';
 
-export const ClassroomScreen = ({ classroomId }) => {
-  const [showCreateAssignmentModal, setShowCreateAssignmentModal] =
-    useState(false);
+const useEditClassroom = ({ refreshClassroom, classroomId }) => {
   const [showEditClassroomModal, setShowEditClassroomModal] = useState(false);
 
-  const {
-    data: assignments,
-    isLoading: isLoadingAssignments,
-    refetch: refetchAssignments,
-  } = trpc.useQuery(['classroom.getAssignments', { classroomId }]);
-
   const editClassroomMutation = trpc.useMutation('classroom.editClassroom');
-
-  const classroomQuery = trpc.useQuery([
-    'classroom.getClassroom',
-    { classroomId },
-  ]);
-
-  const classroom = classroomQuery.data;
-
-  const closeAssignmentModal = () => {
-    setShowCreateAssignmentModal(false);
-  };
-
-  const openAssignmentModal = () => {
-    setShowCreateAssignmentModal(true);
-  };
 
   const openEditClassroomModal = () => {
     setShowEditClassroomModal(true);
@@ -43,20 +20,81 @@ export const ClassroomScreen = ({ classroomId }) => {
     setShowEditClassroomModal(false);
   };
 
-  const handleAssignmentModalComplete = () => {
-    refetchAssignments();
-    closeAssignmentModal();
-  };
-
   const handleEditClassroomComplete = async (updatedClassroomData) => {
     await editClassroomMutation.mutateAsync({
       ...updatedClassroomData,
       classroomId,
     });
-    classroomQuery.refetch();
+    refreshClassroom();
     setShowEditClassroomModal(false);
   };
 
+  return {
+    openEditClassroomModal,
+    closeEditModal,
+    handleEditClassroomComplete,
+    showEditClassroomModal,
+  };
+};
+
+const useCreateAssignment = ({ refetchAssignments }) => {
+  const [showCreateAssignmentModal, setShowCreateAssignmentModal] =
+    useState(false);
+
+  const closeAssignmentModal = () => {
+    setShowCreateAssignmentModal(false);
+  };
+
+  const openAssignmentModal = () => {
+    setShowCreateAssignmentModal(true);
+  };
+
+  const handleAssignmentModalComplete = () => {
+    refetchAssignments();
+    closeAssignmentModal();
+  };
+
+  return {
+    showCreateAssignmentModal,
+    closeAssignmentModal,
+    openAssignmentModal,
+    handleAssignmentModalComplete,
+  };
+};
+
+export const ClassroomScreen = ({ classroomId }) => {
+  const assignmentsQuery = trpc.useQuery([
+    'classroom.getAssignments',
+    { classroomId },
+  ]);
+
+  const classroomQuery = trpc.useQuery([
+    'classroom.getClassroom',
+    { classroomId },
+  ]);
+
+  const {
+    openEditClassroomModal,
+    closeEditModal,
+    handleEditClassroomComplete,
+    showEditClassroomModal,
+  } = useEditClassroom({
+    refreshClassroom: classroomQuery.refetch,
+    classroomId,
+  });
+
+  const {
+    showCreateAssignmentModal,
+    closeAssignmentModal,
+    openAssignmentModal,
+    handleAssignmentModalComplete,
+  } = useCreateAssignment({
+    refetchAssignments: assignmentsQuery.refetch,
+  });
+
+  const isLoadingAssignments = assignmentsQuery.isLoading;
+  const assignments = assignmentsQuery.data;
+  const classroom = classroomQuery.data;
   const showEmptyState =
     !isLoadingAssignments && assignments && assignments.length === 0;
   const showAssignments =
