@@ -1,11 +1,13 @@
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { ThreeDots } from 'react-loader-spinner';
 import { trpc } from '../../../utils/trpc';
 import assignmentsImage from '../../../assets/assignments.svg';
-import { Button, Table } from 'react-daisyui';
+import { Button } from 'react-daisyui';
 import { CreateAssignmentModal } from './CreateAssignmentModal';
 import { Assignment } from '@prisma/client';
+import { Table } from '../../common/Table/Table';
+import Link from 'next/link';
 
 const NoAssignments = ({ openAssignmentModal }) => {
   return (
@@ -31,9 +33,11 @@ const NoAssignments = ({ openAssignmentModal }) => {
 
 const Assignments = ({
   assignments,
+  classroomId,
   openAssignmentModal,
 }: {
   assignments: Assignment[];
+  classroomId: number;
   openAssignmentModal: () => void;
 }) => {
   const totalAssignments = assignments.length;
@@ -52,23 +56,28 @@ const Assignments = ({
         </Button>
       </div>
       <div className="overflow-x-auto">
-        <Table zebra={true}>
-          <Table.Head>
-            <span>Assignment Number</span>
-            <span>Name</span>
-            <span>Description</span>
-          </Table.Head>
-
-          <Table.Body>
-            {assignments.map((assignment, idx) => (
-              <Table.Row key={assignment.id}>
-                <span>{idx + 1}</span>
-                <span>{assignment.name}</span>
-                <span>{assignment.description}</span>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
+        <Table
+          headers={['Assignment Number', 'Name', 'Description']}
+          rows={assignments.map((assignment, idx) => [
+            idx + 1,
+            assignment.name,
+            assignment.description,
+            (
+              <div className="flex gap-4">
+                <Link
+                  href={`/classrooms/${classroomId}/assignments/${assignment.id}/edit`}
+                >
+                  <span className="link">Edit</span>
+                </Link>
+                <Link
+                  href={`/classrooms/${classroomId}/assignments/${assignment.id}`}
+                >
+                  <span className="link">View</span>
+                </Link>
+              </div>
+            ) as ReactNode,
+          ])}
+        />
       </div>
     </div>
   );
@@ -114,7 +123,7 @@ export const ClassroomScreen = ({ classroomId }) => {
     <>
       <div className="container m-auto flex flex-col gap-8">
         <h1 className="text-4xl mt-8">
-          Manage your <b>{classroom?.name}</b>
+          Manage your <b>{classroom?.name}</b> Classroom
         </h1>
 
         <div>
@@ -133,6 +142,7 @@ export const ClassroomScreen = ({ classroomId }) => {
           )}
           {showAssignments && (
             <Assignments
+              classroomId={classroomId}
               assignments={assignments}
               openAssignmentModal={openAssignmentModal}
             />

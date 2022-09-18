@@ -2,8 +2,8 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { ClassroomScreen } from '../../components/screens/classroom/ClassroomScreen';
-import { HeaderLayout } from '../../layouts/HeaderLayout';
+import { ClassroomScreen } from '../../../components/screens/classroom/ClassroomScreen';
+import { HeaderLayout } from '../../../layouts/HeaderLayout';
 
 const ClassroomPage: NextPage = () => {
   const router = useRouter();

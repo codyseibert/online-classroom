@@ -28,15 +28,13 @@ export const LoggedInLinks = ({ hasRole }) => {
         </>
       )}
       {!hasRole && (
-        <>
-          <a
-            href="/welcome"
-            className="link-secondary px-3 py-2 rounded-md text-sm font-medium"
-            aria-current="page"
-          >
-            Finish Setup
-          </a>
-        </>
+        <a
+          href="/welcome"
+          className="link-secondary px-3 py-2 rounded-md text-sm font-medium"
+          aria-current="page"
+        >
+          Finish Setup
+        </a>
       )}
     </>
   );

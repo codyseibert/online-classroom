@@ -45,14 +45,12 @@ export const MobileMenu = ({ isLoggedIn, hasRole }) => {
           </>
         )}
         {!isLoggedIn && (
-          <>
-            <a
-              href="#"
-              className="link-secondary block px-3 py-2 rounded-md text-base font-medium"
-            >
-              Pricing
-            </a>
-          </>
+          <a
+            href="#"
+            className="link-secondary block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Pricing
+          </a>
         )}
       </div>
     </div>

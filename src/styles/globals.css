@@ -2,14 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body, document, #__next {
-  @apply h-full
+html,
+body,
+document,
+#__next {
+  @apply h-full;
 }
 
 .link-primary {
-  @apply text-primary hover:text-primaryDark hover:underline
+  @apply text-primary hover:text-primaryDark hover:underline;
 }
 
 .link-secondary {
-  @apply text-bgPrimary hover:text-bgSecondary hover:underline
+  @apply text-bgPrimary hover:text-bgSecondary hover:underline;
+}
+
+.link {
+  @apply hover:text-blue-600 text-blue-500 cursor-pointer;
 }
