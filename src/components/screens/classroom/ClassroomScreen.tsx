@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { ThreeDots } from 'react-loader-spinner';
 import { trpc } from '../../../utils/trpc';
 import { CreateAssignmentModal } from './CreateAssignmentModal';
 import { EditClassroomModal } from './EditClassroomModal';
 import { PencilSquare } from '../../common/Icons/PencilSquare';
 import { NoAssignments } from './NoAssignments';
 import { Assignments } from './Assignments';
+import { EmptyStateWrapper } from '../../common/EmptyStateWrapper';
 
 const useEditClassroom = ({ refreshClassroom, classroomId }) => {
   const [showEditClassroomModal, setShowEditClassroomModal] = useState(false);
@@ -95,10 +95,6 @@ export const ClassroomScreen = ({ classroomId }) => {
   const isLoadingAssignments = assignmentsQuery.isLoading;
   const assignments = assignmentsQuery.data;
   const classroom = classroomQuery.data;
-  const showEmptyState =
-    !isLoadingAssignments && assignments && assignments.length === 0;
-  const showAssignments =
-    !isLoadingAssignments && assignments && assignments.length > 0;
 
   return (
     <>
@@ -116,26 +112,20 @@ export const ClassroomScreen = ({ classroomId }) => {
         </div>
 
         <div>
-          {isLoadingAssignments && (
-            <ThreeDots
-              height="80"
-              width="80"
-              radius="9"
-              color="#4fa94d"
-              ariaLabel="three-dots-loading"
-              visible={true}
-            />
-          )}
-          {showEmptyState && (
-            <NoAssignments openAssignmentModal={openAssignmentModal} />
-          )}
-          {showAssignments && (
-            <Assignments
-              classroomId={classroomId}
-              assignments={assignments}
-              openAssignmentModal={openAssignmentModal}
-            />
-          )}
+          <EmptyStateWrapper
+            isLoading={isLoadingAssignments}
+            showEmptyState={assignments?.length === 0}
+            EmptyComponent={
+              <NoAssignments openAssignmentModal={openAssignmentModal} />
+            }
+            NonEmptyComponent={
+              <Assignments
+                classroomId={classroomId}
+                assignments={assignments ?? []}
+                openAssignmentModal={openAssignmentModal}
+              />
+            }
+          />
         </div>
       </div>
 
