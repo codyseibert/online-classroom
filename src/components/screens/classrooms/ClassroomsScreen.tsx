@@ -36,7 +36,7 @@ export const ClassroomsScreen = () => {
         <div>
           <EmptyStateWrapper
             isLoading={isLoading}
-            showEmptyState={classrooms?.length === 0}
+            data={classrooms}
             EmptyComponent={
               <EmptyStateClassrooms openClassroomModal={openClassroomModal} />
             }

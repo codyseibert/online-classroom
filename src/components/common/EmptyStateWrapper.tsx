@@ -1,14 +1,15 @@
 import React, { ReactNode } from 'react';
 import { ThreeDots } from 'react-loader-spinner';
+import { isEmpty } from 'lodash';
 
 export const EmptyStateWrapper = ({
   isLoading,
-  showEmptyState,
+  data,
   EmptyComponent,
   NonEmptyComponent,
 }: {
   isLoading: boolean;
-  showEmptyState: boolean;
+  data: any;
   EmptyComponent: ReactNode;
   NonEmptyComponent: ReactNode;
 }) => {
@@ -23,7 +24,7 @@ export const EmptyStateWrapper = ({
           ariaLabel="three-dots-loading"
           visible={true}
         />
-      ) : showEmptyState ? (
+      ) : isEmpty(data) ? (
         EmptyComponent
       ) : (
         NonEmptyComponent

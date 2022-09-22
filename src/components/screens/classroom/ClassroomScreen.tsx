@@ -114,7 +114,7 @@ export const ClassroomScreen = ({ classroomId }) => {
         <div>
           <EmptyStateWrapper
             isLoading={isLoadingAssignments}
-            showEmptyState={assignments?.length === 0}
+            data={assignments}
             EmptyComponent={
               <NoAssignments openAssignmentModal={openAssignmentModal} />
             }
