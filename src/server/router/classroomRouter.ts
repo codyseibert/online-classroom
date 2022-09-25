@@ -190,4 +190,26 @@ export const classroomRouter = createRouter()
       });
       return classroom;
     },
+  })
+  .mutation('unenroll', {
+    input: z.object({
+      classroomId: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      const userId = ctx.session.user?.id;
+
+      const classroom = await ctx.prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          enrolledIn: {
+            disconnect: {
+              id: input.classroomId,
+            },
+          },
+        },
+      });
+      return classroom;
+    },
   });

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { trpc } from '../../../utils/trpc';
 import { CreateAssignmentModal } from './CreateAssignmentModal';
 import { EditClassroomModal } from './EditClassroomModal';
@@ -10,8 +10,13 @@ import { useCreateAssignment } from './hooks/useCreateAssignment';
 import { useEditClassroom } from './hooks/useEditClassroom';
 import { useSession } from '../../../libs/useSession';
 import { StudentsSection } from './StudentsSection';
+import { Button } from '../../common/Button/Button';
+import { useRouter } from 'next/router';
+import { Tabs } from 'react-daisyui';
 
 export const ClassroomScreen = ({ classroomId }) => {
+  const [tab, setTab] = useState('assignments');
+
   const assignmentsQuery = trpc.useQuery([
     'classroom.getAssignments',
     { classroomId },
@@ -21,6 +26,8 @@ export const ClassroomScreen = ({ classroomId }) => {
     'classroom.getClassroom',
     { classroomId },
   ]);
+
+  const unenrollMutation = trpc.useMutation('classroom.unenroll');
 
   const {
     openEditClassroomModal,
@@ -42,11 +49,20 @@ export const ClassroomScreen = ({ classroomId }) => {
   });
 
   const session = useSession();
+  const router = useRouter();
 
   const isLoadingAssignments = assignmentsQuery.isLoading;
   const assignments = assignmentsQuery.data;
   const classroom = classroomQuery.data;
   const hasAdminAccess = classroom?.userId === session.data?.user.id;
+  const isStudent = session.data?.user.role === 'student';
+
+  const handleUnenroll = async () => {
+    if (confirm('are you sure you want to unenroll')) {
+      await unenrollMutation.mutateAsync({ classroomId });
+      router.push('/dashboard');
+    }
+  };
 
   return (
     <>
@@ -63,9 +79,25 @@ export const ClassroomScreen = ({ classroomId }) => {
               <PencilSquare /> Edit
             </button>
           )}
+          {isStudent && (
+            <Button
+              color="error"
+              onClick={handleUnenroll}
+            >
+              Unenroll
+            </Button>
+          )}
         </div>
 
-        <div>
+        <Tabs
+          onChange={setTab}
+          value={tab}
+        >
+          <Tabs.Tab value={'assignments'}>Assignments</Tabs.Tab>
+          <Tabs.Tab value={'students'}>Students</Tabs.Tab>
+        </Tabs>
+
+        {tab === 'assignments' && (
           <EmptyStateWrapper
             isLoading={isLoadingAssignments}
             data={assignments}
@@ -81,9 +113,9 @@ export const ClassroomScreen = ({ classroomId }) => {
               />
             }
           />
-        </div>
+        )}
 
-        <StudentsSection classroomId={classroomId} />
+        {tab === 'students' && <StudentsSection classroomId={classroomId} />}
       </div>
 
       <CreateAssignmentModal
