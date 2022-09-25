@@ -9,6 +9,7 @@ import { EmptyStateWrapper } from '../../common/EmptyStateWrapper';
 import { useCreateAssignment } from './hooks/useCreateAssignment';
 import { useEditClassroom } from './hooks/useEditClassroom';
 import { useSession } from '../../../libs/useSession';
+import { StudentsSection } from './StudentsSection';
 
 export const ClassroomScreen = ({ classroomId }) => {
   const assignmentsQuery = trpc.useQuery([
@@ -81,6 +82,8 @@ export const ClassroomScreen = ({ classroomId }) => {
             }
           />
         </div>
+
+        <StudentsSection classroomId={classroomId} />
       </div>
 
       <CreateAssignmentModal

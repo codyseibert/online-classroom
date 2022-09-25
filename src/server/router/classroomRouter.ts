@@ -14,6 +14,22 @@ export const classroomRouter = createRouter()
       },
     });
   })
+  .query('getStudents', {
+    input: z.object({
+      classroomId: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      const classroom = await ctx.prisma.classroom.findUnique({
+        where: {
+          id: input.classroomId,
+        },
+        include: {
+          students: true,
+        },
+      });
+      return classroom?.students;
+    },
+  })
   .query('getClassroomsForTeacher', {
     async resolve({ ctx }) {
       const classrooms = await ctx.prisma.classroom.findMany({
