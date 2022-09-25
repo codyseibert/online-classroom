@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { trpc } from '../../../utils/trpc';
 import { CreateAssignmentModal } from './CreateAssignmentModal';
 import { EditClassroomModal } from './EditClassroomModal';
@@ -6,61 +6,9 @@ import { PencilSquare } from '../../common/Icons/PencilSquare';
 import { NoAssignments } from './NoAssignments';
 import { Assignments } from './Assignments';
 import { EmptyStateWrapper } from '../../common/EmptyStateWrapper';
-
-const useEditClassroom = ({ refreshClassroom, classroomId }) => {
-  const [showEditClassroomModal, setShowEditClassroomModal] = useState(false);
-
-  const editClassroomMutation = trpc.useMutation('classroom.editClassroom');
-
-  const openEditClassroomModal = () => {
-    setShowEditClassroomModal(true);
-  };
-
-  const closeEditModal = () => {
-    setShowEditClassroomModal(false);
-  };
-
-  const handleEditClassroomComplete = async (updatedClassroomData) => {
-    await editClassroomMutation.mutateAsync({
-      ...updatedClassroomData,
-      classroomId,
-    });
-    refreshClassroom();
-    setShowEditClassroomModal(false);
-  };
-
-  return {
-    openEditClassroomModal,
-    closeEditModal,
-    handleEditClassroomComplete,
-    showEditClassroomModal,
-  };
-};
-
-const useCreateAssignment = ({ refetchAssignments }) => {
-  const [showCreateAssignmentModal, setShowCreateAssignmentModal] =
-    useState(false);
-
-  const closeAssignmentModal = () => {
-    setShowCreateAssignmentModal(false);
-  };
-
-  const openAssignmentModal = () => {
-    setShowCreateAssignmentModal(true);
-  };
-
-  const handleAssignmentModalComplete = () => {
-    refetchAssignments();
-    closeAssignmentModal();
-  };
-
-  return {
-    showCreateAssignmentModal,
-    closeAssignmentModal,
-    openAssignmentModal,
-    handleAssignmentModalComplete,
-  };
-};
+import { useCreateAssignment } from './hooks/useCreateAssignment';
+import { useEditClassroom } from './hooks/useEditClassroom';
+import { useSession } from '../../../libs/useSession';
 
 export const ClassroomScreen = ({ classroomId }) => {
   const assignmentsQuery = trpc.useQuery([
@@ -92,9 +40,12 @@ export const ClassroomScreen = ({ classroomId }) => {
     refetchAssignments: assignmentsQuery.refetch,
   });
 
+  const session = useSession();
+
   const isLoadingAssignments = assignmentsQuery.isLoading;
   const assignments = assignmentsQuery.data;
   const classroom = classroomQuery.data;
+  const hasAdminAccess = classroom?.userId === session.data?.user.id;
 
   return (
     <>
@@ -103,12 +54,14 @@ export const ClassroomScreen = ({ classroomId }) => {
           <h1 className="text-4xl">
             Manage your <b>{classroom?.name}</b> Classroom
           </h1>
-          <button
-            className="flex link"
-            onClick={openEditClassroomModal}
-          >
-            <PencilSquare /> Edit
-          </button>
+          {hasAdminAccess && (
+            <button
+              className="flex link"
+              onClick={openEditClassroomModal}
+            >
+              <PencilSquare /> Edit
+            </button>
+          )}
         </div>
 
         <div>
@@ -120,6 +73,7 @@ export const ClassroomScreen = ({ classroomId }) => {
             }
             NonEmptyComponent={
               <Assignments
+                hasAdminAccess={hasAdminAccess}
                 classroomId={classroomId}
                 assignments={assignments ?? []}
                 openAssignmentModal={openAssignmentModal}
