@@ -8,6 +8,7 @@ import '../styles/globals.css';
 import { ThemeProvider } from 'next-themes';
 import NextNProgress from 'nextjs-progressbar';
 import daisyuiColors from 'daisyui/src/colors/themes';
+import Layout from '../components/common/Layout';
 
 const MyApp: AppType = ({
   Component,
@@ -20,7 +21,9 @@ const MyApp: AppType = ({
           color={daisyuiColors['[data-theme=light]'].secondary}
           options={{ showSpinner: false }}
         />
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </ThemeProvider>
     </SessionProvider>
   );
