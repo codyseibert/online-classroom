@@ -9,6 +9,10 @@ export const LoggedInLinks = ({ role }: { role: string }) => {
   const linksByRole: Record<string, TLink[]> = {
     student: [
       {
+        title: 'Your Classrooms',
+        href: '/dashboard',
+      },
+      {
         title: 'Find a Classroom',
         href: '/browse-classrooms',
       },

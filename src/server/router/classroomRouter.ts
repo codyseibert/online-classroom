@@ -37,6 +37,19 @@ export const classroomRouter = createRouter()
       return assignments;
     },
   })
+  .query('getAssignment', {
+    input: z.object({
+      assignmentId: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      const assignment = await ctx.prisma.assignment.findUnique({
+        where: {
+          id: input.assignmentId,
+        },
+      });
+      return assignment;
+    },
+  })
   .query('getClassroom', {
     input: z.object({
       classroomId: z.string(),

@@ -20,8 +20,9 @@ export const ClassroomOverviewScreen = ({
 
   const classroom = classroomQuery.data;
 
-  const handleEnroll = () => {
-    enrollMutation.mutateAsync({ classroomId });
+  const handleEnroll = async () => {
+    await enrollMutation.mutateAsync({ classroomId });
+    router.push(`/classrooms/${classroomId}`);
   };
 
   useEffect(() => {

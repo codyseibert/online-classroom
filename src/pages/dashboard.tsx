@@ -1,10 +1,11 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { Header } from '../components/common/Header/Header';
+import { DashboardScreen } from '../components/screens/dashboard/DashboardScreen';
+import { HeaderLayout } from '../layouts/HeaderLayout';
 import { unstable_getServerSession } from '../libs/unstable_getServerSession';
 import { authOptions } from './api/auth/[...nextauth]';
 
-const Dashboard: NextPage = () => {
+const DashboardPage: NextPage = () => {
   return (
     <>
       <Head>
@@ -15,14 +16,14 @@ const Dashboard: NextPage = () => {
         />
       </Head>
 
-      <Header />
-
-      <main className="container m-auto">Dashboard</main>
+      <HeaderLayout>
+        <DashboardScreen />
+      </HeaderLayout>
     </>
   );
 };
 
-export default Dashboard;
+export default DashboardPage;
 
 export async function getServerSideProps(context: any) {
   const session = await unstable_getServerSession(

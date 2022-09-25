@@ -36,7 +36,7 @@ export const Assignments = ({
       </div>
       <div className="overflow-x-auto">
         <Table
-          headers={['Assignment Number', 'Name', 'Description']}
+          headers={['Assignment Number', 'Name', 'Description', 'Actions']}
           rows={assignments.map((assignment, idx) => [
             idx + 1,
             assignment.name,

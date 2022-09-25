@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { createRouter } from './context';
 
-export const userRouter = createRouter()
+export const studentRouter = createRouter()
   .middleware(async ({ ctx, next }) => {
     if (!ctx.session) {
       throw new TRPCError({ code: 'UNAUTHORIZED' });
@@ -13,7 +13,7 @@ export const userRouter = createRouter()
       },
     });
   })
-  .query('getUser', {
+  .query('getClassrooms', {
     async resolve({ ctx }) {
       const userId = ctx.session.user?.id;
       const user = await ctx.prisma.user.findUnique({
@@ -24,6 +24,6 @@ export const userRouter = createRouter()
           enrolledIn: true,
         },
       });
-      return user;
+      return user?.enrolledIn;
     },
   });

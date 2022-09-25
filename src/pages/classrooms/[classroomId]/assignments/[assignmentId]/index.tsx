@@ -5,7 +5,7 @@ import React from 'react';
 import { AssignmentScreen } from '../../../../../components/screens/assignments/AssignmentScreen';
 import { HeaderLayout } from '../../../../../layouts/HeaderLayout';
 
-const ClassroomPage: NextPage = () => {
+const ClassroomAssignmentPage: NextPage = () => {
   const router = useRouter();
   const classroomId = router.query.classroomId as string;
   const assignmentId = router.query.assignmentId as string;
@@ -13,7 +13,7 @@ const ClassroomPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Classrooms</title>
+        <title>Assignment {assignmentId}</title>
         <meta
           name="description"
           content="all of the classrooms you've created as a teacher"
@@ -30,4 +30,4 @@ const ClassroomPage: NextPage = () => {
   );
 };
 
-export default ClassroomPage;
+export default ClassroomAssignmentPage;

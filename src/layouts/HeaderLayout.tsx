@@ -5,7 +5,10 @@ export const HeaderLayout = ({ children }) => {
   return (
     <div>
       <Header />
-      {children}
+
+      <div className="container m-auto flex flex-col gap-8 mt-8">
+        {children}
+      </div>
     </div>
   );
 };
