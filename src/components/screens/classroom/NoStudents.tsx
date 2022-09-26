@@ -1,7 +1,7 @@
 import React from 'react';
 import assignmentsImage from '../../../assets/assignments.svg';
 import Image from 'next/image';
-import { Button } from 'react-daisyui';
+import { Button } from '../../common/Button/Button';
 
 export const NoStudents = () => {
   return (

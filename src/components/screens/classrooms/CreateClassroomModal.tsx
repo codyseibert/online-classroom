@@ -1,7 +1,8 @@
-import React, { useRef } from 'react';
-import { Modal, Button, Input } from 'react-daisyui';
+import { Dialog } from '@headlessui/react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { trpc } from '../../../utils/trpc';
+import { Button } from '../../common/Button/Button';
 
 type CreateClassroomForm = {
   name: string;
@@ -38,17 +39,21 @@ export const CreateClassroomModal = ({
   };
 
   return (
-    <Modal
+    <Dialog
       open={isOpen}
-      onClickBackdrop={handleCancel}
+      onClose={handleCancel}
     >
-      <Modal.Header className="font-bold">Create Classroom</Modal.Header>
-      <form onSubmit={onSubmit}>
-        <Modal.Body>
+      <Dialog.Panel>
+        <Dialog.Title>Create Classroom</Dialog.Title>
+        <Dialog.Description>
+          This will permanently deactivate your account
+        </Dialog.Description>
+
+        <form onSubmit={onSubmit}>
           <div className="flex flex-col gap-4">
             <label className="flex flex-col gap-2">
               <div>Name:</div>
-              <Input
+              <input
                 placeholder="name"
                 {...register('name', { required: true })}
               />
@@ -57,9 +62,7 @@ export const CreateClassroomModal = ({
               <div className="text-red-500">Name is required</div>
             )}
           </div>
-        </Modal.Body>
 
-        <Modal.Actions>
           <Button
             onClick={handleCancel}
             type="button"
@@ -72,8 +75,8 @@ export const CreateClassroomModal = ({
           >
             Create
           </Button>
-        </Modal.Actions>
-      </form>
-    </Modal>
+        </form>
+      </Dialog.Panel>
+    </Dialog>
   );
 };

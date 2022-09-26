@@ -7,7 +7,6 @@ import { SessionProvider } from 'next-auth/react';
 import '../styles/globals.css';
 import { ThemeProvider } from 'next-themes';
 import NextNProgress from 'nextjs-progressbar';
-import daisyuiColors from 'daisyui/src/colors/themes';
 
 const MyApp: AppType = ({
   Component,
@@ -17,7 +16,7 @@ const MyApp: AppType = ({
     <SessionProvider session={session}>
       <ThemeProvider attribute="class">
         <NextNProgress
-          color={daisyuiColors['[data-theme=light]'].secondary}
+          color={'blue'}
           options={{ showSpinner: false }}
         />
         <Component {...pageProps} />

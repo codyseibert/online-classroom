@@ -2,8 +2,8 @@ import Image from 'next/image';
 import React from 'react';
 import { trpc } from '../../../utils/trpc';
 import studentImage from '../../../assets/student.jpeg';
-import { Button } from 'react-daisyui';
 import Link from 'next/link';
+import { Button } from '../../common/Button/Button';
 
 export const BrowseClassroomsScreen = () => {
   const findClassroom = trpc.useQuery(['classroom.findClassroom']);

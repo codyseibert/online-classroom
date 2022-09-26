@@ -2,7 +2,7 @@ import { Assignment, Classroom } from '@prisma/client';
 import { User } from 'next-auth';
 import Link from 'next/link';
 import { ReactNode } from 'react';
-import { Button } from 'react-daisyui';
+import { Button } from '../../common/Button/Button';
 import { Table } from '../../common/Table/Table';
 
 export const Assignments = ({

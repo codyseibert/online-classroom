@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import { Button } from 'react-daisyui';
 import assignmentsImage from '../../../assets/assignments.svg';
+import { Button } from '../../common/Button/Button';
 
 export const NoAssignments = ({ openAssignmentModal }) => {
   return (

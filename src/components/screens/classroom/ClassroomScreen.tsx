@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { trpc } from '../../../utils/trpc';
 import { CreateAssignmentModal } from './CreateAssignmentModal';
 import { EditClassroomModal } from './EditClassroomModal';
@@ -12,11 +12,9 @@ import { useSession } from '../../../libs/useSession';
 import { StudentsSection } from './StudentsSection';
 import { Button } from '../../common/Button/Button';
 import { useRouter } from 'next/router';
-import { Tabs } from 'react-daisyui';
+import { Tab } from '@headlessui/react';
 
 export const ClassroomScreen = ({ classroomId }) => {
-  const [tab, setTab] = useState('assignments');
-
   const assignmentsQuery = trpc.useQuery([
     'classroom.getAssignments',
     { classroomId },
@@ -89,33 +87,34 @@ export const ClassroomScreen = ({ classroomId }) => {
           )}
         </div>
 
-        <Tabs
-          onChange={setTab}
-          value={tab}
-        >
-          <Tabs.Tab value={'assignments'}>Assignments</Tabs.Tab>
-          <Tabs.Tab value={'students'}>Students</Tabs.Tab>
-        </Tabs>
-
-        {tab === 'assignments' && (
-          <EmptyStateWrapper
-            isLoading={isLoadingAssignments}
-            data={assignments}
-            EmptyComponent={
-              <NoAssignments openAssignmentModal={openAssignmentModal} />
-            }
-            NonEmptyComponent={
-              <Assignments
-                hasAdminAccess={hasAdminAccess}
-                classroomId={classroomId}
-                assignments={assignments ?? []}
-                openAssignmentModal={openAssignmentModal}
+        <Tab.Group>
+          <Tab.List>
+            <Tab>Assignments</Tab>
+            <Tab>Students</Tab>
+          </Tab.List>
+          <Tab.Panels>
+            <Tab.Panel>
+              <EmptyStateWrapper
+                isLoading={isLoadingAssignments}
+                data={assignments}
+                EmptyComponent={
+                  <NoAssignments openAssignmentModal={openAssignmentModal} />
+                }
+                NonEmptyComponent={
+                  <Assignments
+                    hasAdminAccess={hasAdminAccess}
+                    classroomId={classroomId}
+                    assignments={assignments ?? []}
+                    openAssignmentModal={openAssignmentModal}
+                  />
+                }
               />
-            }
-          />
-        )}
-
-        {tab === 'students' && <StudentsSection classroomId={classroomId} />}
+            </Tab.Panel>
+            <Tab.Panel>
+              <StudentsSection classroomId={classroomId} />
+            </Tab.Panel>
+          </Tab.Panels>
+        </Tab.Group>
       </div>
 
       <CreateAssignmentModal

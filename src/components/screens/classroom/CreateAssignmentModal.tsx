@@ -1,7 +1,8 @@
-import React, { useRef } from 'react';
-import { Modal, Button, Input, Textarea } from 'react-daisyui';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { trpc } from '../../../utils/trpc';
+import { Dialog } from '@headlessui/react';
+import { Button } from '../../common/Button/Button';
 
 type CreateAssignmentForm = {
   name: string;
@@ -44,17 +45,21 @@ export const CreateAssignmentModal = ({
   };
 
   return (
-    <Modal
+    <Dialog
       open={isOpen}
-      onClickBackdrop={handleCancel}
+      onClose={onCancel}
     >
-      <Modal.Header className="font-bold">Create Assignment</Modal.Header>
-      <form onSubmit={onSubmit}>
-        <Modal.Body>
+      <Dialog.Panel>
+        <Dialog.Title>Create Assignment</Dialog.Title>
+        <Dialog.Description>
+          This will permanently deactivate your account
+        </Dialog.Description>
+
+        <form onSubmit={onSubmit}>
           <div className="flex flex-col gap-4">
             <label className="flex flex-col gap-2">
               <div>Name:</div>
-              <Input
+              <input
                 placeholder="name"
                 {...register('name', { required: true })}
               />
@@ -64,7 +69,7 @@ export const CreateAssignmentModal = ({
             )}
             <label className="flex flex-col gap-2">
               <div>Description:</div>
-              <Textarea
+              <textarea
                 {...register('description', { required: true })}
                 placeholder="description"
               />
@@ -73,9 +78,7 @@ export const CreateAssignmentModal = ({
               )}
             </label>
           </div>
-        </Modal.Body>
 
-        <Modal.Actions>
           <Button
             onClick={handleCancel}
             type="button"
@@ -88,8 +91,8 @@ export const CreateAssignmentModal = ({
           >
             Create
           </Button>
-        </Modal.Actions>
-      </form>
-    </Modal>
+        </form>
+      </Dialog.Panel>
+    </Dialog>
   );
 };
