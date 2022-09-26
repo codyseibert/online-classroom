@@ -17,7 +17,7 @@ export const EmptyStateClassrooms = ({ openClassroomModal }) => {
         variant={Variant.Primary}
         onClick={openClassroomModal}
       >
-        Create A Classroom
+        Create a Classroom
       </Button>
     </div>
   );

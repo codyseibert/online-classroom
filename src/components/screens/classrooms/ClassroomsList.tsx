@@ -17,7 +17,7 @@ export const ClassroomsList = ({
           variant={Variant.Primary}
           onClick={openClassroomModal}
         >
-          Create A Classroom
+          Create a Class
         </Button>
       </div>
       <div className="grid grid-cols-3 gap-4">

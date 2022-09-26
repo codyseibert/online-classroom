@@ -42,7 +42,7 @@ export const CreateClassroomModal = ({
     <Modal
       isOpen={isOpen}
       handleCancel={handleCancel}
-      title="Create Classroom"
+      title="Create a Class"
       description="This will permanently deactivate your account"
     >
       <ModalForm onSubmit={onSubmit}>
