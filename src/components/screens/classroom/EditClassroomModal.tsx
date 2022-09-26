@@ -1,8 +1,8 @@
-import { Dialog } from '@headlessui/react';
 import { Classroom } from '@prisma/client';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Button } from '../../common/Button/Button';
+import { Button, Variant } from '../../common/Button/Button';
+import { Modal, ModalActions } from '../../common/Modal';
 
 type EditClassroomForm = {
   name: string;
@@ -40,55 +40,55 @@ export const EditClassroomModal = ({
   };
 
   return (
-    <Dialog
-      open={isOpen}
-      onClose={handleCancel}
+    <Modal
+      title="Edit Classroom"
+      description="Type in the information needed for your classroom"
+      isOpen={isOpen}
+      handleCancel={handleCancel}
     >
-      <Dialog.Panel>
-        <Dialog.Title>Edit Classroom</Dialog.Title>
-        <Dialog.Description>
-          This will permanently deactivate your account
-        </Dialog.Description>
+      <form
+        onSubmit={onSubmit}
+        className="flex flex-col gap-4"
+      >
+        <div className="flex flex-col gap-4">
+          <label className="flex flex-col gap-2">
+            <div>Name</div>
+            <input
+              placeholder="name"
+              {...register('name', { required: true })}
+            />
+          </label>
+          {errors.name?.type === 'required' && (
+            <div className="text-red-500">Name is required</div>
+          )}
 
-        <form onSubmit={onSubmit}>
-          <div className="flex flex-col gap-4">
-            <label className="flex flex-col gap-2">
-              <div>Name:</div>
-              <input
-                placeholder="name"
-                {...register('name', { required: true })}
-              />
-            </label>
-            {errors.name?.type === 'required' && (
-              <div className="text-red-500">Name is required</div>
+          <label className="flex flex-col gap-2">
+            <div>Description</div>
+            <textarea
+              {...register('description', { required: true })}
+              placeholder="description"
+            />
+            {errors.description?.type === 'required' && (
+              <div className="text-red-500">Description is required</div>
             )}
-
-            <label className="flex flex-col gap-2">
-              <div>Description:</div>
-              <textarea
-                {...register('description', { required: true })}
-                placeholder="description"
-              />
-              {errors.description?.type === 'required' && (
-                <div className="text-red-500">Description is required</div>
-              )}
-            </label>
-          </div>
-
+          </label>
+        </div>
+        <ModalActions>
           <Button
+            variant={Variant.Secondary}
             onClick={handleCancel}
             type="button"
           >
             Cancel
           </Button>
           <Button
-            color="primary"
+            variant={Variant.Primary}
             type="submit"
           >
-            Create
+            Save
           </Button>
-        </form>
-      </Dialog.Panel>
-    </Dialog>
+        </ModalActions>
+      </form>
+    </Modal>
   );
 };

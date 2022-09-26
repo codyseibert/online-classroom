@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import { Button } from '../../common/Button/Button';
+import { Button, Variant } from '../../common/Button/Button';
 import { Card } from '../../common/Card';
 
 export const ClassroomCard = ({ classroom }) => {
@@ -11,7 +11,7 @@ export const ClassroomCard = ({ classroom }) => {
       nulla! Maiores et perferendis eaque, exercitationem praesentium nihil."
     >
       <Link href={`/classrooms/${classroom.id}`}>
-        <Button color="primary">Manage Classroom</Button>
+        <Button variant={Variant.Primary}>Manage Classroom</Button>
       </Link>
     </Card>
   );

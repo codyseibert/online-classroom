@@ -2,7 +2,7 @@ import { Assignment, Classroom } from '@prisma/client';
 import { User } from 'next-auth';
 import Link from 'next/link';
 import { ReactNode } from 'react';
-import { Button } from '../../common/Button/Button';
+import { Button, Variant } from '../../common/Button/Button';
 import { Table } from '../../common/Table/Table';
 
 export const Assignments = ({
@@ -26,9 +26,8 @@ export const Assignments = ({
         </h3>
         {hasAdminAccess && (
           <Button
+            variant={Variant.Primary}
             onClick={openAssignmentModal}
-            color="primary"
-            size="sm"
           >
             Create An Assignment
           </Button>

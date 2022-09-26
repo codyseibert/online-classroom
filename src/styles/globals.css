@@ -20,3 +20,8 @@ document,
 .link {
   @apply hover:text-blue-600 text-blue-500 cursor-pointer;
 }
+
+input,
+textarea {
+  @apply bg-white border p-2;
+}
