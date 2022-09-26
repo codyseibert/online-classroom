@@ -1,6 +1,6 @@
 import { Classroom } from '@prisma/client';
 import React from 'react';
-import { Button } from '../../common/Button/Button';
+import { Button, Variant } from '../../common/Button/Button';
 import { ClassroomCard } from './ClassroomCard';
 
 export const ClassroomsList = ({
@@ -14,8 +14,8 @@ export const ClassroomsList = ({
     <div className="flex flex-col gap-4">
       <div>
         <Button
+          variant={Variant.Primary}
           onClick={openClassroomModal}
-          color="primary"
         >
           Create A Classroom
         </Button>

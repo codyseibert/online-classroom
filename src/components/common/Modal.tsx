@@ -40,3 +40,14 @@ export const Modal = ({
 export const ModalActions = ({ children }) => {
   return <div className="flex gap-4 justify-end">{children}</div>;
 };
+
+export const ModalForm = ({ children, ...rest }) => {
+  return (
+    <form
+      {...rest}
+      className="flex flex-col gap-4"
+    >
+      {children}
+    </form>
+  );
+};

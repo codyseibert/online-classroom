@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import teacherImage from '../../../assets/teacher.svg';
-import { Button } from '../../common/Button/Button';
+import { Button, Variant } from '../../common/Button/Button';
 
 export const EmptyStateClassrooms = ({ openClassroomModal }) => {
   return (
@@ -14,8 +14,8 @@ export const EmptyStateClassrooms = ({ openClassroomModal }) => {
       />
       <div className="text-2xl">You have no classrooms yet!</div>
       <Button
+        variant={Variant.Primary}
         onClick={openClassroomModal}
-        color="primary"
       >
         Create A Classroom
       </Button>

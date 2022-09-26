@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { trpc } from '../../../utils/trpc';
 import { Button, Variant } from '../../common/Button/Button';
-import { Modal, ModalActions } from '../../common/Modal';
+import { Modal, ModalActions, ModalForm } from '../../common/Modal';
 
 type CreateAssignmentForm = {
   name: string;
@@ -51,10 +51,7 @@ export const CreateAssignmentModal = ({
       title="Create Assignment"
       description="enter the information for your new classroom"
     >
-      <form
-        onSubmit={onSubmit}
-        className="flex flex-col gap-4"
-      >
+      <ModalForm onSubmit={onSubmit}>
         <div className="flex flex-col gap-4">
           <label className="flex flex-col gap-2">
             <div>Name:</div>
@@ -94,7 +91,7 @@ export const CreateAssignmentModal = ({
             Create
           </Button>
         </ModalActions>
-      </form>
+      </ModalForm>
     </Modal>
   );
 };

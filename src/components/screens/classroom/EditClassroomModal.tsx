@@ -2,7 +2,7 @@ import { Classroom } from '@prisma/client';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Variant } from '../../common/Button/Button';
-import { Modal, ModalActions } from '../../common/Modal';
+import { Modal, ModalActions, ModalForm } from '../../common/Modal';
 
 type EditClassroomForm = {
   name: string;
@@ -46,10 +46,7 @@ export const EditClassroomModal = ({
       isOpen={isOpen}
       handleCancel={handleCancel}
     >
-      <form
-        onSubmit={onSubmit}
-        className="flex flex-col gap-4"
-      >
+      <ModalForm onSubmit={onSubmit}>
         <div className="flex flex-col gap-4">
           <label className="flex flex-col gap-2">
             <div>Name</div>
@@ -88,7 +85,7 @@ export const EditClassroomModal = ({
             Save
           </Button>
         </ModalActions>
-      </form>
+      </ModalForm>
     </Modal>
   );
 };

@@ -2,7 +2,8 @@ import { Dialog } from '@headlessui/react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { trpc } from '../../../utils/trpc';
-import { Button } from '../../common/Button/Button';
+import { Button, Variant } from '../../common/Button/Button';
+import { Modal, ModalActions, ModalForm } from '../../common/Modal';
 
 type CreateClassroomForm = {
   name: string;
@@ -33,50 +34,47 @@ export const CreateClassroomModal = ({
   });
 
   const handleCancel = () => {
-    console.log('here');
     reset();
     onCancel();
   };
 
   return (
-    <Dialog
-      open={isOpen}
-      onClose={handleCancel}
+    <Modal
+      isOpen={isOpen}
+      handleCancel={handleCancel}
+      title="Create Classroom"
+      description="This will permanently deactivate your account"
     >
-      <Dialog.Panel>
-        <Dialog.Title>Create Classroom</Dialog.Title>
-        <Dialog.Description>
-          This will permanently deactivate your account
-        </Dialog.Description>
+      <ModalForm onSubmit={onSubmit}>
+        <div className="flex flex-col gap-4">
+          <label className="flex flex-col gap-2">
+            <div>Name:</div>
+            <input
+              placeholder="name"
+              {...register('name', { required: true })}
+            />
+          </label>
+          {errors.name?.type === 'required' && (
+            <div className="text-red-500">Name is required</div>
+          )}
+        </div>
 
-        <form onSubmit={onSubmit}>
-          <div className="flex flex-col gap-4">
-            <label className="flex flex-col gap-2">
-              <div>Name:</div>
-              <input
-                placeholder="name"
-                {...register('name', { required: true })}
-              />
-            </label>
-            {errors.name?.type === 'required' && (
-              <div className="text-red-500">Name is required</div>
-            )}
-          </div>
-
+        <ModalActions>
           <Button
             onClick={handleCancel}
             type="button"
+            variant={Variant.Secondary}
           >
             Cancel
           </Button>
           <Button
-            color="primary"
             type="submit"
+            variant={Variant.Primary}
           >
             Create
           </Button>
-        </form>
-      </Dialog.Panel>
-    </Dialog>
+        </ModalActions>
+      </ModalForm>
+    </Modal>
   );
 };
