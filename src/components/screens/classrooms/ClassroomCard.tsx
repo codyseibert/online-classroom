@@ -1,18 +1,21 @@
+import { Classroom } from '@prisma/client';
 import Link from 'next/link';
 import React from 'react';
-import { Button, Variant } from '../../common/Button/Button';
 import { Card } from '../../common/Card';
 
-export const ClassroomCard = ({ classroom }) => {
+export const ClassroomCard = ({ classroom }: { classroom: Classroom }) => {
   return (
     <Card
+      titleAs="h2"
       title={classroom.name}
       body="ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia,
       nulla! Maiores et perferendis eaque, exercitationem praesentium nihil."
     >
-      <Link href={`/classrooms/${classroom.id}`}>
-        <Button variant={Variant.Primary}>Manage Classroom</Button>
-      </Link>
+      <div className="flex justify-end">
+        <Link href={`/classrooms/${classroom.id}`}>
+          <a className="text-blue-500">Manage Classroom</a>
+        </Link>
+      </div>
     </Card>
   );
 };

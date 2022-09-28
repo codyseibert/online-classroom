@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { trpc } from '../../../utils/trpc';
 import { CreateAssignmentModal } from './CreateAssignmentModal';
 import { EditClassroomModal } from './EditClassroomModal';
@@ -10,11 +10,13 @@ import { useCreateAssignment } from './hooks/useCreateAssignment';
 import { useEditClassroom } from './hooks/useEditClassroom';
 import { useSession } from '../../../libs/useSession';
 import { StudentsSection } from './StudentsSection';
-import { Button } from '../../common/Button/Button';
+import { Button, Variant } from '../../common/Button/Button';
 import { useRouter } from 'next/router';
-import { Tab } from '@headlessui/react';
+import { SideNavigation } from './SideNavigation';
 
 export const ClassroomScreen = ({ classroomId }) => {
+  const [tab, setTab] = useState('dashboard');
+
   const assignmentsQuery = trpc.useQuery([
     'classroom.getAssignments',
     { classroomId },
@@ -64,57 +66,55 @@ export const ClassroomScreen = ({ classroomId }) => {
 
   return (
     <>
-      <div className="container m-auto flex flex-col gap-8">
-        <div className="flex items-center mt-8 gap-4">
-          <h1 className="text-4xl">
-            Manage your <b>{classroom?.name}</b> Classroom
-          </h1>
-          {hasAdminAccess && (
-            <button
-              className="flex link"
-              onClick={openEditClassroomModal}
-            >
-              <PencilSquare /> Edit
-            </button>
-          )}
-          {isStudent && (
-            <Button
-              color="error"
-              onClick={handleUnenroll}
-            >
-              Unenroll
-            </Button>
-          )}
-        </div>
+      <section className="py-4 flex items-center mt-8 gap-4">
+        <h1 className="text-4xl font-bold">{classroom?.name}</h1>
 
-        <Tab.Group>
-          <Tab.List>
-            <Tab>Assignments</Tab>
-            <Tab>Students</Tab>
-          </Tab.List>
-          <Tab.Panels>
-            <Tab.Panel>
-              <EmptyStateWrapper
-                isLoading={isLoadingAssignments}
-                data={assignments}
-                EmptyComponent={
-                  <NoAssignments openAssignmentModal={openAssignmentModal} />
-                }
-                NonEmptyComponent={
-                  <Assignments
-                    hasAdminAccess={hasAdminAccess}
-                    classroomId={classroomId}
-                    assignments={assignments ?? []}
-                    openAssignmentModal={openAssignmentModal}
-                  />
-                }
-              />
-            </Tab.Panel>
-            <Tab.Panel>
-              <StudentsSection classroomId={classroomId} />
-            </Tab.Panel>
-          </Tab.Panels>
-        </Tab.Group>
+        {hasAdminAccess && (
+          <button
+            className="flex link"
+            onClick={openEditClassroomModal}
+          >
+            <PencilSquare /> Edit
+          </button>
+        )}
+
+        {isStudent && (
+          <Button
+            variant={Variant.Primary}
+            onClick={handleUnenroll}
+          >
+            Unenroll
+          </Button>
+        )}
+      </section>
+
+      <div className="container m-auto flex flex-col gap-8">
+        <div className="flex">
+          <SideNavigation
+            tab={tab}
+            setTab={setTab}
+          />
+
+          {tab === 'assignments' && (
+            <EmptyStateWrapper
+              isLoading={isLoadingAssignments}
+              data={assignments}
+              EmptyComponent={
+                <NoAssignments openAssignmentModal={openAssignmentModal} />
+              }
+              NonEmptyComponent={
+                <Assignments
+                  hasAdminAccess={hasAdminAccess}
+                  classroomId={classroomId}
+                  assignments={assignments ?? []}
+                  openAssignmentModal={openAssignmentModal}
+                />
+              }
+            />
+          )}
+
+          {tab === 'students' && <StudentsSection classroomId={classroomId} />}
+        </div>
       </div>
 
       <CreateAssignmentModal

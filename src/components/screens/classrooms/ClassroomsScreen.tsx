@@ -4,6 +4,7 @@ import { CreateClassroomModal } from './CreateClassroomModal';
 import { EmptyStateWrapper } from '../../common/EmptyStateWrapper';
 import { EmptyStateClassrooms } from './EmptyStateClassrooms';
 import { ClassroomsList } from './ClassroomsList';
+import { Button, Variant } from '../../common/Button/Button';
 
 export const ClassroomsScreen = () => {
   const [showCreateClassroomModal, setShowCreateClassroomModal] =
@@ -30,8 +31,17 @@ export const ClassroomsScreen = () => {
 
   return (
     <>
-      <div className="container m-auto flex flex-col gap-4">
-        <h1 className="text-4xl mt-8">Your Classrooms</h1>
+      <div className="container m-auto flex flex-col gap-8">
+        <section className="flex gap-8 items-end">
+          <h1 className="text-4xl mt-8">Your Classrooms</h1>
+
+          <Button
+            variant={Variant.Primary}
+            onClick={openClassroomModal}
+          >
+            Create a Class
+          </Button>
+        </section>
 
         <div>
           <EmptyStateWrapper
@@ -40,12 +50,7 @@ export const ClassroomsScreen = () => {
             EmptyComponent={
               <EmptyStateClassrooms openClassroomModal={openClassroomModal} />
             }
-            NonEmptyComponent={
-              <ClassroomsList
-                classrooms={classrooms ?? []}
-                openClassroomModal={openClassroomModal}
-              />
-            }
+            NonEmptyComponent={<ClassroomsList classrooms={classrooms ?? []} />}
           />
         </div>
       </div>
