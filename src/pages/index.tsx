@@ -1,6 +1,5 @@
 import Head from 'next/head';
-import { HomeContent } from '../components/screens/home/HomeContent';
-import { HeaderLayout } from '../layouts/HeaderLayout';
+import { HomeScreen } from '../components/screens/home/HomeScreen';
 
 export default function HomePage() {
   return (
@@ -13,9 +12,7 @@ export default function HomePage() {
         />
       </Head>
 
-      <HeaderLayout>
-        <HomeContent />
-      </HeaderLayout>
+      <HomeScreen />
     </>
   );
 }

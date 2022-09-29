@@ -8,7 +8,11 @@ const Logo = () => {
   return (
     <Link
       href={
-        session.data?.user.role === 'teacher' ? '/classrooms' : '/dashboard'
+        session.data
+          ? session.data?.user.role === 'teacher'
+            ? '/classrooms'
+            : '/dashboard'
+          : '/'
       }
     >
       WDJ Classroom

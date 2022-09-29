@@ -4,7 +4,7 @@ const LoggedOutSection = ({ signIn }) => {
   return (
     <div className="ml-3 relative">
       <a
-        onClick={(e) => signIn('google')}
+        onClick={() => signIn()}
         href="#"
         className="link-secondary px-3 py-2 rounded-md text-sm font-medium"
         role="menuitem"
