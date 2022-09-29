@@ -10,7 +10,7 @@ document,
 }
 
 .link {
-  @apply hover:text-blue-600 text-blue-500 cursor-pointer;
+  @apply hover:text-blue-600 text-blue-500 cursor-pointer hover:underline;
 }
 
 input,

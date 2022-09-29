@@ -1,8 +1,8 @@
-import { Dialog } from '@headlessui/react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { trpc } from '../../../utils/trpc';
 import { Button, Variant } from '../../common/Button/Button';
+import { FormGroup } from '../../common/Form/FormGroup/FormGroup';
 import { Modal, ModalActions, ModalForm } from '../../common/Modal';
 
 type CreateClassroomForm = {
@@ -43,21 +43,19 @@ export const CreateClassroomModal = ({
       isOpen={isOpen}
       handleCancel={handleCancel}
       title="Create a Class"
-      description="This will permanently deactivate your account"
+      description="Create a class to teach your students."
     >
       <ModalForm onSubmit={onSubmit}>
-        <div className="flex flex-col gap-4">
-          <label className="flex flex-col gap-2">
-            <div>Name:</div>
-            <input
-              placeholder="name"
-              {...register('name', { required: true })}
-            />
-          </label>
-          {errors.name?.type === 'required' && (
-            <div className="text-red-500">Name is required</div>
-          )}
-        </div>
+        <FormGroup
+          label="Name"
+          error={errors.name && 'Name is required'}
+          name="name"
+        >
+          <input
+            id="name"
+            {...register('name', { required: true })}
+          />
+        </FormGroup>
 
         <ModalActions>
           <Button

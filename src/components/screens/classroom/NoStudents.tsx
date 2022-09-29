@@ -1,7 +1,7 @@
 import React from 'react';
 import assignmentsImage from '../../../assets/assignments.svg';
 import Image from 'next/image';
-import { Button } from '../../common/Button/Button';
+import { Button, Variant } from '../../common/Button/Button';
 
 export const NoStudents = () => {
   return (
@@ -16,7 +16,7 @@ export const NoStudents = () => {
         You have no students enrolled yet!
       </div>
       <div className="text-center">
-        <Button color="primary">Send Email Invite</Button>
+        <Button variant={Variant.Primary}>Send Email Invite</Button>
       </div>
     </div>
   );

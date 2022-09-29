@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { trpc } from '../../../utils/trpc';
 import { CreateAssignmentModal } from './CreateAssignmentModal';
 import { EditClassroomModal } from './EditClassroomModal';
@@ -12,10 +12,12 @@ import { useSession } from '../../../libs/useSession';
 import { StudentsSection } from './StudentsSection';
 import { Button, Variant } from '../../common/Button/Button';
 import { useRouter } from 'next/router';
-import { SideNavigation } from './SideNavigation';
+import { SideNavigation, tabAtom, TabName } from './SideNavigation';
+import { useAtom } from 'jotai';
+import { MainHeading } from '../../common/MainHeading';
 
 export const ClassroomScreen = ({ classroomId }) => {
-  const [tab, setTab] = useState('dashboard');
+  const [selectedTab] = useAtom(tabAtom);
 
   const assignmentsQuery = trpc.useQuery([
     'classroom.getAssignments',
@@ -66,9 +68,7 @@ export const ClassroomScreen = ({ classroomId }) => {
 
   return (
     <>
-      <section className="py-4 flex items-center mt-8 gap-4">
-        <h1 className="text-4xl font-bold">{classroom?.name}</h1>
-
+      <MainHeading title={classroom?.name}>
         {hasAdminAccess && (
           <button
             className="flex link"
@@ -86,16 +86,13 @@ export const ClassroomScreen = ({ classroomId }) => {
             Unenroll
           </Button>
         )}
-      </section>
+      </MainHeading>
 
-      <div className="container m-auto flex flex-col gap-8">
-        <div className="flex">
-          <SideNavigation
-            tab={tab}
-            setTab={setTab}
-          />
+      <div className="flex">
+        <SideNavigation />
 
-          {tab === 'assignments' && (
+        <section className="grow">
+          {selectedTab === TabName.Assignment && (
             <EmptyStateWrapper
               isLoading={isLoadingAssignments}
               data={assignments}
@@ -113,8 +110,10 @@ export const ClassroomScreen = ({ classroomId }) => {
             />
           )}
 
-          {tab === 'students' && <StudentsSection classroomId={classroomId} />}
-        </div>
+          {selectedTab === TabName.Students && (
+            <StudentsSection classroomId={classroomId} />
+          )}
+        </section>
       </div>
 
       <CreateAssignmentModal

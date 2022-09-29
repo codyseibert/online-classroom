@@ -10,7 +10,7 @@ export const DashboardScreen = () => {
   const { data: classrooms, isLoading } = enrolledClassroomsQuery;
 
   return (
-    <div>
+    <div className="mt-16">
       <EmptyStateWrapper
         isLoading={isLoading}
         data={classrooms}

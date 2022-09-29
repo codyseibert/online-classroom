@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { trpc } from '../../../utils/trpc';
 import { Button, Variant } from '../../common/Button/Button';
+import { FormGroup } from '../../common/Form/FormGroup/FormGroup';
 import { Modal, ModalActions, ModalForm } from '../../common/Modal';
 
 type CreateAssignmentForm = {
@@ -49,31 +50,30 @@ export const CreateAssignmentModal = ({
       isOpen={isOpen}
       handleCancel={handleCancel}
       title="Create Assignment"
-      description="enter the information for your new classroom"
+      description="Enter the information for your new classroom"
     >
       <ModalForm onSubmit={onSubmit}>
-        <div className="flex flex-col gap-4">
-          <label className="flex flex-col gap-2">
-            <div>Name:</div>
-            <input
-              placeholder="name"
-              {...register('name', { required: true })}
-            />
-          </label>
-          {errors.name?.type === 'required' && (
-            <div className="text-red-500">Name is required</div>
-          )}
-          <label className="flex flex-col gap-2">
-            <div>Description:</div>
-            <textarea
-              {...register('description', { required: true })}
-              placeholder="description"
-            />
-            {errors.description?.type === 'required' && (
-              <div className="text-red-500">Description is required</div>
-            )}
-          </label>
-        </div>
+        <FormGroup
+          label="Name"
+          error={errors.name && 'Name is required'}
+          name="name"
+        >
+          <input
+            id="name"
+            {...register('name', { required: true })}
+          />
+        </FormGroup>
+
+        <FormGroup
+          label="Description"
+          error={errors.description && 'Description is required'}
+          name="description"
+        >
+          <input
+            id="description"
+            {...register('description', { required: true })}
+          />
+        </FormGroup>
 
         <ModalActions>
           <Button

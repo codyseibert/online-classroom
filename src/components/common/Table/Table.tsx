@@ -28,7 +28,7 @@ export const Table = ({
           return (
             <tr
               key={rowIndex}
-              className="hover:bg-gray-100 dark:hover:bg-gray-700"
+              className="hover:bg-blue-50 dark:hover:bg-gray-700"
             >
               {row.map((column, columnIndex) => (
                 <td

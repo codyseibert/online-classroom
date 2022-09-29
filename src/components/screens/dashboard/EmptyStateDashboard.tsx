@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import teacherImage from '../../../assets/teacher.svg';
+import { Button, Variant } from '../../common/Button/Button';
 
 export const EmptyStateDashboard = () => {
   return (
@@ -14,7 +15,7 @@ export const EmptyStateDashboard = () => {
       />
       <div className="text-2xl">You have no classrooms yet!</div>
       <Link href="/browse-classrooms">
-        <a className="btn btn-primary">Browser for Classrooms</a>
+        <Button variant={Variant.Primary}>Browse for Classrooms</Button>
       </Link>
     </div>
   );

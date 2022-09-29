@@ -1,21 +1,32 @@
 import classNames from 'classnames';
 import React from 'react';
+import { PaperCheckIcon } from '../../common/Icons/PaperCheckIcon';
+import { PeopleIcon } from '../../common/Icons/PeopleIcon';
+import { atom, useAtom } from 'jotai';
 
-export const SideNavigation = ({ tab, setTab }) => {
-  const links = [
-    {
-      name: 'Dashboard',
-      tab: 'dashboard',
-    },
-    {
-      name: 'Assignments',
-      tab: 'assignments',
-    },
-    {
-      name: 'Students',
-      tab: 'students',
-    },
-  ];
+export enum TabName {
+  Assignment,
+  Students,
+}
+
+export const tabAtom = atom<TabName>(TabName.Assignment);
+
+const links = [
+  {
+    name: 'Assignments',
+    tab: TabName.Assignment,
+    icon: <PaperCheckIcon />,
+  },
+  {
+    name: 'Students',
+    tab: TabName.Students,
+    icon: <PeopleIcon />,
+  },
+];
+
+export const SideNavigation = () => {
+  const [selectedTab, setSelectedTab] = useAtom(tabAtom);
+
   return (
     <aside
       className="w-64"
@@ -26,25 +37,16 @@ export const SideNavigation = ({ tab, setTab }) => {
           {links.map((link) => (
             <li
               key={link.name}
-              onClick={() => setTab(link.tab)}
+              onClick={() => setSelectedTab(link.tab)}
             >
               <a
                 href="#"
                 className={classNames(
                   'flex items-center p-2 text-base font-normal rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700',
-                  link.tab === tab ? 'text-blue-700' : 'text-gray-900'
+                  link.tab === selectedTab ? 'text-blue-700' : 'text-gray-900'
                 )}
               >
-                <svg
-                  aria-hidden="true"
-                  className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                  <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-                </svg>
+                {link.icon}
                 <span className="ml-3">{link.name}</span>
               </a>
             </li>

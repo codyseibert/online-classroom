@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { trpc } from '../../../utils/trpc';
-import { Button } from '../../common/Button/Button';
+import { Button, Variant } from '../../common/Button/Button';
 
 export const ClassroomOverviewScreen = ({
   classroomId,
@@ -43,7 +43,7 @@ export const ClassroomOverviewScreen = ({
       <h2>{classroom?.name}</h2>
       <h2>{classroom?.description}</h2>
       <Button
-        color="primary"
+        variant={Variant.Primary}
         onClick={handleEnroll}
       >
         Enroll
