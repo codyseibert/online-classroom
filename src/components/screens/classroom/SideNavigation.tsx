@@ -32,7 +32,7 @@ export const SideNavigation = () => {
       className="w-64"
       aria-label="Sidebar"
     >
-      <div className="overflow-y-auto py-4 px-3 bg-gray-50 rounded dark:bg-gray-800">
+      <div className="overflow-y-auto py-4 px-3">
         <ul className="space-y-2">
           {links.map((link) => (
             <li
@@ -42,8 +42,10 @@ export const SideNavigation = () => {
               <a
                 href="#"
                 className={classNames(
-                  'flex items-center p-2 text-base font-normal rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700',
-                  link.tab === selectedTab ? 'text-blue-700' : 'text-gray-900'
+                  'flex items-center p-2 text-base font-normal rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700',
+                  link.tab === selectedTab
+                    ? 'text-blue-700 dark:text-blue-400'
+                    : 'text-gray-900 dark:text-white'
                 )}
               >
                 {link.icon}

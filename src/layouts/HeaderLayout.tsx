@@ -11,7 +11,7 @@ export const HeaderLayout = ({ children, useContainer = true }) => {
       <main
         className={classNames(
           useContainer && 'container',
-          'mx-auto flex flex-col h-full'
+          'mx-auto flex flex-col h-screen'
         )}
       >
         {children}

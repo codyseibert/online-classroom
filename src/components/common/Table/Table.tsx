@@ -8,7 +8,7 @@ export const Table = ({
   rows: ReactNode[][];
 }) => {
   return (
-    <table className="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
+    <table className="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-400">
       <thead className="bg-gray-100 dark:bg-gray-700">
         <tr>
           {headers.map((header, headerIndex) => (
@@ -23,12 +23,12 @@ export const Table = ({
         </tr>
       </thead>
 
-      <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+      <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-500">
         {rows.map((row, rowIndex) => {
           return (
             <tr
               key={rowIndex}
-              className="hover:bg-blue-50 dark:hover:bg-gray-700"
+              className="hover:bg-blue-50 dark:hover:bg-gray-900"
             >
               {row.map((column, columnIndex) => (
                 <td

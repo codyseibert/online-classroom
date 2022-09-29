@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import { BellIcon } from '../../Icons/BellIcon';
 import { useClickOutside } from '../hooks/useClickOutside';
 import AccountMenu from './AccountMenu';
+import profileImage from '../../../../assets/profile.jpeg';
 
 export const LoggedInSection = ({
   image,
@@ -53,16 +54,15 @@ export const LoggedInSection = ({
             aria-haspopup="true"
           >
             <span className="sr-only">Open user menu</span>
-            {image && (
-              <Image
-                width="50"
-                height="50"
-                referrerPolicy="no-referrer"
-                className="h-8 w-8 rounded-full"
-                src={image}
-                alt=""
-              />
-            )}
+
+            <Image
+              width="50"
+              height="50"
+              referrerPolicy="no-referrer"
+              className="h-8 w-8 rounded-full"
+              src={image ?? profileImage}
+              alt=""
+            />
           </button>
         </div>
         {isAccountMenuOpen && <AccountMenu />}

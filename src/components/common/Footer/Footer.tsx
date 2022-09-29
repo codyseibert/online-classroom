@@ -1,11 +1,11 @@
 export const Footer = () => {
   return (
-    <footer className="p-4 bg-gray-50 rounded-lg shadow  dark:bg-gray-800">
+    <footer className="p-4 bg-gray-50 shadow  dark:bg-gray-800">
       <div className="container mx-auto md:flex md:items-center md:justify-between md:p-6">
-        <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+        <span className="text-sm text-gray-500 sm:text-center dark:text-gray-50">
           © 2022 <a className="hover:underline">WDJ</a>. All Rights Reserved.
         </span>
-        <ul className="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
+        <ul className="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-50 sm:mt-0">
           <li>
             <a
               href="#"
@@ -19,7 +19,7 @@ export const Footer = () => {
               href="#"
               className="mr-4 hover:underline md:mr-6"
             >
-              Privacy Policy
+              Terms of Service
             </a>
           </li>
           <li>
@@ -27,7 +27,7 @@ export const Footer = () => {
               href="#"
               className="mr-4 hover:underline md:mr-6"
             >
-              Licensing
+              Privacy Policy
             </a>
           </li>
           <li>
