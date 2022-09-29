@@ -3,6 +3,8 @@ import { User } from 'next-auth';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { Button, Variant } from '../../common/Button/Button';
+import { EyeIcon } from '../../common/Icons/EyeIcon';
+import { PencilSquare } from '../../common/Icons/PencilSquare';
 import { Table } from '../../common/Table/Table';
 
 export const Assignments = ({
@@ -47,13 +49,17 @@ export const Assignments = ({
                     <Link
                       href={`/classrooms/${classroomId}/assignments/${assignment.id}/edit`}
                     >
-                      <span className="link">Edit</span>
+                      <a className="link flex gap-1 items-center">
+                        <PencilSquare /> Edit
+                      </a>
                     </Link>
                   )}
                   <Link
                     href={`/classrooms/${classroomId}/assignments/${assignment.id}`}
                   >
-                    <span className="link">View</span>
+                    <a className="link flex gap-1 items-center">
+                      <EyeIcon /> View
+                    </a>
                   </Link>
                 </>
               </div>

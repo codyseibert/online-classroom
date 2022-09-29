@@ -1,6 +1,7 @@
 import React from 'react';
 import { trpc } from '../../../utils/trpc';
 import { EmptyStateWrapper } from '../../common/EmptyStateWrapper';
+import { MainHeading } from '../../common/MainHeading';
 import { EmptyStateDashboard } from './EmptyStateDashboard';
 import { EnrolledList } from './EnrolledList';
 
@@ -10,7 +11,9 @@ export const DashboardScreen = () => {
   const { data: classrooms, isLoading } = enrolledClassroomsQuery;
 
   return (
-    <div className="mt-16">
+    <div>
+      <MainHeading title="Your Classrooms" />
+
       <EmptyStateWrapper
         isLoading={isLoading}
         data={classrooms}

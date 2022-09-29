@@ -3,10 +3,15 @@ import React from 'react';
 import { trpc } from '../../../utils/trpc';
 import studentImage from '../../../assets/student.jpeg';
 import Link from 'next/link';
-import { Button } from '../../common/Button/Button';
+import { Button, Variant } from '../../common/Button/Button';
 
 export const BrowseClassroomsScreen = () => {
   const findClassroom = trpc.useQuery(['classroom.findClassroom']);
+  const classrooms = trpc.useQuery(['student.getClassrooms']);
+
+  const isEnrolled = (classroomId: string) => {
+    return classrooms.data?.some(({ id }) => id === classroomId);
+  };
 
   return (
     <section>
@@ -30,8 +35,25 @@ export const BrowseClassroomsScreen = () => {
             </div>
 
             <div>
-              <Link href={`/classrooms/${classroom.id}/overview`}>
-                <Button color="primary">View Classroom</Button>
+              <Link
+                href={
+                  isEnrolled(classroom.id)
+                    ? `/classrooms/${classroom.id}`
+                    : `/classrooms/${classroom.id}/overview`
+                }
+              >
+                <Button
+                  variant={
+                    isEnrolled(classroom.id)
+                      ? Variant.Secondary
+                      : Variant.Primary
+                  }
+                  color="primary"
+                >
+                  {isEnrolled(classroom.id)
+                    ? '(Already Enrolled) View'
+                    : 'View Classroom'}
+                </Button>
               </Link>
             </div>
           </article>

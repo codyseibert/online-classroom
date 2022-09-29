@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
-import { Button } from '../../common/Button/Button';
+import { Button, Variant } from '../../common/Button/Button';
+import { Card } from '../../common/Card';
 
 export const EnrolledCard = ({ classroom }) => {
   return (
@@ -13,9 +14,16 @@ export const EnrolledCard = ({ classroom }) => {
         </span>
       }
     >
-      <Link href={`/classrooms/${classroom.id}`}>
-        <Button color="primary">View</Button>
-      </Link>
+      <div className="flex justify-end">
+        <Link href={`/classrooms/${classroom.id}`}>
+          <Button
+            variant={Variant.Primary}
+            color="primary"
+          >
+            View
+          </Button>
+        </Link>
+      </div>
     </Card>
   );
 };

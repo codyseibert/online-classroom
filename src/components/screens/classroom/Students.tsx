@@ -1,6 +1,7 @@
 import { User } from '@prisma/client';
 import Link from 'next/link';
 import { ReactNode } from 'react';
+import { EyeIcon } from '../../common/Icons/EyeIcon';
 import { Table } from '../../common/Table/Table';
 
 export const Students = ({ students }: { students: User[] }) => {
@@ -21,7 +22,9 @@ export const Students = ({ students }: { students: User[] }) => {
             (
               <div className="flex gap-4">
                 <Link href={`/students/${student.id}`}>
-                  <span className="link">View</span>
+                  <a className="link flex gap-1 items-center">
+                    <EyeIcon /> View
+                  </a>
                 </Link>
               </div>
             ) as ReactNode,

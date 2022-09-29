@@ -11,7 +11,7 @@ export const Card = ({
 }: {
   children: ReactNode;
   title: string;
-  body: string;
+  body: ReactNode;
   titleAs?: keyof ReactHTML;
 }) => {
   const TitleAs = titleAs ? titleAs : 'div';

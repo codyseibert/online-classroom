@@ -80,7 +80,7 @@ export const ClassroomScreen = ({ classroomId }) => {
 
         {isStudent && (
           <Button
-            variant={Variant.Primary}
+            variant={Variant.Danger}
             onClick={handleUnenroll}
           >
             Unenroll
