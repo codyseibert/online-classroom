@@ -68,7 +68,7 @@ export const ClassroomScreen = ({ classroomId }) => {
 
   return (
     <>
-      <MainHeading title={classroom?.name}>
+      <MainHeading title={classroom?.name ?? 'loading...'}>
         {hasAdminAccess && (
           <button
             className="flex link"

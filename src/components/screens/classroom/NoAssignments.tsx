@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import assignmentsImage from '../../../assets/assignments.svg';
-import { Button } from '../../common/Button/Button';
+import { Button, Variant } from '../../common/Button/Button';
 
 export const NoAssignments = ({ openAssignmentModal }) => {
   return (
@@ -15,7 +15,7 @@ export const NoAssignments = ({ openAssignmentModal }) => {
       <div className="text-center">
         <Button
           onClick={openAssignmentModal}
-          color="primary"
+          variant={Variant.Primary}
         >
           Create An Assignment
         </Button>
