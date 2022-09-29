@@ -1,7 +1,5 @@
 import React from 'react';
 
-type Props = {};
-
-export const HomeContent = (props: Props) => {
+export const HomeContent = () => {
   return <div>HomeContent</div>;
 };

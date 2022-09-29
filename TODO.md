@@ -8,6 +8,7 @@
 - teacher: ability for teacher to grade assignment
 - teacher: ability to see all students enrolled
 - student: ability to see my class grade
+- teacher: upload image for classroom
 - all: create notifications for students when assignment created
 - all: create notifications for students when assignment graded
 - student: to ask questions about assignment
