@@ -78,7 +78,7 @@ export const LoggedInSection = ({
             )}
           </button>
         </div>
-        {isAccountMenuOpen && <AccountMenu />}
+        {true && <AccountMenu />}
       </div>
     </>
   );

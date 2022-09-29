@@ -6,7 +6,7 @@ html,
 body,
 document,
 #__next {
-  @apply h-full;
+  @apply h-max;
 }
 
 .link {
@@ -15,5 +15,5 @@ document,
 
 input,
 textarea {
-  @apply bg-white border p-2;
+  @apply bg-white border p-2 dark:bg-gray-500;
 }

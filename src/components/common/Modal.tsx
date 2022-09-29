@@ -26,7 +26,7 @@ export const Modal = ({
       />
 
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="mx-auto max-w-md bg-white p-8 rounded-xl flex flex-col gap-4">
+        <Dialog.Panel className="mx-auto max-w-md bg-white dark:bg-gray-700 p-8 rounded-xl flex flex-col gap-4">
           <Dialog.Title className="font-bold text-2xl">{title}</Dialog.Title>
           <Dialog.Description>{description}</Dialog.Description>
 

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactHTML, ReactNode } from 'react';
 
 export enum Variant {
   Primary,
@@ -6,29 +6,41 @@ export enum Variant {
   Danger,
 }
 
-export const Button = ({
-  children,
-  variant,
-  ...rest
-}: {
-  children: ReactNode;
-  variant: Variant;
-  [key: string]: any;
-}) => {
-  const colors = {
-    [Variant.Primary]:
-      'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400',
-    [Variant.Secondary]:
-      'bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-400',
-    [Variant.Danger]:
-      'bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400',
-  };
-  return (
-    <button
-      className={colors[variant]}
-      {...rest}
-    >
-      {children}
-    </button>
-  );
-};
+const Button = React.forwardRef(
+  (
+    {
+      children,
+      variant,
+      as = 'button',
+      ...rest
+    }: {
+      children: ReactNode;
+      variant: Variant;
+      as?: keyof ReactHTML;
+      [key: string]: any;
+    },
+    ref
+  ) => {
+    const colors = {
+      [Variant.Primary]:
+        'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400',
+      [Variant.Secondary]:
+        'bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-400',
+      [Variant.Danger]:
+        'bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400',
+    };
+    const As = as;
+    return (
+      <As
+        className={colors[variant]}
+        {...rest}
+      >
+        {children}
+      </As>
+    );
+  }
+);
+
+Button.displayName = 'Button';
+
+export { Button };
