@@ -29,7 +29,7 @@ export const classroomRouter = createRouter()
       });
       return classroom?.students.map((student) => ({
         ...student,
-        email: undefined,
+        email: '',
       }));
     },
   })

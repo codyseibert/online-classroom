@@ -32,13 +32,13 @@ export const LoggedInSection = ({
     <>
       <div className="mr-3 text-white"></div>
 
-      <button
+      {/* <button
         type="button"
         className="p-1 rounded-full text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
       >
         <span className="sr-only">View notifications</span>
         <BellIcon />
-      </button>
+      </button> */}
 
       <div className="ml-3 relative">
         <div className="flex items-center justify-between">
