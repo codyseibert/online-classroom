@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { ReactNode } from 'react';
 import { EyeIcon } from '../../common/Icons/EyeIcon';
 import { Table } from '../../common/Table/Table';
+import profileImage from '../../../assets/profile.jpeg';
+import Image from 'next/image';
 
 export const Students = ({ students }: { students: User[] }) => {
   const totalStudents = students.length;
@@ -14,10 +16,20 @@ export const Students = ({ students }: { students: User[] }) => {
       </div>
       <div className="overflow-x-auto">
         <Table
-          headers={['Student Number', 'Name', 'Grade', 'Actions']}
-          rows={students.map((student, idx) => [
-            idx + 1,
-            student.name,
+          headers={['Name', 'Grade', 'Actions']}
+          rows={students.map((student) => [
+            // eslint-disable-next-line react/jsx-key
+            <div className="flex items-center gap-2">
+              <Image
+                width="30"
+                height="30"
+                referrerPolicy="no-referrer"
+                className="h-8 w-8 rounded-full"
+                src={student.image ?? profileImage}
+                alt=""
+              />{' '}
+              {student.name}
+            </div>,
             '65% (D)',
             (
               <div className="flex gap-4">

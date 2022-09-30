@@ -15,6 +15,8 @@ import { useRouter } from 'next/router';
 import { SideNavigation, tabAtom, TabName } from './SideNavigation';
 import { useAtom } from 'jotai';
 import { MainHeading } from '../../common/MainHeading';
+import { MoonIcon } from '../../common/Icons/MoonIcon';
+import { SunIcon } from '../../common/Icons/SunIcon';
 
 export const ClassroomScreen = ({ classroomId }) => {
   const [selectedTab] = useAtom(tabAtom);
@@ -28,6 +30,8 @@ export const ClassroomScreen = ({ classroomId }) => {
     'classroom.getClassroom',
     { classroomId },
   ]);
+
+  const classrooms = trpc.useQuery(['student.getClassrooms']);
 
   const unenrollMutation = trpc.useMutation('classroom.unenroll');
 
@@ -57,7 +61,8 @@ export const ClassroomScreen = ({ classroomId }) => {
   const assignments = assignmentsQuery.data;
   const classroom = classroomQuery.data;
   const hasAdminAccess = classroom?.userId === session.data?.user.id;
-  const isStudent = session.data?.user.role === 'student';
+  // const isStudent = session.data?.user.role === 'student';
+  const showUnenroll = classrooms.data?.some(({ id }) => id === classroomId);
 
   const handleUnenroll = async () => {
     if (confirm('are you sure you want to unenroll')) {
@@ -78,7 +83,7 @@ export const ClassroomScreen = ({ classroomId }) => {
           </button>
         )}
 
-        {isStudent && (
+        {showUnenroll && (
           <Button
             variant={Variant.Danger}
             onClick={handleUnenroll}
@@ -88,7 +93,7 @@ export const ClassroomScreen = ({ classroomId }) => {
         )}
       </MainHeading>
 
-      <div className="flex">
+      <div className="flex mb-12">
         <SideNavigation />
 
         <section className="grow">

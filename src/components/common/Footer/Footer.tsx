@@ -1,6 +1,6 @@
 export const Footer = () => {
   return (
-    <footer className="p-4 bg-gray-50 shadow  dark:bg-gray-800">
+    <footer className="p-4 bg-gray-50 shadow  dark:bg-gray-900">
       <div className="container mx-auto md:flex md:items-center md:justify-between md:p-6">
         <span className="text-sm text-gray-500 sm:text-center dark:text-gray-50">
           © 2022 <a className="hover:underline">WDJ</a>. All Rights Reserved.

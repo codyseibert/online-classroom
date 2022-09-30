@@ -4,10 +4,12 @@ import { trpc } from '../../../utils/trpc';
 import { Button, Variant } from '../../common/Button/Button';
 import { FormGroup } from '../../common/Form/FormGroup/FormGroup';
 import { Modal, ModalActions, ModalForm } from '../../common/Modal';
+import { DateTime, Duration } from 'luxon';
 
 type CreateAssignmentForm = {
   name: string;
   description: string;
+  dueDate: string;
 };
 
 export const CreateAssignmentModal = ({
@@ -31,9 +33,12 @@ export const CreateAssignmentModal = ({
   const createAssignment = trpc.useMutation('classroom.createAssignment');
 
   const onSubmit = handleSubmit(async (data) => {
+    const dur = Duration.fromObject({ day: 1, seconds: -1 });
+
     await createAssignment.mutateAsync({
       name: data.name,
       classroomId,
+      dueDate: DateTime.fromISO(data.dueDate).plus(dur).toISO(),
       description: data.description,
     });
     reset();
@@ -72,6 +77,18 @@ export const CreateAssignmentModal = ({
           <input
             id="description"
             {...register('description', { required: true })}
+          />
+        </FormGroup>
+
+        <FormGroup
+          label="Due Date"
+          error={errors.dueDate && 'Due date is required'}
+          name="dueDate"
+        >
+          <input
+            type="date"
+            id="dueDate"
+            {...register('dueDate', { required: true })}
           />
         </FormGroup>
 

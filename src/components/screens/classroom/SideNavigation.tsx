@@ -44,7 +44,7 @@ export const SideNavigation = () => {
                 className={classNames(
                   'flex items-center p-2 text-base font-normal rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700',
                   link.tab === selectedTab
-                    ? 'text-blue-700 dark:text-blue-400'
+                    ? 'text-blue-700 dark:text-blue-300 hover:dark:text-blue-200'
                     : 'text-gray-900 dark:text-white'
                 )}
               >

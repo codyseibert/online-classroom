@@ -24,11 +24,11 @@ export const Card = ({
         src={student}
         alt="a student"
       />
-      <section className="px-4">
+      <section className="px-6">
         <TitleAs className="font-bold text-xl mb-2">{title}</TitleAs>
         <p className="dark:text-black text-gray-700 text-base">{body}</p>
       </section>
-      <footer className="px-4 pt-4 pb-4">{children}</footer>
+      <footer className="px-6 pt-4 pb-6">{children}</footer>
     </li>
   );
 };

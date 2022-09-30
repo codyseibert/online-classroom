@@ -23,7 +23,7 @@ const Button = React.forwardRef(
   ) => {
     const colors = {
       [Variant.Primary]:
-        'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400',
+        'bg-blue-50 text-black px-4 py-2 rounded hover:bg-blue-100',
       [Variant.Secondary]:
         'bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-400',
       [Variant.Danger]:

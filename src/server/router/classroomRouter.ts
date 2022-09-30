@@ -27,7 +27,10 @@ export const classroomRouter = createRouter()
           students: true,
         },
       });
-      return classroom?.students;
+      return classroom?.students.map((student) => ({
+        ...student,
+        email: undefined,
+      }));
     },
   })
   .query('getClassroomsForTeacher', {
@@ -137,12 +140,14 @@ export const classroomRouter = createRouter()
     input: z.object({
       name: z.string(),
       description: z.string(),
+      dueDate: z.string(),
       classroomId: z.string(),
     }),
     async resolve({ input, ctx }) {
       const assignment = await ctx.prisma.assignment.create({
         data: {
           name: input.name,
+          dueDate: input.dueDate,
           description: input.description,
           classroomId: input.classroomId,
         },

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Assignment" ADD COLUMN     "dueDate" TEXT NOT NULL DEFAULT '2022-09-30T00:00:00Z';

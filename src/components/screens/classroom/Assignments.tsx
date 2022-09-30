@@ -1,11 +1,11 @@
-import { Assignment, Classroom } from '@prisma/client';
-import { User } from 'next-auth';
+import { Assignment } from '@prisma/client';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { Button, Variant } from '../../common/Button/Button';
 import { EyeIcon } from '../../common/Icons/EyeIcon';
 import { PencilSquare } from '../../common/Icons/PencilSquare';
 import { Table } from '../../common/Table/Table';
+import { DateTime } from 'luxon';
 
 export const Assignments = ({
   assignments,
@@ -23,25 +23,28 @@ export const Assignments = ({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-8 items-center">
-        <h3 className="text-2xl">
+        <h2 className="text-2xl">
           Your Assignments ({totalAssignments} total)
-        </h3>
+        </h2>
         {hasAdminAccess && (
           <Button
             variant={Variant.Primary}
             onClick={openAssignmentModal}
           >
-            Create An Assignment
+            Create an Assignment
           </Button>
         )}
       </div>
       <div className="overflow-x-auto">
         <Table
-          headers={['Assignment Number', 'Name', 'Description', 'Actions']}
-          rows={assignments.map((assignment, idx) => [
-            idx + 1,
+          headers={['Number', 'Name', 'Description', 'Due Date', 'Actions']}
+          rows={assignments.map((assignment) => [
+            assignment.number,
             assignment.name,
             assignment.description,
+            DateTime.fromISO(assignment.dueDate).toLocaleString(
+              DateTime.DATE_MED
+            ),
             (
               <div className="flex gap-4">
                 <>

@@ -14,6 +14,10 @@ function defineNextConfig(config) {
 
 export default defineNextConfig({
   reactStrictMode: true,
+  i18n: {
+    locales: ['en'],
+    defaultLocale: 'en',
+  },
   images: {
     domains: ['lh3.googleusercontent.com'],
     formats: ['image/avif', 'image/webp'],

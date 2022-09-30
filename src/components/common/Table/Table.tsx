@@ -15,7 +15,7 @@ export const Table = ({
             <th
               key={headerIndex}
               scope="col"
-              className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+              className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-200"
             >
               {header}
             </th>
@@ -28,7 +28,7 @@ export const Table = ({
           return (
             <tr
               key={rowIndex}
-              className="hover:bg-blue-50 dark:hover:bg-gray-900"
+              className="hover:bg-blue-50 dark:hover:bg-gray-700"
             >
               {row.map((column, columnIndex) => (
                 <td
