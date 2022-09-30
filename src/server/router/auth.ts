@@ -4,7 +4,7 @@ import z from 'zod';
 
 enum Roles {
   Teacher = 'teacher',
-  Student = 'student'
+  Student = 'student',
 }
 
 export const authRouter = createRouter()
@@ -18,16 +18,40 @@ export const authRouter = createRouter()
     input: z.object({}).nullish(),
     async resolve({ ctx }) {
       if (ctx.session?.user?.role) {
-        throw new TRPCError({ code: 'BAD_REQUEST', message: 'you can not change your role once it has been set' });
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'you can not change your role once it has been set',
+        });
       }
 
       await ctx.prisma.user.update({
         where: {
-          id: ctx.session?.user?.id
+          id: ctx.session?.user?.id,
         },
         data: {
-          role: Roles.Teacher
-        }
+          role: Roles.Teacher,
+        },
+      });
+      return 'role updated';
+    },
+  })
+  .mutation('setRoleAsStudent', {
+    input: z.object({}).nullish(),
+    async resolve({ ctx }) {
+      if (ctx.session?.user?.role) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'you can not change your role once it has been set',
+        });
+      }
+
+      await ctx.prisma.user.update({
+        where: {
+          id: ctx.session?.user?.id,
+        },
+        data: {
+          role: Roles.Student,
+        },
       });
       return 'role updated';
     },

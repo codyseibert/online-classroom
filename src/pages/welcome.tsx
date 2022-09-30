@@ -16,9 +16,18 @@ const Welcome: NextPage = () => {
   const { mutateAsync: setRoleAsTeacher } = trpc.useMutation(
     'auth.setRoleAsTeacher'
   );
+  const { mutateAsync: setRoleAsStudent } = trpc.useMutation(
+    'auth.setRoleAsStudent'
+  );
 
   const setTeacherRole = async () => {
     await setRoleAsTeacher();
+    reloadSession();
+    router.push('/classrooms');
+  };
+
+  const setStudentRole = async () => {
+    await setRoleAsStudent();
     reloadSession();
     router.push('/dashboard');
   };
@@ -37,12 +46,14 @@ const Welcome: NextPage = () => {
 
       <main className="container m-auto">
         <div className="mx-auto flex flex-col items-center justify-center p-4 h-full">
-          <p className="text-gray-900">Welcome to classroom!</p>
-          <p className="text-gray-900">
+          <h1 className="text-gray-900 dark:text-white text-4xl">
+            Welcome to classroom!
+          </h1>
+          <p className="text-gray-900 dark:text-white">
             Before we start, click what type of user you want to be:
           </p>
 
-          <div className="hidden sm:grid sm:grid-cols-2 gap-8 mt-10">
+          <div className="hidden sm:grid sm:grid-cols-2 gap-8 mt-10 mb-4">
             <Image
               height="300"
               className="object-cover"
@@ -67,7 +78,12 @@ const Welcome: NextPage = () => {
               </Button>
             </div>
             <div className="relative rounded flex flex-col items-center justify-center">
-              <Button variant={Variant.Primary}>I&apos;m a student</Button>
+              <Button
+                onClick={setStudentRole}
+                variant={Variant.Primary}
+              >
+                I&apos;m a student
+              </Button>
             </div>
           </div>
 
