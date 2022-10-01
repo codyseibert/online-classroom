@@ -23,6 +23,7 @@
     "@trpc/react": "^9.26.2",
     "@trpc/server": "^9.26.2",
     "@types/luxon": "^3.0.1",
+    "aws-sdk": "^2.1227.0",
     "classnames": "^2.3.1",
     "immer": "^9.0.15",
     "jest": "^28.1.3",

@@ -68,11 +68,19 @@ model Classroom {
   description String @default("no description provided")
 }
 
+model Attachment {
+  id          String    @id @default(cuid())
+  filename    String
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  assignmentId String
+}
+
 model Assignment {
   id          String    @id @default(cuid())
   number      Int       @default(autoincrement())
   name        String
   description String
+  attachments Attachment[]
   dueDate String @default("2022-09-30T00:00:00Z")
   classroom   Classroom @relation(fields: [classroomId], references: [id])
   classroomId String
