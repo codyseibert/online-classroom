@@ -10,6 +10,13 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
     'assignment.createPresignedUrl'
   );
 
+  const attachments = trpc.useQuery([
+    'assignment.getAttachments',
+    {
+      assignmentId,
+    },
+  ]);
+
   const onFileChange = (e: React.FormEvent<HTMLInputElement>) => {
     setFile(e.currentTarget.files?.[0]);
   };
@@ -19,7 +26,7 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
     if (!file) return;
     const { url, fields }: { url: string; fields: any } =
       (await createPresignedUrl({
-        filename: 'bob.pdf',
+        filename: file.name,
         assignmentId,
       })) as any;
     const data = {
@@ -27,7 +34,6 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
       'Content-Type': file.type,
       file,
     };
-    console.log('data', data);
     const formData = new FormData();
     for (const name in data) {
       formData.append(name, data[name]);
@@ -47,6 +53,9 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
   return (
     <div>
       EditAssignmentScreen {classroomId} {assignmentId}
+      {attachments.data?.map((attachment) => (
+        <div key={attachment.id}>{attachment.filename}</div>
+      ))}
       <form
         className="text-white"
         onSubmit={uploadImage}

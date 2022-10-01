@@ -49,4 +49,21 @@ export const assignmentRouter = createRouter()
         );
       });
     },
+  })
+  .query('getAttachments', {
+    input: z.object({
+      assignmentId: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      const assignment = await ctx.prisma.assignment.findUnique({
+        where: {
+          id: input.assignmentId,
+        },
+        include: {
+          attachments: true,
+        },
+      });
+
+      return assignment?.attachments;
+    },
   });
