@@ -17,6 +17,7 @@ export const AttachmentsTable = ({
     window.open(url, '_blank');
   };
 
+  // TODO: look into <a href="myFile.png" download>Click to download</a>
   return (
     <Table
       headers={['Filename', 'Actions']}

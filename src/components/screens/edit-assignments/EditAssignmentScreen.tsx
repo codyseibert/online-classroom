@@ -12,6 +12,7 @@ import { PencilSquare } from '../../common/Icons/PencilSquare';
 import { LinkButton } from '../../common/Button/LinkButton';
 import { useToggle } from 'react-use';
 import { UploadIcon } from '../../common/Icons/UploadIcon';
+import ReactMarkdown from 'react-markdown';
 
 type UpdateDescriptionForm = {
   description: string;
@@ -129,7 +130,9 @@ export const EditAssignmentScreen = ({ assignmentId }) => {
             </div>
           </form>
         ) : (
-          <p className="mb-12">{assignment.data?.description}</p>
+          <div className="markdown mb-12">
+            <ReactMarkdown children={assignment.data?.description} />
+          </div>
         )}
 
         <h2 className="text-3xl mb-4">Attachments</h2>

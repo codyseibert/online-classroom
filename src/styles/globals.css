@@ -17,3 +17,23 @@ input,
 textarea {
   @apply bg-white border p-2 dark:bg-gray-500;
 }
+
+.markdown h3 {
+  @apply text-2xl font-bold;
+}
+
+.markdown h4 {
+  @apply text-xl font-bold;
+}
+
+.markdown h5 {
+  @apply text-lg font-bold;
+}
+
+ul {
+  list-style: square;
+}
+
+li {
+  margin-left: 16px;
+}
