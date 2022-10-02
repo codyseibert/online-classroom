@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { Header } from '../components/common/Header/Header';
 import { BrowseClassroomsScreen } from '../components/screens/browse-classrooms/BrowseClassroomsScreen';
+import { HeaderLayout } from '../layouts/HeaderLayout';
 
 const BrowseClassroomsPage: NextPage = () => {
   return (
@@ -14,11 +15,9 @@ const BrowseClassroomsPage: NextPage = () => {
         />
       </Head>
 
-      <Header />
-
-      <main className="container m-auto">
+      <HeaderLayout>
         <BrowseClassroomsScreen />
-      </main>
+      </HeaderLayout>
     </>
   );
 };

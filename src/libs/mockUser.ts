@@ -16,4 +16,6 @@ const mockUsers = {
   unauthenticated: null,
 };
 
-export const MOCK_USER = mockUsers[process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH!];
+export const getMockUser = (role) => {
+  return mockUsers[role];
+};

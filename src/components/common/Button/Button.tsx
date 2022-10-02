@@ -10,7 +10,7 @@ const Button = React.forwardRef(
   (
     {
       children,
-      variant,
+      variant = Variant.Primary,
       as = 'button',
       ...rest
     }: {

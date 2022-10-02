@@ -7,9 +7,9 @@ import { trpc } from '../utils/trpc';
 import { useRouter } from 'next/router';
 import { authOptions } from './api/auth/[...nextauth]';
 import { reloadSession } from '../utils/reloadSession';
-import { Header } from '../components/common/Header/Header';
 import { unstable_getServerSession } from '../libs/unstable_getServerSession';
 import { Button, Variant } from '../components/common/Button/Button';
+import { HeaderLayout } from '../layouts/HeaderLayout';
 
 const Welcome: NextPage = () => {
   const router = useRouter();
@@ -42,78 +42,78 @@ const Welcome: NextPage = () => {
         />
       </Head>
 
-      <Header />
+      <HeaderLayout>
+        <main className="container m-auto">
+          <div className="mx-auto flex flex-col items-center justify-center p-4 h-full">
+            <h1 className="text-gray-900 dark:text-white text-4xl">
+              Welcome to classroom!
+            </h1>
+            <p className="text-gray-900 dark:text-white">
+              Before we start, click what type of user you want to be:
+            </p>
 
-      <main className="container m-auto">
-        <div className="mx-auto flex flex-col items-center justify-center p-4 h-full">
-          <h1 className="text-gray-900 dark:text-white text-4xl">
-            Welcome to classroom!
-          </h1>
-          <p className="text-gray-900 dark:text-white">
-            Before we start, click what type of user you want to be:
-          </p>
+            <div className="hidden sm:grid sm:grid-cols-2 gap-8 mt-10 mb-4">
+              <Image
+                height="300"
+                className="object-cover"
+                src={feynman}
+                alt="A picture of Richard Feynman(well known physics professor) teaching"
+              />
+              <Image
+                height="300"
+                className="object-cover"
+                src={student}
+                alt="A person studying"
+              />
+            </div>
 
-          <div className="hidden sm:grid sm:grid-cols-2 gap-8 mt-10 mb-4">
-            <Image
-              height="300"
-              className="object-cover"
-              src={feynman}
-              alt="A picture of Richard Feynman(well known physics professor) teaching"
-            />
-            <Image
-              height="300"
-              className="object-cover"
-              src={student}
-              alt="A person studying"
-            />
-          </div>
+            <div className="hidden sm:grid grid-cols-2 gap-8 w-full">
+              <div className="relative rounded flex flex-col items-center justify-center">
+                <Button
+                  variant={Variant.Primary}
+                  onClick={setTeacherRole}
+                >
+                  I&apos;m a teacher
+                </Button>
+              </div>
+              <div className="relative rounded flex flex-col items-center justify-center">
+                <Button
+                  onClick={setStudentRole}
+                  variant={Variant.Primary}
+                >
+                  I&apos;m a student
+                </Button>
+              </div>
+            </div>
 
-          <div className="hidden sm:grid grid-cols-2 gap-8 w-full">
-            <div className="relative rounded flex flex-col items-center justify-center">
+            <div className="sm:hidden flex flex-col mt-8">
+              <Image
+                height={150}
+                width={300}
+                className="object-cover object-top"
+                src={feynman}
+                alt="A picture of Richard Feynman(well known physics professor) teaching"
+              />
               <Button
                 variant={Variant.Primary}
                 onClick={setTeacherRole}
               >
                 I&apos;m a teacher
               </Button>
-            </div>
-            <div className="relative rounded flex flex-col items-center justify-center">
-              <Button
-                onClick={setStudentRole}
-                variant={Variant.Primary}
-              >
-                I&apos;m a student
-              </Button>
+
+              <Image
+                height={150}
+                width={300}
+                className="object-cover"
+                src={student}
+                alt="A person studying"
+              />
+
+              <Button variant={Variant.Primary}>I&apos;m a student</Button>
             </div>
           </div>
-
-          <div className="sm:hidden flex flex-col mt-8">
-            <Image
-              height={150}
-              width={300}
-              className="object-cover object-top"
-              src={feynman}
-              alt="A picture of Richard Feynman(well known physics professor) teaching"
-            />
-            <Button
-              variant={Variant.Primary}
-              onClick={setTeacherRole}
-            >
-              I&apos;m a teacher
-            </Button>
-
-            <Image
-              height={150}
-              width={300}
-              className="object-cover"
-              src={student}
-              alt="A person studying"
-            />
-
-            <Button variant={Variant.Primary}>I&apos;m a student</Button>
-          </div>
-        </div>
-      </main>
+        </main>
+      </HeaderLayout>
     </>
   );
 };
@@ -127,7 +127,16 @@ export async function getServerSideProps(context: any) {
     authOptions
   );
 
-  if (session?.user?.role) {
+  console.log(session);
+
+  if (!session?.user) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  } else if (session?.user?.role) {
     return {
       redirect: {
         destination: '/dashboard',

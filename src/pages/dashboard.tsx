@@ -32,6 +32,8 @@ export async function getServerSideProps(context: any) {
     authOptions
   );
 
+  console.log('session', session);
+
   if (!session) {
     return {
       redirect: {
