@@ -38,34 +38,37 @@ export const Assignments = ({
       <div className="overflow-x-auto">
         <Table
           headers={['Number', 'Name', 'Description', 'Due Date', 'Actions']}
-          rows={assignments.map((assignment) => [
+          rows={assignments.map((assignment, idx) => [
             assignment.number,
             assignment.name,
             assignment.description,
-            DateTime.fromISO(assignment.dueDate).toLocaleString(
-              DateTime.DATE_MED
-            ),
+            <span
+              key={idx}
+              className="whitespace-nowrap"
+            >
+              {DateTime.fromISO(assignment.dueDate).toLocaleString(
+                DateTime.DATE_MED
+              )}
+            </span>,
             (
-              <div className="flex gap-4">
-                <>
-                  {hasAdminAccess && (
-                    <Link
-                      href={`/classrooms/${classroomId}/assignments/${assignment.id}/edit`}
-                    >
-                      <a className="link flex gap-1 items-center">
-                        <PencilSquare /> Edit
-                      </a>
-                    </Link>
-                  )}
+              <span className="flex gap-4">
+                {hasAdminAccess && (
                   <Link
-                    href={`/classrooms/${classroomId}/assignments/${assignment.id}`}
+                    href={`/classrooms/${classroomId}/assignments/${assignment.id}/edit`}
                   >
                     <a className="link flex gap-1 items-center">
-                      <EyeIcon /> View
+                      <PencilSquare /> Edit
                     </a>
                   </Link>
-                </>
-              </div>
+                )}
+                <Link
+                  href={`/classrooms/${classroomId}/assignments/${assignment.id}`}
+                >
+                  <a className="link flex gap-1 items-center">
+                    <EyeIcon /> View
+                  </a>
+                </Link>
+              </span>
             ) as ReactNode,
           ])}
         />

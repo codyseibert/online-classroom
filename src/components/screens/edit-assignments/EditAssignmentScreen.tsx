@@ -125,7 +125,7 @@ export const EditAssignmentScreen = ({ assignmentId }) => {
 
             <div className="flex justify-end">
               <Button className="w-fit">
-                <UploadIcon /> Save
+                <UploadIcon size="md" /> Save
               </Button>
             </div>
           </form>

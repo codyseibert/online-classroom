@@ -33,7 +33,7 @@ export const Table = ({
               {row.map((column, columnIndex) => (
                 <td
                   key={columnIndex}
-                  className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  className="py-4 px-6 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   {column}
                 </td>

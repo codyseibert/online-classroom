@@ -30,10 +30,14 @@ textarea {
   @apply text-lg font-bold;
 }
 
-ul {
+.markdown ul {
   list-style: square;
 }
 
-li {
+.markdown li {
   margin-left: 16px;
+}
+
+.markdown a {
+  @apply link;
 }
