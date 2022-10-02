@@ -3,13 +3,14 @@ import { createRouter } from './context';
 import { AWS } from '../../libs/aws';
 import z from 'zod';
 
-const BUCKET_NAME = 'online-classroom-uploads';
+export const BUCKET_NAME = 'online-classroom-uploads';
 
-const getObjectKey = ({ assignmentId, attachmentId }) => {
+export const getObjectKey = ({ assignmentId, attachmentId }) => {
   return `assignments/${assignmentId}/${attachmentId}`;
 };
 
 const s3 = new AWS.S3();
+
 export const assignmentRouter = createRouter()
   .middleware(async ({ ctx, next }) => {
     if (!ctx.session) {

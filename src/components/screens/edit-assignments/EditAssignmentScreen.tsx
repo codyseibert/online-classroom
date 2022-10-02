@@ -61,6 +61,7 @@ export const EditAssignmentScreen = ({ assignmentId }) => {
   const uploadImage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!file) return;
+    console.log('file.name', file.name);
     const { url, fields }: { url: string; fields: any } =
       (await createPresignedUrl({
         filename: file.name,

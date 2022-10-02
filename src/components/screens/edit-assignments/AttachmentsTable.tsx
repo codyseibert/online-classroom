@@ -23,12 +23,16 @@ export const AttachmentsTable = ({
       headers={['Filename', 'Actions']}
       rows={attachments.map((attachment) => [
         attachment.filename,
-        <Button
+        <a
+          className="link"
           key={attachment.id}
-          onClick={() => handleDownloadClicked(attachment.id)}
+          target="_blank"
+          href={`/api/download-attachment?attachmentId=${attachment.id}`}
+          download={attachment.filename}
+          rel="noreferrer"
         >
           Download
-        </Button>,
+        </a>,
       ])}
     ></Table>
   );
