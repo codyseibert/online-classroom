@@ -7,13 +7,28 @@ import { AttachmentsTable } from './AttachmentsTable';
 import { EmptyStateAttachments } from './EmptyStateAttachments';
 import { DateTime } from 'luxon';
 import { Badge, BadgeVariant } from '../../common/Badge';
+import { useForm } from 'react-hook-form';
+import { PencilSquare } from '../../common/Icons/PencilSquare';
+import { LinkButton } from '../../common/Button/LinkButton';
+import { useToggle } from 'react-use';
+import { UploadIcon } from '../../common/Icons/UploadIcon';
 
-export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
+type UpdateDescriptionForm = {
+  description: string;
+};
+
+export const EditAssignmentScreen = ({ assignmentId }) => {
   const [file, setFile] = useState<any>(null);
+  const [isEditingDescription, toggleIsEditingDescription] = useToggle(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const { register, handleSubmit, setValue } = useForm<UpdateDescriptionForm>();
 
   const { mutateAsync: createPresignedUrl } = trpc.useMutation(
     'assignment.createPresignedUrl'
+  );
+
+  const { mutateAsync: updateDescription } = trpc.useMutation(
+    'assignment.updateDescription'
   );
 
   const attachments = trpc.useQuery([
@@ -23,12 +38,20 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
     },
   ]);
 
-  const assignment = trpc.useQuery([
-    'classroom.getAssignment',
+  const assignment = trpc.useQuery(
+    [
+      'classroom.getAssignment',
+      {
+        assignmentId,
+      },
+    ],
     {
-      assignmentId,
-    },
-  ]);
+      refetchOnWindowFocus: false,
+      onSuccess(data) {
+        setValue('description', data?.description);
+      },
+    }
+  );
 
   const onFileChange = (e: React.FormEvent<HTMLInputElement>) => {
     setFile(e.currentTarget.files?.[0]);
@@ -62,6 +85,15 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
     attachments.refetch();
   };
 
+  const handleSaveEditDescription = async (formData: UpdateDescriptionForm) => {
+    await updateDescription({
+      description: formData.description,
+      assignmentId,
+    });
+    assignment.refetch();
+    toggleIsEditingDescription();
+  };
+
   const formattedDueDate = DateTime.fromISO(
     assignment.data?.dueDate
   ).toLocaleString(DateTime.DATE_MED);
@@ -73,9 +105,32 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
       </MainHeading>
 
       <section>
-        <h2 className="text-3xl mb-4">Assignment Overview</h2>
+        <h2 className="text-3xl mb-4 flex">
+          Assignment Overview
+          <LinkButton onClick={() => toggleIsEditingDescription()}>
+            <PencilSquare className="w-4 h-4" /> Edit
+          </LinkButton>
+        </h2>
 
-        <p className="mb-12">{assignment.data?.description}</p>
+        {isEditingDescription ? (
+          <form
+            className="w-2/3 flex flex-col mb-12"
+            onSubmit={handleSubmit(handleSaveEditDescription)}
+          >
+            <textarea
+              className="mb-4 h-56"
+              {...register('description')}
+            ></textarea>
+
+            <div className="flex justify-end">
+              <Button className="w-fit">
+                <UploadIcon /> Save
+              </Button>
+            </div>
+          </form>
+        ) : (
+          <p className="mb-12">{assignment.data?.description}</p>
+        )}
 
         <h2 className="text-3xl mb-4">Attachments</h2>
 
@@ -95,7 +150,7 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
             className="text-white"
             onSubmit={uploadImage}
           >
-            <label htmlFor="file-upload">Upload File</label>
+            <label htmlFor="file-upload">Upload Attachment</label>
             <input
               ref={fileRef}
               id="file-upload"

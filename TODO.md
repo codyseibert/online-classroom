@@ -7,6 +7,7 @@
 - all: hide email from ui
 - teacher: prevent enroll in own classroom
 - teacher: ability to extend due date on assignments
+- teacher: ability to setup scheduled meeting times for lessons
 - studet: prevent upload if after due date
 - teacher: ability for teacher to grade assignment
 - teacher: ability to see all students enrolled

@@ -6,6 +6,7 @@ export enum Variant {
   Danger,
 }
 
+// TODO: why am I using a forwardRef here
 const Button = React.forwardRef(
   (
     {
@@ -34,7 +35,7 @@ const Button = React.forwardRef(
     const As = as;
     return (
       <As
-        className={`${colors[variant]} ${className}`}
+        className={`${colors[variant]} ${className} flex gap-2 items-center`}
         {...rest}
       >
         {children}

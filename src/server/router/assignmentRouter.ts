@@ -16,6 +16,22 @@ export const assignmentRouter = createRouter()
       },
     });
   })
+  .mutation('updateDescription', {
+    input: z.object({
+      description: z.string(),
+      assignmentId: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      await ctx.prisma.assignment.update({
+        where: {
+          id: input.assignmentId,
+        },
+        data: {
+          description: input.description,
+        },
+      });
+    },
+  })
   .mutation('createPresignedUrl', {
     input: z.object({
       assignmentId: z.string(),
