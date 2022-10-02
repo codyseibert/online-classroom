@@ -49,7 +49,7 @@ export const EditAssignmentScreen = ({ assignmentId }) => {
     {
       refetchOnWindowFocus: false,
       onSuccess(data) {
-        setValue('description', data?.description);
+        setValue('description', data?.description ?? '');
       },
     }
   );
@@ -95,9 +95,11 @@ export const EditAssignmentScreen = ({ assignmentId }) => {
     toggleIsEditingDescription();
   };
 
-  const formattedDueDate = DateTime.fromISO(
-    assignment.data?.dueDate
-  ).toLocaleString(DateTime.DATE_MED);
+  const formattedDueDate = assignment.data?.dueDate
+    ? DateTime.fromISO(assignment.data?.dueDate).toLocaleString(
+        DateTime.DATE_MED
+      )
+    : 'N/A';
 
   return (
     <>
