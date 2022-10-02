@@ -12,10 +12,12 @@ const Button = React.forwardRef(
       children,
       variant = Variant.Primary,
       as = 'button',
+      className,
       ...rest
     }: {
       children: ReactNode;
       variant: Variant;
+      className?: string;
       as?: keyof ReactHTML;
       [key: string]: any;
     },
@@ -32,7 +34,7 @@ const Button = React.forwardRef(
     const As = as;
     return (
       <As
-        className={colors[variant]}
+        className={`${colors[variant]} ${className}`}
         {...rest}
       >
         {children}

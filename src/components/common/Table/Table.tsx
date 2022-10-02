@@ -11,9 +11,9 @@ export const Table = ({
     <table className="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-400">
       <thead className="bg-gray-100 dark:bg-gray-700">
         <tr>
-          {headers.map((header, headerIndex) => (
+          {headers.map((header) => (
             <th
-              key={headerIndex}
+              key={header}
               scope="col"
               className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-200"
             >
