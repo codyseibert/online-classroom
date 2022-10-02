@@ -3,6 +3,12 @@ import { createRouter } from './context';
 import { AWS } from '../../libs/aws';
 import z from 'zod';
 
+const BUCKET_NAME = 'online-classroom-uploads';
+
+const getObjectKey = ({ assignmentId, attachmentId }) => {
+  return `assignments/${assignmentId}/${attachmentId}`;
+};
+
 const s3 = new AWS.S3();
 export const assignmentRouter = createRouter()
   .middleware(async ({ ctx, next }) => {
@@ -32,6 +38,28 @@ export const assignmentRouter = createRouter()
       });
     },
   })
+  .mutation('getDownloadUrl', {
+    input: z.object({
+      attachmentId: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      const attachment = await ctx.prisma.attachment.findUnique({
+        where: {
+          id: input.attachmentId,
+        },
+      });
+
+      const downloadUrl = await s3.getSignedUrlPromise('getObject', {
+        Bucket: BUCKET_NAME,
+        Key: getObjectKey({
+          assignmentId: attachment?.assignmentId,
+          attachmentId: attachment?.id,
+        }),
+      });
+
+      return downloadUrl;
+    },
+  })
   .mutation('createPresignedUrl', {
     input: z.object({
       assignmentId: z.string(),
@@ -49,7 +77,10 @@ export const assignmentRouter = createRouter()
         s3.createPresignedPost(
           {
             Fields: {
-              key: `assignments/${input.assignmentId}/${attachment.id}`,
+              key: getObjectKey({
+                assignmentId: input.assignmentId,
+                attachmentId: attachment.id,
+              }),
             },
             Conditions: [
               ['starts-with', '$Content-Type', ''],

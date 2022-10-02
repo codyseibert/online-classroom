@@ -18,7 +18,7 @@ type UpdateDescriptionForm = {
 };
 
 export const EditAssignmentScreen = ({ assignmentId }) => {
-  const [file, setFile] = useState<any>(null);
+  const [file, setFile] = useState<File>();
   const [isEditingDescription, toggleIsEditingDescription] = useToggle(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const { register, handleSubmit, setValue } = useForm<UpdateDescriptionForm>();
@@ -78,7 +78,7 @@ export const EditAssignmentScreen = ({ assignmentId }) => {
       method: 'POST',
       body: formData,
     });
-    setFile(null);
+    setFile(undefined);
     if (fileRef.current) {
       fileRef.current.value = '';
     }
