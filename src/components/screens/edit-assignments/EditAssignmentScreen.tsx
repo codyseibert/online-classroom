@@ -131,7 +131,7 @@ export const EditAssignmentScreen = ({ assignmentId }) => {
           </form>
         ) : (
           <div className="markdown mb-12">
-            <ReactMarkdown children={assignment.data?.description} />
+            <ReactMarkdown>{assignment.data?.description ?? ''}</ReactMarkdown>
           </div>
         )}
 
