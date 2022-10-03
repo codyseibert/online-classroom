@@ -37,11 +37,10 @@ export const Assignments = ({
       </div>
       <div className="overflow-x-auto">
         <Table
-          headers={['Number', 'Name', 'Description', 'Due Date', 'Actions']}
+          headers={['Number', 'Name', 'Due Date', 'Actions']}
           rows={assignments.map((assignment, idx) => [
             assignment.number,
             assignment.name,
-            assignment.description,
             <span
               key={idx}
               className="whitespace-nowrap"

@@ -15,8 +15,6 @@ import { useRouter } from 'next/router';
 import { SideNavigation, tabAtom, TabName } from './SideNavigation';
 import { useAtom } from 'jotai';
 import { MainHeading } from '../../common/MainHeading';
-import { MoonIcon } from '../../common/Icons/MoonIcon';
-import { SunIcon } from '../../common/Icons/SunIcon';
 
 export const ClassroomScreen = ({ classroomId }) => {
   const [selectedTab] = useAtom(tabAtom);

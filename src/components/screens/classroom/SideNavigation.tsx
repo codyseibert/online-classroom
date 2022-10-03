@@ -29,7 +29,7 @@ export const SideNavigation = () => {
 
   return (
     <aside
-      className="w-64"
+      className="w-64 flex-none"
       aria-label="Sidebar"
     >
       <div className="overflow-y-auto py-4 px-3">

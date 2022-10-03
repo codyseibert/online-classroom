@@ -21,7 +21,10 @@ const ClassroomPage: NextPage = () => {
       </Head>
 
       <HeaderLayout>
-        <EditAssignmentScreen assignmentId={assignmentId} />
+        <EditAssignmentScreen
+          classroomId={classroomId}
+          assignmentId={assignmentId}
+        />
       </HeaderLayout>
     </>
   );

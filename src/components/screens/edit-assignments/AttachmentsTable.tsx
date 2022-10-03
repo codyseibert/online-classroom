@@ -1,38 +1,53 @@
 import { Attachment } from '@prisma/client';
 import { trpc } from '../../../utils/trpc';
-import { Button } from '../../common/Button/Button';
+import { LinkButton, LinkButtonVariant } from '../../common/Button/LinkButton';
+import { TrashIcon } from '../../common/Icons/TrashIcon';
 import { Table } from '../../common/Table/Table';
 
 export const AttachmentsTable = ({
   attachments,
+  onAttachmentDeleted,
 }: {
   attachments: Attachment[];
+  onAttachmentDeleted: () => void;
 }) => {
-  const getDownloadUrl = trpc.useMutation('assignment.getDownloadUrl');
+  const deleteAttachment = trpc.useMutation('assignment.deleteAttachment');
 
-  const handleDownloadClicked = async (attachmentId: string) => {
-    const url = await getDownloadUrl.mutateAsync({
+  const handleDeleteAttachment = async (attachmentId: string) => {
+    if (!confirm('are you sure?')) return;
+    await deleteAttachment.mutateAsync({
       attachmentId,
     });
-    window.open(url, '_blank');
+    onAttachmentDeleted();
   };
 
-  // TODO: look into <a href="myFile.png" download>Click to download</a>
   return (
     <Table
       headers={['Filename', 'Actions']}
       rows={attachments.map((attachment) => [
         attachment.filename,
-        <a
-          className="link"
+        <span
           key={attachment.id}
-          target="_blank"
-          href={`/api/download-attachment?attachmentId=${attachment.id}`}
-          download={attachment.filename}
-          rel="noreferrer"
+          className="flex gap-4"
         >
-          Download
-        </a>,
+          {/* TODO: add download icon */}
+          <a
+            className="link"
+            target="_blank"
+            href={`/api/download-attachment?attachmentId=${attachment.id}`}
+            download={attachment.filename}
+            rel="noreferrer"
+          >
+            Download
+          </a>
+          <LinkButton
+            variant={LinkButtonVariant.Danger}
+            onClick={() => handleDeleteAttachment(attachment.id)}
+          >
+            <TrashIcon />
+            Delete
+          </LinkButton>
+        </span>,
       ])}
     ></Table>
   );

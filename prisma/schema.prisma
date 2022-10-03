@@ -71,7 +71,7 @@ model Classroom {
 model Attachment {
   id          String    @id @default(cuid())
   filename    String
-  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  assignment   Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
   assignmentId String
 }
 
@@ -82,6 +82,6 @@ model Assignment {
   description String
   attachments Attachment[]
   dueDate String @default("2022-09-30T00:00:00Z")
-  classroom   Classroom @relation(fields: [classroomId], references: [id])
+  classroom   Classroom @relation(fields: [classroomId], references: [id], onDelete: Cascade)
   classroomId String
 }

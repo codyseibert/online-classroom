@@ -61,6 +61,30 @@ export const assignmentRouter = createRouter()
       return downloadUrl;
     },
   })
+  .mutation('deleteAssignment', {
+    input: z.object({
+      assignmentId: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      await ctx.prisma.assignment.delete({
+        where: {
+          id: input.assignmentId,
+        },
+      });
+    },
+  })
+  .mutation('deleteAttachment', {
+    input: z.object({
+      attachmentId: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      await ctx.prisma.attachment.delete({
+        where: {
+          id: input.attachmentId,
+        },
+      });
+    },
+  })
   .mutation('createPresignedUrl', {
     input: z.object({
       assignmentId: z.string(),

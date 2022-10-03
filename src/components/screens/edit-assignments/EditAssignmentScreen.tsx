@@ -9,23 +9,30 @@ import { DateTime } from 'luxon';
 import { Badge, BadgeVariant } from '../../common/Badge';
 import { useForm } from 'react-hook-form';
 import { PencilSquare } from '../../common/Icons/PencilSquare';
-import { LinkButton } from '../../common/Button/LinkButton';
+import { LinkButton, LinkButtonVariant } from '../../common/Button/LinkButton';
 import { useToggle } from 'react-use';
 import { UploadIcon } from '../../common/Icons/UploadIcon';
 import ReactMarkdown from 'react-markdown';
+import { useRouter } from 'next/router';
+import { TrashIcon } from '../../common/Icons/TrashIcon';
 
 type UpdateDescriptionForm = {
   description: string;
 };
 
-export const EditAssignmentScreen = ({ assignmentId }) => {
+export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
   const [file, setFile] = useState<File>();
   const [isEditingDescription, toggleIsEditingDescription] = useToggle(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const { register, handleSubmit, setValue } = useForm<UpdateDescriptionForm>();
+  const router = useRouter();
 
   const { mutateAsync: createPresignedUrl } = trpc.useMutation(
     'assignment.createPresignedUrl'
+  );
+
+  const { mutateAsync: deleteAssignment } = trpc.useMutation(
+    'assignment.deleteAssignment'
   );
 
   const { mutateAsync: updateDescription } = trpc.useMutation(
@@ -61,7 +68,6 @@ export const EditAssignmentScreen = ({ assignmentId }) => {
   const uploadImage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!file) return;
-    console.log('file.name', file.name);
     const { url, fields }: { url: string; fields: any } =
       (await createPresignedUrl({
         filename: file.name,
@@ -96,6 +102,16 @@ export const EditAssignmentScreen = ({ assignmentId }) => {
     toggleIsEditingDescription();
   };
 
+  const handleDeleteAssignment = async () => {
+    if (!confirm('are you sure?')) return;
+    await deleteAssignment({ assignmentId });
+    router.push(`/classrooms/${classroomId}`);
+  };
+
+  const handleOnAttachmentDelete = () => {
+    attachments.refetch();
+  };
+
   const formattedDueDate = assignment.data?.dueDate
     ? DateTime.fromISO(assignment.data?.dueDate).toLocaleString(
         DateTime.DATE_MED
@@ -106,13 +122,20 @@ export const EditAssignmentScreen = ({ assignmentId }) => {
     <>
       <MainHeading title={`Edit Assignment: ${assignment.data?.name}`}>
         <Badge variant={BadgeVariant.Error}>Due on {formattedDueDate}</Badge>
+
+        <LinkButton
+          variant={LinkButtonVariant.Danger}
+          onClick={handleDeleteAssignment}
+        >
+          <TrashIcon /> Delete
+        </LinkButton>
       </MainHeading>
 
       <section>
         <h2 className="text-3xl mb-4 flex">
           Assignment Overview
           <LinkButton onClick={() => toggleIsEditingDescription()}>
-            <PencilSquare className="w-4 h-4" /> Edit
+            <PencilSquare /> Edit
           </LinkButton>
         </h2>
 
@@ -144,7 +167,10 @@ export const EditAssignmentScreen = ({ assignmentId }) => {
           <EmptyStateWrapper
             EmptyComponent={<EmptyStateAttachments />}
             NonEmptyComponent={
-              <AttachmentsTable attachments={attachments.data ?? []} />
+              <AttachmentsTable
+                onAttachmentDeleted={handleOnAttachmentDelete}
+                attachments={attachments.data ?? []}
+              />
             }
             isLoading={attachments.isLoading}
             data={attachments.data}
