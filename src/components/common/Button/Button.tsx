@@ -1,4 +1,5 @@
 import React, { ReactHTML, ReactNode } from 'react';
+import { Spinner } from '../Icons/Spinner';
 
 export enum Variant {
   Primary,
@@ -11,12 +12,14 @@ const Button = React.forwardRef(
   (
     {
       children,
+      isLoading = false,
       variant = Variant.Primary,
       as = 'button',
       className,
       ...rest
     }: {
       children: ReactNode;
+      isLoading?: boolean;
       variant: Variant;
       className?: string;
       as?: keyof ReactHTML;
@@ -38,6 +41,7 @@ const Button = React.forwardRef(
         className={`${colors[variant]} ${className} flex gap-2 items-center`}
         {...rest}
       >
+        {isLoading && <Spinner />}
         {children}
       </As>
     );

@@ -52,7 +52,12 @@ export const ProfileScreen = () => {
               className="mb-2"
               {...register('displayName', { required: true })}
             />
-            <Button className="self-end">Update</Button>
+            <Button
+              isLoading={updateDisplayName.isLoading}
+              className="self-end"
+            >
+              Update
+            </Button>
           </>
         </FormGroup>
       </form>
