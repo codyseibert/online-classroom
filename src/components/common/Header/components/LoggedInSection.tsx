@@ -4,6 +4,7 @@ import { BellIcon } from '../../Icons/BellIcon';
 import { useClickOutside } from '../hooks/useClickOutside';
 import AccountMenu from './AccountMenu';
 import profileImage from '../../../../assets/profile.jpeg';
+import { trpc } from '../../../../utils/trpc';
 
 export const LoggedInSection = ({
   image,
@@ -14,6 +15,8 @@ export const LoggedInSection = ({
 }) => {
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
   const openAccountMenuButtonRef = useRef<HTMLButtonElement>(null);
+
+  const userQuery = trpc.useQuery(['user.getUser']);
 
   function toggleAccountMenu() {
     setIsAccountMenuOpen(!isAccountMenuOpen);
@@ -27,6 +30,12 @@ export const LoggedInSection = ({
     ref: openAccountMenuButtonRef,
     onClose: closeAccountMenu,
   });
+
+  const user = userQuery.data;
+  let displayName = '';
+  if (user) {
+    displayName = user.displayName ?? user.name ?? '';
+  }
 
   return (
     <>
@@ -42,7 +51,7 @@ export const LoggedInSection = ({
 
       <div className="ml-3 relative">
         <div className="flex items-center justify-between">
-          <div className="pr-4">{name}</div>
+          <div className="pr-4">{displayName}</div>
 
           <button
             ref={openAccountMenuButtonRef}

@@ -1,4 +1,5 @@
 import { TRPCError } from '@trpc/server';
+import { z } from 'zod';
 import { createRouter } from './context';
 
 export const userRouter = createRouter()
@@ -12,6 +13,23 @@ export const userRouter = createRouter()
         session: ctx.session,
       },
     });
+  })
+  .mutation('updateDisplayName', {
+    input: z.object({
+      displayName: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      const userId = ctx.session.user?.id;
+      const user = await ctx.prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          displayName: input.displayName,
+        },
+      });
+      return user;
+    },
   })
   .query('getUser', {
     async resolve({ ctx }) {
