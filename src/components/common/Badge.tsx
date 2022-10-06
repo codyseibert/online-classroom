@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 
 export enum BadgeVariant {
   Error,
+  Success,
 }
 
 export const Badge = ({
@@ -14,6 +15,8 @@ export const Badge = ({
   const colorMap = {
     [BadgeVariant.Error]:
       'bg-red-100 text-red-800 dark:bg-red-200 dark:text-red-900',
+    [BadgeVariant.Success]:
+      'bg-green-100 text-green-800 dark:bg-green-200 dark:text-green-900',
   };
 
   const colors = colorMap[variant];

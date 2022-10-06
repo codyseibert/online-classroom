@@ -49,6 +49,7 @@ model User {
   sessions      Session[]
   classrooms    Classroom[] @relation("Classroom")
   enrolledIn    Classroom[] @relation("EnrolledIn")
+  submissions   Submission[]
 }
 
 model VerificationToken {
@@ -85,4 +86,14 @@ model Assignment {
   dueDate String @default("2022-09-30T00:00:00Z")
   classroom   Classroom @relation(fields: [classroomId], references: [id], onDelete: Cascade)
   classroomId String
+  submissions Submission[]
+}
+
+model Submission {
+  id          String    @id @default(cuid())
+  filename    String
+  studentId   String 
+  student     User @relation(fields: [studentId], references: [id], onDelete: Cascade) 
+  assignment   Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  assignmentId String
 }
