@@ -1,8 +1,11 @@
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-export const useCreateAssignment = ({ refetchAssignments }) => {
+export const useCreateAssignment = ({ classroomId }) => {
   const [showCreateAssignmentModal, setShowCreateAssignmentModal] =
     useState(false);
+
+  const router = useRouter();
 
   const closeAssignmentModal = () => {
     setShowCreateAssignmentModal(false);
@@ -12,9 +15,9 @@ export const useCreateAssignment = ({ refetchAssignments }) => {
     setShowCreateAssignmentModal(true);
   };
 
-  const handleAssignmentModalComplete = () => {
-    refetchAssignments();
+  const handleAssignmentModalComplete = (assignmentId: string) => {
     closeAssignmentModal();
+    router.push(`/classrooms/${classroomId}/assignments/${assignmentId}/edit`);
   };
 
   return {

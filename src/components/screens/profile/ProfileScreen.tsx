@@ -2,11 +2,14 @@ import { User } from '@prisma/client';
 import { useForm } from 'react-hook-form';
 import { HeaderLayout } from '../../../layouts/HeaderLayout';
 import { trpc } from '../../../utils/trpc';
+import { Alert, useDismissible } from '../../common/Alert';
 import { Button } from '../../common/Button/Button';
 import { FormGroup } from '../../common/Form/FormGroup/FormGroup';
 import { MainHeading } from '../../common/MainHeading';
 
 export const ProfileScreen = () => {
+  const { dismiss, show, isDisplayed } = useDismissible();
+
   const {
     register,
     handleSubmit,
@@ -29,11 +32,19 @@ export const ProfileScreen = () => {
       displayName: data.displayName,
     });
     queryClient.invalidateQueries(['user.getUser']);
+    show();
   };
 
   return (
     <HeaderLayout>
       <MainHeading title="Your Profile" />
+
+      {isDisplayed && (
+        <Alert
+          message="Your profile has been sucessfully updated."
+          onClose={dismiss}
+        />
+      )}
 
       <h2 className="text-2xl mb-4">Settings</h2>
 

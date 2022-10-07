@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { trpc } from '../../../utils/trpc';
 import { Button, Variant } from '../../common/Button/Button';
@@ -6,41 +6,45 @@ import { FormGroup } from '../../common/Form/FormGroup/FormGroup';
 import { Modal, ModalActions, ModalForm } from '../../common/Modal';
 import { DateTime, Duration } from 'luxon';
 
-type CreateAssignmentForm = {
-  name: string;
-  description: string;
+type EditDateForm = {
   dueDate: string;
 };
 
-export const CreateAssignmentModal = ({
+export const EditDateModal = ({
   onCancel,
+  initialDueDate,
   onComplete,
   isOpen,
-  classroomId,
+  assignmentId,
 }: {
+  initialDueDate: string;
   onCancel: () => void;
-  onComplete: (assignmentId: string) => void;
+  onComplete: () => void;
   isOpen: boolean;
-  classroomId: string;
+  assignmentId: string;
 }) => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<CreateAssignmentForm>();
+  } = useForm<EditDateForm>();
 
-  const createAssignment = trpc.useMutation('classroom.createAssignment');
+  useEffect(() => {
+    reset({
+      dueDate: DateTime.fromISO(initialDueDate).toFormat('yyyy-MM-dd'),
+    });
+  }, [initialDueDate, reset]);
+
+  const updateDueDate = trpc.useMutation('assignment.updateDueDate');
 
   const onSubmit = handleSubmit(async (data) => {
     const dur = Duration.fromObject({ day: 1, seconds: -1 }); // TODO: this seems like backend business logic
-    const assignment = await createAssignment.mutateAsync({
-      name: data.name,
-      classroomId,
+    await updateDueDate.mutateAsync({
+      assignmentId,
       dueDate: DateTime.fromISO(data.dueDate).plus(dur).toISO(),
     });
-    reset();
-    onComplete(assignment.id);
+    onComplete();
   });
 
   const handleCancel = () => {
@@ -56,17 +60,6 @@ export const CreateAssignmentModal = ({
       description="Enter the information for your new assignment."
     >
       <ModalForm onSubmit={onSubmit}>
-        <FormGroup
-          label="Name"
-          error={errors.name && 'Name is required'}
-          name="name"
-        >
-          <input
-            id="name"
-            {...register('name', { required: true })}
-          />
-        </FormGroup>
-
         <FormGroup
           label="Due Date"
           error={errors.dueDate && 'Due date is required'}
@@ -92,7 +85,7 @@ export const CreateAssignmentModal = ({
             variant={Variant.Primary}
             type="submit"
           >
-            Create
+            Update
           </Button>
         </ModalActions>
       </ModalForm>

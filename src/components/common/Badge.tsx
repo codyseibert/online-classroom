@@ -8,9 +8,11 @@ export enum BadgeVariant {
 export const Badge = ({
   children,
   variant,
+  className,
 }: {
   children: ReactNode;
   variant: BadgeVariant;
+  className?: string;
 }) => {
   const colorMap = {
     [BadgeVariant.Error]:
@@ -23,7 +25,7 @@ export const Badge = ({
 
   return (
     <span
-      className={`text-md font-semibold mr-2 px-2.5 py-0.5 rounded ${colors}`}
+      className={`text-md font-semibold mr-2 px-2.5 py-0.5 rounded ${colors} ${className}`}
     >
       {children}
     </span>

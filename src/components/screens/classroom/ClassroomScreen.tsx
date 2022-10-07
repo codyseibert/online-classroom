@@ -49,7 +49,7 @@ export const ClassroomScreen = ({ classroomId }) => {
     openAssignmentModal,
     handleAssignmentModalComplete,
   } = useCreateAssignment({
-    refetchAssignments: assignmentsQuery.refetch,
+    classroomId,
   });
 
   const session = useSession();

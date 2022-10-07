@@ -15,16 +15,30 @@ import { UploadIcon } from '../../common/Icons/UploadIcon';
 import ReactMarkdown from 'react-markdown';
 import { useRouter } from 'next/router';
 import { TrashIcon } from '../../common/Icons/TrashIcon';
+import { FormGroup } from '../../common/Form/FormGroup/FormGroup';
+import { EditDateModal } from './EditDateModal';
 
 type UpdateDescriptionForm = {
   description: string;
 };
 
+type UpdateTitleForm = {
+  title: string;
+};
+
 export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
   const [file, setFile] = useState<File>();
   const [isEditingDescription, toggleIsEditingDescription] = useToggle(false);
+  const [isEditingTitle, toggleIsEditingTitle] = useToggle(false);
+  const [isEditDueDateModalOpen, toggleIsEditDueDateModalOpen] =
+    useToggle(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const { register, handleSubmit, setValue } = useForm<UpdateDescriptionForm>();
+  const {
+    register: registerTitle,
+    handleSubmit: handleSubmitTitle,
+    setValue: setValueTitle,
+  } = useForm<UpdateTitleForm>();
   const router = useRouter();
 
   const { mutateAsync: createPresignedUrl } = trpc.useMutation(
@@ -37,6 +51,10 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
 
   const { mutateAsync: updateDescription } = trpc.useMutation(
     'assignment.updateDescription'
+  );
+
+  const { mutateAsync: updateTitle } = trpc.useMutation(
+    'assignment.updateTitle'
   );
 
   const attachments = trpc.useQuery([
@@ -57,6 +75,7 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
       refetchOnWindowFocus: false,
       onSuccess(data) {
         setValue('description', data?.description ?? '');
+        setValueTitle('title', data?.name ?? '');
       },
     }
   );
@@ -102,6 +121,15 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
     toggleIsEditingDescription();
   };
 
+  const handleSaveEditTitle = async (formData: UpdateTitleForm) => {
+    await updateTitle({
+      title: formData.title,
+      assignmentId,
+    });
+    assignment.refetch();
+    toggleIsEditingTitle();
+  };
+
   const handleDeleteAssignment = async () => {
     if (!confirm('are you sure?')) return;
     await deleteAssignment({ assignmentId });
@@ -120,8 +148,19 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
 
   return (
     <>
-      <MainHeading title={`Edit Assignment: ${assignment.data?.name}`}>
-        <Badge variant={BadgeVariant.Error}>Due on {formattedDueDate}</Badge>
+      <MainHeading title={`Edit Assignment`}>
+        <Badge
+          variant={BadgeVariant.Error}
+          className="flex gap-4 items-center"
+        >
+          Due on {formattedDueDate}
+          <LinkButton
+            onClick={toggleIsEditDueDateModalOpen}
+            variant={LinkButtonVariant.Secondary}
+          >
+            <PencilSquare /> Edit
+          </LinkButton>
+        </Badge>
 
         <LinkButton
           variant={LinkButtonVariant.Danger}
@@ -132,9 +171,44 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
       </MainHeading>
 
       <section>
+        <h2 className="text-4xl mb-4 flex gap-4 items-center">
+          Title
+          <LinkButton onClick={toggleIsEditingTitle}>
+            <PencilSquare /> Edit
+          </LinkButton>
+        </h2>
+        {isEditingTitle ? (
+          <form
+            className="w-2/3 flex flex-col mb-12"
+            onSubmit={handleSubmitTitle(handleSaveEditTitle)}
+          >
+            <FormGroup
+              label="Title"
+              name="title"
+            >
+              <input
+                className="mb-4"
+                {...registerTitle('title')}
+              ></input>
+            </FormGroup>
+
+            <div className="flex justify-end">
+              <Button className="w-fit">
+                <UploadIcon size="md" /> Save
+              </Button>
+            </div>
+          </form>
+        ) : (
+          <p className="text-md mb-12 flex gap-4 items-center">
+            {assignment.data?.name}
+          </p>
+        )}
+      </section>
+
+      <section>
         <h2 className="text-3xl mb-4 flex">
-          Assignment Overview
-          <LinkButton onClick={() => toggleIsEditingDescription()}>
+          Description
+          <LinkButton onClick={toggleIsEditingDescription}>
             <PencilSquare /> Edit
           </LinkButton>
         </h2>
@@ -144,10 +218,15 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
             className="w-2/3 flex flex-col mb-12"
             onSubmit={handleSubmit(handleSaveEditDescription)}
           >
-            <textarea
-              className="mb-4 h-56"
-              {...register('description')}
-            ></textarea>
+            <FormGroup
+              label="Description"
+              name="description"
+            >
+              <textarea
+                className="mb-4 h-56"
+                {...register('description')}
+              ></textarea>
+            </FormGroup>
 
             <div className="flex justify-end">
               <Button className="w-fit">
@@ -202,6 +281,19 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
           </form>
         </div>
       </section>
+
+      {assignment.data?.dueDate && (
+        <EditDateModal
+          initialDueDate={assignment.data.dueDate}
+          assignmentId={assignmentId}
+          isOpen={isEditDueDateModalOpen}
+          onCancel={toggleIsEditDueDateModalOpen}
+          onComplete={() => {
+            toggleIsEditDueDateModalOpen();
+            assignment.refetch();
+          }}
+        />
+      )}
     </>
   );
 };

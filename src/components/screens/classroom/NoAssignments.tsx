@@ -12,7 +12,7 @@ export const NoAssignments = ({ openAssignmentModal }) => {
         alt="no classrooms found"
       />
       <div className="text-2xl text-center">You have no assignments yet!</div>
-      <div className="text-center">
+      <div className="self-center">
         <Button
           onClick={openAssignmentModal}
           variant={Variant.Primary}

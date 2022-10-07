@@ -139,7 +139,6 @@ export const classroomRouter = createRouter()
   .mutation('createAssignment', {
     input: z.object({
       name: z.string(),
-      description: z.string(),
       dueDate: z.string(),
       classroomId: z.string(),
     }),
@@ -148,7 +147,7 @@ export const classroomRouter = createRouter()
         data: {
           name: input.name,
           dueDate: input.dueDate,
-          description: input.description,
+          description: 'This is a default assignment template',
           classroomId: input.classroomId,
         },
       });

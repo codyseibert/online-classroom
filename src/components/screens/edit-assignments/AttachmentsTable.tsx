@@ -1,6 +1,7 @@
 import { Attachment } from '@prisma/client';
 import { trpc } from '../../../utils/trpc';
 import { LinkButton, LinkButtonVariant } from '../../common/Button/LinkButton';
+import { DownloadIcon } from '../../common/Icons/DownloadIcon';
 import { TrashIcon } from '../../common/Icons/TrashIcon';
 import { Table } from '../../common/Table/Table';
 
@@ -28,16 +29,17 @@ export const AttachmentsTable = ({
         attachment.filename,
         <span
           key={attachment.id}
-          className="flex gap-4"
+          className="flex gap-4 items-center"
         >
           {/* TODO: add download icon */}
           <a
-            className="link"
+            className="link flex gap-2"
             target="_blank"
             href={`/api/download-attachment?attachmentId=${attachment.id}`}
             download={attachment.filename}
             rel="noreferrer"
           >
+            <DownloadIcon />
             Download
           </a>
           <LinkButton

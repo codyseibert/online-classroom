@@ -39,6 +39,39 @@ export const assignmentRouter = createRouter()
       });
     },
   })
+  .mutation('updateTitle', {
+    input: z.object({
+      title: z.string(),
+      assignmentId: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      await ctx.prisma.assignment.update({
+        where: {
+          id: input.assignmentId,
+        },
+        data: {
+          name: input.title,
+        },
+      });
+    },
+  })
+
+  .mutation('updateDueDate', {
+    input: z.object({
+      dueDate: z.string(),
+      assignmentId: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      await ctx.prisma.assignment.update({
+        where: {
+          id: input.assignmentId,
+        },
+        data: {
+          dueDate: input.dueDate,
+        },
+      });
+    },
+  })
   .mutation('getDownloadUrl', {
     input: z.object({
       attachmentId: z.string(),

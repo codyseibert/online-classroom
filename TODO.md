@@ -3,7 +3,6 @@
 - teacher: ability to send an email invite to a classroom
 - teacher: ability to upload assignment file
 - teacher: ability to set due date on assignments
-- student: change display name
 - all: hide email from ui
 - teacher: prevent enroll in own classroom
 - teacher: ability to extend due date on assignments

@@ -50,6 +50,7 @@ model User {
   classrooms    Classroom[] @relation("Classroom")
   enrolledIn    Classroom[] @relation("EnrolledIn")
   submissions   Submission[]
+  ratings    Rating[]
 }
 
 model VerificationToken {
@@ -66,6 +67,7 @@ model Classroom {
   teacher     User         @relation("Classroom", fields: [userId], references: [id])
   userId      String
   students    User[] @relation("EnrolledIn")
+  ratings    Rating[]
   assignments Assignment[]
   description String @default("no description provided")
 }
@@ -96,4 +98,13 @@ model Submission {
   student     User @relation(fields: [studentId], references: [id], onDelete: Cascade) 
   assignment   Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
   assignmentId String
+}
+
+model Rating {
+    id          String    @id @default(cuid())
+    studentId String
+    classroomId String
+    amount Int
+    student     User @relation(fields: [studentId], references: [id], onDelete: Cascade) 
+    classroom  Classroom @relation(fields: [classroomId], references: [id], onDelete: Cascade) 
 }
