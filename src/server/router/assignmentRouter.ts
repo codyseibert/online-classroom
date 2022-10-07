@@ -131,7 +131,7 @@ export const assignmentRouter = createRouter()
         },
       });
 
-      return new Promise((resolve, reject) => {
+      const presignedPost = await new Promise((resolve, reject) => {
         s3.createPresignedPost(
           {
             Fields: {
@@ -153,6 +153,11 @@ export const assignmentRouter = createRouter()
           }
         );
       });
+
+      return presignedPost as {
+        url: string;
+        fields: object;
+      };
     },
   })
   .query('getAttachments', {

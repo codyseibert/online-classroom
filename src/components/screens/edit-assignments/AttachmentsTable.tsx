@@ -31,7 +31,6 @@ export const AttachmentsTable = ({
           key={attachment.id}
           className="flex gap-4 items-center"
         >
-          {/* TODO: add download icon */}
           <a
             className="link flex gap-2"
             target="_blank"

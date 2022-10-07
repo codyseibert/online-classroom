@@ -17,6 +17,7 @@ import { useRouter } from 'next/router';
 import { TrashIcon } from '../../common/Icons/TrashIcon';
 import { FormGroup } from '../../common/Form/FormGroup/FormGroup';
 import { EditDateModal } from './EditDateModal';
+import { useFileUpload } from './hooks/useFileUpload';
 
 type UpdateDescriptionForm = {
   description: string;
@@ -27,12 +28,10 @@ type UpdateTitleForm = {
 };
 
 export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
-  const [file, setFile] = useState<File>();
   const [isEditingDescription, toggleIsEditingDescription] = useToggle(false);
   const [isEditingTitle, toggleIsEditingTitle] = useToggle(false);
   const [isEditDueDateModalOpen, toggleIsEditDueDateModalOpen] =
     useToggle(false);
-  const fileRef = useRef<HTMLInputElement>(null);
   const { register, handleSubmit, setValue } = useForm<UpdateDescriptionForm>();
   const {
     register: registerTitle,
@@ -44,6 +43,17 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
   const { mutateAsync: createPresignedUrl } = trpc.useMutation(
     'assignment.createPresignedUrl'
   );
+
+  const { file, fileRef, handleFileChange, uploadFile } = useFileUpload({
+    getUploadUrl: (fileToUpload: File) =>
+      createPresignedUrl({
+        filename: fileToUpload.name,
+        assignmentId,
+      }),
+    onFileUploaded: () => {
+      attachments.refetch();
+    },
+  });
 
   const { mutateAsync: deleteAssignment } = trpc.useMutation(
     'assignment.deleteAssignment'
@@ -79,38 +89,6 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
       },
     }
   );
-
-  const onFileChange = (e: React.FormEvent<HTMLInputElement>) => {
-    setFile(e.currentTarget.files?.[0]);
-  };
-
-  const uploadImage = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!file) return;
-    const { url, fields }: { url: string; fields: any } =
-      (await createPresignedUrl({
-        filename: file.name,
-        assignmentId,
-      })) as any;
-    const data = {
-      ...fields,
-      'Content-Type': file.type,
-      file,
-    };
-    const formData = new FormData();
-    for (const name in data) {
-      formData.append(name, data[name]);
-    }
-    await fetch(url, {
-      method: 'POST',
-      body: formData,
-    });
-    setFile(undefined);
-    if (fileRef.current) {
-      fileRef.current.value = '';
-    }
-    attachments.refetch();
-  };
 
   const handleSaveEditDescription = async (formData: UpdateDescriptionForm) => {
     await updateDescription({
@@ -259,14 +237,14 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
         <div className="flex justify-end">
           <form
             className="text-white"
-            onSubmit={uploadImage}
+            onSubmit={uploadFile}
           >
             <label htmlFor="file-upload">Upload Attachment</label>
             <input
               ref={fileRef}
               id="file-upload"
               className="ml-4 text-white"
-              onChange={onFileChange}
+              onChange={handleFileChange}
               type="file"
             ></input>
             {file && (

@@ -1,8 +1,6 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import React from 'react';
 import teacherImage from '../../../assets/teacher.svg';
-import { Button, Variant } from '../../common/Button/Button';
 
 export const EmptyStateAttachments = () => {
   return (
