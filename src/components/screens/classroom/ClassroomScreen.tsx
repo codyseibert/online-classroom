@@ -115,6 +115,8 @@ export const ClassroomScreen = ({ classroomId }) => {
           {selectedTab === TabName.Students && (
             <StudentsSection classroomId={classroomId} />
           )}
+
+          {selectedTab === TabName.Homework && <h2>Homework</h2>}
         </section>
       </div>
 

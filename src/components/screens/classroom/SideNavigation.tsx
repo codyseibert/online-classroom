@@ -3,10 +3,12 @@ import React from 'react';
 import { PaperCheckIcon } from '../../common/Icons/PaperCheckIcon';
 import { PeopleIcon } from '../../common/Icons/PeopleIcon';
 import { atom, useAtom } from 'jotai';
+import { PencilSquare } from '../../common/Icons/PencilSquare';
 
 export enum TabName {
   Assignment,
   Students,
+  Homework,
 }
 
 export const tabAtom = atom<TabName>(TabName.Assignment);
@@ -21,6 +23,11 @@ const links = [
     name: 'Students',
     tab: TabName.Students,
     icon: <PeopleIcon />,
+  },
+  {
+    name: 'Homework',
+    tab: TabName.Homework,
+    icon: <PencilSquare />,
   },
 ];
 

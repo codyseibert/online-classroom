@@ -131,10 +131,7 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
 
   return (
     <>
-      <MainHeading
-        title={`Edit Assignment #${assignment?.number}`}
-        subTitle={assignment?.name}
-      >
+      <MainHeading title={`Edit Assignment #${assignment?.number}`}>
         <Badge
           variant={BadgeVariant.Error}
           className="flex gap-4 items-center"
