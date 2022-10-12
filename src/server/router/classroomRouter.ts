@@ -1,6 +1,9 @@
 import { TRPCError } from '@trpc/server';
 import { createRouter } from './context';
 import z from 'zod';
+import { assertIsStudent } from '../utils/assertIsStudent';
+import { assertIsClassroomAdmin } from '../utils/assertIsClassroomAdmin';
+import { assertIsAssignmentAdmin } from '../utils/assertIsAssignmentAdmin';
 
 export const classroomRouter = createRouter()
   .middleware(async ({ ctx, next }) => {
@@ -129,6 +132,8 @@ export const classroomRouter = createRouter()
       assignmentId: z.string(),
     }),
     async resolve({ input, ctx }) {
+      assertIsAssignmentAdmin(ctx, input.assignmentId);
+
       await ctx.prisma.assignment.delete({
         where: {
           id: input.assignmentId,
@@ -143,6 +148,8 @@ export const classroomRouter = createRouter()
       classroomId: z.string(),
     }),
     async resolve({ input, ctx }) {
+      assertIsClassroomAdmin(ctx, input.classroomId);
+
       const assignment = await ctx.prisma.assignment.create({
         data: {
           name: input.name,
@@ -161,7 +168,9 @@ export const classroomRouter = createRouter()
       classroomId: z.string(),
     }),
     async resolve({ input, ctx }) {
-      const classroom = await ctx.prisma.classroom.update({
+      assertIsClassroomAdmin(ctx, input.classroomId);
+
+      const updatedClassroom = await ctx.prisma.classroom.update({
         where: {
           id: input.classroomId,
         },
@@ -170,7 +179,8 @@ export const classroomRouter = createRouter()
           description: input.description,
         },
       });
-      return classroom;
+
+      return updatedClassroom;
     },
   })
   .mutation('enrollInClassroom', {
@@ -179,6 +189,8 @@ export const classroomRouter = createRouter()
     }),
     async resolve({ input, ctx }) {
       const userId = ctx.session.user?.id;
+
+      assertIsStudent(ctx);
 
       const classroom = await ctx.prisma.user.update({
         where: {
@@ -201,6 +213,8 @@ export const classroomRouter = createRouter()
     }),
     async resolve({ input, ctx }) {
       const userId = ctx.session.user?.id;
+
+      assertIsStudent(ctx);
 
       const classroom = await ctx.prisma.user.update({
         where: {

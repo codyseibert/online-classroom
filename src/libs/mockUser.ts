@@ -1,14 +1,16 @@
+import { Roles } from '../server/utils/constants';
+
 const mockUsers = {
   teacher: {
     id: 'al814zcy80074hloomogrg1mv',
-    role: 'teacher',
+    role: Roles.Teacher,
     name: 'Teacher Rick',
     email: 'testing@example.com',
     image: null,
   },
   student: {
     id: 'bl814zcy80074hloomogrg1mv',
-    role: 'student',
+    role: Roles.Student,
     name: 'Student Bob',
     email: 'testing@example.com',
     image: null,

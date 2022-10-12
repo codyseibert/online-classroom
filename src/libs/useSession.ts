@@ -15,14 +15,23 @@ export const useSession = () => {
         });
     }, []);
 
-    return {
-      data: getMockUser(mockRole)
-        ? {
-            user: getMockUser(mockRole),
-          }
-        : null,
-      status: getMockUser(mockRole) ? 'authenticated' : 'unauthenticated',
-    };
+    if (!mockRole) {
+      return {
+        data: undefined,
+        status: 'loading',
+      };
+    } else {
+      return {
+        data:
+          mockRole === 'unauthenticated'
+            ? null
+            : {
+                user: getMockUser(mockRole),
+              },
+        status:
+          mockRole === 'unauthenticated' ? 'unauthenticated' : 'authenticated',
+      };
+    }
   } else {
     return useNextAuthSession();
   }

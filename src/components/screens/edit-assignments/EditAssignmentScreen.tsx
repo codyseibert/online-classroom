@@ -18,6 +18,7 @@ import { TrashIcon } from '../../common/Icons/TrashIcon';
 import { FormGroup } from '../../common/Form/FormGroup/FormGroup';
 import { EditDateModal } from './EditDateModal';
 import { useFileUpload } from './hooks/useFileUpload';
+import { useIsClassroomAdmin } from '../../../hooks/useIsClassAdmin';
 
 type UpdateDescriptionForm = {
   description: string;
@@ -40,6 +41,8 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
   } = useForm<UpdateTitleForm>();
   const router = useRouter();
 
+  useIsClassroomAdmin(classroomId);
+
   const { mutateAsync: createPresignedUrl } = trpc.useMutation(
     'assignment.createPresignedUrl'
   );
@@ -51,7 +54,7 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
         assignmentId,
       }),
     onFileUploaded: () => {
-      attachments.refetch();
+      attachmentsQuery.refetch();
     },
   });
 
@@ -67,14 +70,14 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
     'assignment.updateTitle'
   );
 
-  const attachments = trpc.useQuery([
+  const attachmentsQuery = trpc.useQuery([
     'assignment.getAttachments',
     {
       assignmentId,
     },
   ]);
 
-  const assignment = trpc.useQuery(
+  const assignmentQuery = trpc.useQuery(
     [
       'classroom.getAssignment',
       {
@@ -95,7 +98,7 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
       description: formData.description,
       assignmentId,
     });
-    assignment.refetch();
+    assignmentQuery.refetch();
     toggleIsEditingDescription();
   };
 
@@ -104,7 +107,7 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
       title: formData.title,
       assignmentId,
     });
-    assignment.refetch();
+    assignmentQuery.refetch();
     toggleIsEditingTitle();
   };
 
@@ -115,18 +118,23 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
   };
 
   const handleOnAttachmentDelete = () => {
-    attachments.refetch();
+    attachmentsQuery.refetch();
   };
 
-  const formattedDueDate = assignment.data?.dueDate
-    ? DateTime.fromISO(assignment.data?.dueDate).toLocaleString(
+  const formattedDueDate = assignmentQuery.data?.dueDate
+    ? DateTime.fromISO(assignmentQuery.data?.dueDate).toLocaleString(
         DateTime.DATE_MED
       )
     : 'N/A';
 
+  const assignment = assignmentQuery.data;
+
   return (
     <>
-      <MainHeading title={`Edit Assignment`}>
+      <MainHeading
+        title={`Edit Assignment #${assignment?.number}`}
+        subTitle={assignment?.name}
+      >
         <Badge
           variant={BadgeVariant.Error}
           className="flex gap-4 items-center"
@@ -178,7 +186,7 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
           </form>
         ) : (
           <p className="text-md mb-12 flex gap-4 items-center">
-            {assignment.data?.name}
+            {assignmentQuery.data?.name}
           </p>
         )}
       </section>
@@ -214,7 +222,7 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
           </form>
         ) : (
           <div className="markdown mb-12">
-            <ReactMarkdown>{assignment.data?.description ?? ''}</ReactMarkdown>
+            <ReactMarkdown>{assignment?.description ?? ''}</ReactMarkdown>
           </div>
         )}
 
@@ -226,11 +234,11 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
             NonEmptyComponent={
               <AttachmentsTable
                 onAttachmentDeleted={handleOnAttachmentDelete}
-                attachments={attachments.data ?? []}
+                attachments={attachmentsQuery.data ?? []}
               />
             }
-            isLoading={attachments.isLoading}
-            data={attachments.data}
+            isLoading={attachmentsQuery.isLoading}
+            data={attachmentsQuery.data}
           />
         </div>
 
@@ -260,15 +268,15 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
         </div>
       </section>
 
-      {assignment.data?.dueDate && (
+      {assignmentQuery.data?.dueDate && (
         <EditDateModal
-          initialDueDate={assignment.data.dueDate}
+          initialDueDate={assignmentQuery.data.dueDate}
           assignmentId={assignmentId}
           isOpen={isEditDueDateModalOpen}
           onCancel={toggleIsEditDueDateModalOpen}
           onComplete={() => {
             toggleIsEditDueDateModalOpen();
-            assignment.refetch();
+            assignmentQuery.refetch();
           }}
         />
       )}

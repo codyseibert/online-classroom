@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { Roles } from '../src/server/utils/constants';
 const prisma = new PrismaClient();
 
 async function main() {
@@ -6,7 +7,7 @@ async function main() {
     create: {
       id: 'al814zcy80074hloomogrg1mv',
       name: 'Teacher Rick',
-      role: 'teacher',
+      role: Roles.Teacher,
       email: 'teacherrick@example.com',
     },
     update: {},
@@ -17,7 +18,7 @@ async function main() {
     create: {
       id: 'bl814zcy80074hloomogrg1mv',
       name: 'Student Bob',
-      role: 'student',
+      role: Roles.Student,
       email: 'studentbob@example.com',
     },
     update: {},

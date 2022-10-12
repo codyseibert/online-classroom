@@ -1,16 +1,21 @@
-import { ReactHTML, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 export const MainHeading = ({
   title,
+  subTitle,
   children,
 }: {
   title: string;
+  subTitle?: string;
   children?: ReactNode;
 }) => {
   return (
     <>
-      <section className="flex gap-8 items-end mb-8">
-        <h1 className="text-4xl mt-8 px-4">{title}</h1>
+      <section className="flex gap-8 items-end mb-8 justify-between">
+        <div className="flex-col">
+          <h1 className="text-4xl mt-8">{title}</h1>
+          {subTitle && <h2 className="text-2xl mt-4">{subTitle}</h2>}
+        </div>
 
         {children}
       </section>

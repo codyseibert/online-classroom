@@ -60,13 +60,15 @@ export const Assignments = ({
                     </a>
                   </Link>
                 )}
-                <Link
-                  href={`/classrooms/${classroomId}/assignments/${assignment.id}`}
-                >
-                  <a className="link flex gap-1 items-center">
-                    <EyeIcon /> View
-                  </a>
-                </Link>
+                {!hasAdminAccess && (
+                  <Link
+                    href={`/classrooms/${classroomId}/assignments/${assignment.id}`}
+                  >
+                    <a className="link flex gap-1 items-center">
+                      <EyeIcon /> View
+                    </a>
+                  </Link>
+                )}
               </span>
             ) as ReactNode,
           ])}

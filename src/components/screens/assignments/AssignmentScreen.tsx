@@ -66,44 +66,49 @@ export const AssignmentScreen = ({ classroomId, assignmentId }) => {
 
   return (
     <section>
-      <MainHeading title={`View Assignment: ${assignmentQuery.data?.name}`}>
-        {isSubmissionSubmitted ? (
-          <Badge variant={BadgeVariant.Success}>Submitted</Badge>
-        ) : (
-          <Badge variant={BadgeVariant.Error}>Due on {formattedDueDate}</Badge>
-        )}
+      <MainHeading
+        title={`Assignment #${assignmentQuery.data?.number}`}
+        subTitle={assignmentQuery.data?.name}
+      >
+        <>
+          {isSubmissionSubmitted ? (
+            <Badge variant={BadgeVariant.Success}>Submitted</Badge>
+          ) : (
+            <Badge variant={BadgeVariant.Error}>
+              Due on {formattedDueDate}
+            </Badge>
+          )}
+
+          <div className="flex justify-end place-self-end">
+            <form
+              className="text-white"
+              onSubmit={uploadAssignment}
+            >
+              <label htmlFor="file-upload">Upload Assignment</label>
+              <input
+                ref={fileRef}
+                id="file-upload"
+                className="ml-4 text-white"
+                onChange={onFileChange}
+                type="file"
+              ></input>
+              {file && (
+                <Button
+                  className="ml-4"
+                  type="submit"
+                  variant={Variant.Primary}
+                >
+                  Upload
+                </Button>
+              )}
+            </form>
+          </div>
+        </>
       </MainHeading>
 
       <div className="markdown mb-12">
         <ReactMarkdown>{assignmentQuery.data?.description ?? ''}</ReactMarkdown>
       </div>
-
-      {!isSubmissionSubmitted && (
-        <div className="flex justify-end">
-          <form
-            className="text-white"
-            onSubmit={uploadAssignment}
-          >
-            <label htmlFor="file-upload">Upload Assignment</label>
-            <input
-              ref={fileRef}
-              id="file-upload"
-              className="ml-4 text-white"
-              onChange={onFileChange}
-              type="file"
-            ></input>
-            {file && (
-              <Button
-                className="ml-4"
-                type="submit"
-                variant={Variant.Primary}
-              >
-                Upload
-              </Button>
-            )}
-          </form>
-        </div>
-      )}
     </section>
   );
 };

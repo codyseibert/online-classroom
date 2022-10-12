@@ -1,3 +1,4 @@
+import { Roles } from '../../../server/utils/constants';
 import { Button } from '../Button/Button';
 
 const becomeRole = (role: string) => {
@@ -67,14 +68,14 @@ export const Footer = () => {
             DEVELOPMENT ROLE SWITCHER:
             <Button
               onClick={() => {
-                becomeRole('student');
+                becomeRole(Roles.Student);
               }}
             >
               student
             </Button>
             <Button
               onClick={() => {
-                becomeRole('teacher');
+                becomeRole(Roles.Teacher);
               }}
             >
               teacher

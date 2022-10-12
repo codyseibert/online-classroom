@@ -1,11 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { createRouter } from './context';
 import z from 'zod';
-
-enum Roles {
-  Teacher = 'teacher',
-  Student = 'student',
-}
+import { Roles } from '../utils/constants';
 
 export const authRouter = createRouter()
   .middleware(async ({ ctx, next }) => {

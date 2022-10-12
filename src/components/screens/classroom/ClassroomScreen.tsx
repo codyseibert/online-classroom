@@ -59,7 +59,6 @@ export const ClassroomScreen = ({ classroomId }) => {
   const assignments = assignmentsQuery.data;
   const classroom = classroomQuery.data;
   const hasAdminAccess = classroom?.userId === session.data?.user.id;
-  // const isStudent = session.data?.user.role === 'student';
   const showUnenroll = classrooms.data?.some(({ id }) => id === classroomId);
 
   const handleUnenroll = async () => {

@@ -2,6 +2,7 @@ import { TRPCError } from '@trpc/server';
 import { createRouter } from './context';
 import { AWS } from '../../libs/aws';
 import z from 'zod';
+import { assertIsAssignmentAdmin } from '../utils/assertIsAssignmentAdmin';
 
 export const BUCKET_NAME = 'online-classroom-uploads';
 
@@ -29,6 +30,8 @@ export const assignmentRouter = createRouter()
       assignmentId: z.string(),
     }),
     async resolve({ ctx, input }) {
+      assertIsAssignmentAdmin(ctx, input.assignmentId);
+
       await ctx.prisma.assignment.update({
         where: {
           id: input.assignmentId,
@@ -45,6 +48,8 @@ export const assignmentRouter = createRouter()
       assignmentId: z.string(),
     }),
     async resolve({ ctx, input }) {
+      assertIsAssignmentAdmin(ctx, input.assignmentId);
+
       await ctx.prisma.assignment.update({
         where: {
           id: input.assignmentId,
@@ -62,6 +67,8 @@ export const assignmentRouter = createRouter()
       assignmentId: z.string(),
     }),
     async resolve({ ctx, input }) {
+      assertIsAssignmentAdmin(ctx, input.assignmentId);
+
       await ctx.prisma.assignment.update({
         where: {
           id: input.assignmentId,
@@ -99,6 +106,7 @@ export const assignmentRouter = createRouter()
       assignmentId: z.string(),
     }),
     async resolve({ ctx, input }) {
+      // TODO: add auth
       await ctx.prisma.assignment.delete({
         where: {
           id: input.assignmentId,
@@ -111,6 +119,7 @@ export const assignmentRouter = createRouter()
       attachmentId: z.string(),
     }),
     async resolve({ ctx, input }) {
+      // TODO: add auth
       await ctx.prisma.attachment.delete({
         where: {
           id: input.attachmentId,
@@ -124,6 +133,8 @@ export const assignmentRouter = createRouter()
       filename: z.string(),
     }),
     async resolve({ ctx, input }) {
+      assertIsAssignmentAdmin(ctx, input.assignmentId);
+
       const attachment = await ctx.prisma.attachment.create({
         data: {
           filename: input.filename,
