@@ -4,6 +4,7 @@ import z from 'zod';
 import { assertIsStudent } from '../utils/assertIsStudent';
 import { assertIsClassroomAdmin } from '../utils/assertIsClassroomAdmin';
 import { assertIsAssignmentAdmin } from '../utils/assertIsAssignmentAdmin';
+import { assertIsTeacher } from '../utils/assertIsTeacher';
 
 export const classroomRouter = createRouter()
   .middleware(async ({ ctx, next }) => {
@@ -113,14 +114,12 @@ export const classroomRouter = createRouter()
       name: z.string(),
     }),
     async resolve({ input, ctx }) {
-      const user = ctx.session.user;
-      if (!user || !user.id) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
-      }
+      assertIsTeacher(ctx);
+
       const classroom = await ctx.prisma.classroom.create({
         data: {
           name: input.name,
-          userId: user.id,
+          userId: ctx.session.user.id,
         },
       });
 
