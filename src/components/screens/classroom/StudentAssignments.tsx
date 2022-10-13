@@ -3,22 +3,40 @@ import Link from 'next/link';
 import { ReactNode } from 'react';
 import { Button, Variant } from '../../common/Button/Button';
 import { EyeIcon } from '../../common/Icons/EyeIcon';
-import { PencilSquare } from '../../common/Icons/PencilSquare';
 import { Table } from '../../common/Table/Table';
 import { DateTime } from 'luxon';
+import { trpc } from '../../../utils/trpc';
+import { useSession } from '../../../libs/useSession';
 
-export const Assignments = ({
+export const StudentAssignments = ({
   assignments,
-  hasAdminAccess,
   classroomId,
-  openAssignmentModal,
 }: {
   assignments: Assignment[];
-  hasAdminAccess: boolean;
   classroomId: string;
-  openAssignmentModal: () => void;
 }) => {
   const totalAssignments = assignments.length;
+
+  const session = useSession();
+
+  const submissionsQuery = trpc.useQuery(
+    [
+      'submission.getSubmissionForStudent',
+      {
+        classroomId,
+        studentId: session.data?.user.id,
+      },
+    ],
+    {
+      enabled: !!session.data,
+    }
+  );
+
+  const getSubmission = (assignmentId: string) => {
+    return submissionsQuery.data?.find(
+      (submission) => submission.assignmentId === assignmentId
+    );
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -26,20 +44,13 @@ export const Assignments = ({
         <h2 className="text-2xl">
           Your Assignments ({totalAssignments} total)
         </h2>
-        {hasAdminAccess && (
-          <Button
-            variant={Variant.Primary}
-            onClick={openAssignmentModal}
-          >
-            Create an Assignment
-          </Button>
-        )}
       </div>
       <div className="overflow-x-auto">
         <Table
-          headers={['Number', 'Name', 'Due Date', 'Actions']}
+          headers={['Number', 'Grade', 'Name', 'Due Date', 'Actions']}
           rows={assignments.map((assignment, idx) => [
             assignment.number,
+            getSubmission(assignment.id)?.grade ?? 'N/A',
             assignment.name,
             <span
               key={idx}
@@ -51,24 +62,13 @@ export const Assignments = ({
             </span>,
             (
               <span className="flex gap-4">
-                {hasAdminAccess && (
-                  <Link
-                    href={`/classrooms/${classroomId}/assignments/${assignment.id}/edit`}
-                  >
-                    <a className="link flex gap-1 items-center">
-                      <PencilSquare /> Edit
-                    </a>
-                  </Link>
-                )}
-                {!hasAdminAccess && (
-                  <Link
-                    href={`/classrooms/${classroomId}/assignments/${assignment.id}`}
-                  >
-                    <a className="link flex gap-1 items-center">
-                      <EyeIcon /> View
-                    </a>
-                  </Link>
-                )}
+                <Link
+                  href={`/classrooms/${classroomId}/assignments/${assignment.id}`}
+                >
+                  <a className="link flex gap-1 items-center">
+                    <EyeIcon /> View
+                  </a>
+                </Link>
               </span>
             ) as ReactNode,
           ])}

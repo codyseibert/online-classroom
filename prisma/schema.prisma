@@ -98,6 +98,7 @@ model Submission {
   student     User @relation(fields: [studentId], references: [id], onDelete: Cascade) 
   assignment   Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
   assignmentId String
+  grade Float?
 }
 
 model Rating {

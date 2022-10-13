@@ -10,6 +10,7 @@
 - teacher: ability for teacher to grade assignment
 - teacher: prevent enroll in own classroom
 - teacher: ability to send an email invite to a classroom
+- teacher filter out graded submissions
 
 ## Medium
 

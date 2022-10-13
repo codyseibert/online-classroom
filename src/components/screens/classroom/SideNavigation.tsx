@@ -4,16 +4,31 @@ import { PaperCheckIcon } from '../../common/Icons/PaperCheckIcon';
 import { PeopleIcon } from '../../common/Icons/PeopleIcon';
 import { atom, useAtom } from 'jotai';
 import { PencilSquare } from '../../common/Icons/PencilSquare';
+import { useSession } from '../../../libs/useSession';
+import { Roles } from '../../../server/utils/constants';
 
 export enum TabName {
   Assignment,
   Students,
-  Homework,
+  Submissions,
 }
 
 export const tabAtom = atom<TabName>(TabName.Assignment);
 
-const links = [
+const studentLinks = [
+  {
+    name: 'Assignments',
+    tab: TabName.Assignment,
+    icon: <PaperCheckIcon />,
+  },
+  {
+    name: 'Students',
+    tab: TabName.Students,
+    icon: <PeopleIcon />,
+  },
+];
+
+const teacherLinks = [
   {
     name: 'Assignments',
     tab: TabName.Assignment,
@@ -25,14 +40,20 @@ const links = [
     icon: <PeopleIcon />,
   },
   {
-    name: 'Homework',
-    tab: TabName.Homework,
+    name: 'Submissions',
+    tab: TabName.Submissions,
     icon: <PencilSquare />,
   },
 ];
 
 export const SideNavigation = () => {
   const [selectedTab, setSelectedTab] = useAtom(tabAtom);
+  const session = useSession();
+
+  if (!session.data) return null;
+
+  const links =
+    session.data.user.role === Roles.Teacher ? teacherLinks : studentLinks;
 
   return (
     <aside

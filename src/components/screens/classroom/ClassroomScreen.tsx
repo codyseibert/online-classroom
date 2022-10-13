@@ -4,7 +4,7 @@ import { CreateAssignmentModal } from './CreateAssignmentModal';
 import { EditClassroomModal } from './EditClassroomModal';
 import { PencilSquare } from '../../common/Icons/PencilSquare';
 import { NoAssignments } from './NoAssignments';
-import { Assignments } from './Assignments';
+import { StudentAssignments } from './StudentAssignments';
 import { EmptyStateWrapper } from '../../common/EmptyStateWrapper';
 import { useCreateAssignment } from './hooks/useCreateAssignment';
 import { useEditClassroom } from './hooks/useEditClassroom';
@@ -15,6 +15,9 @@ import { useRouter } from 'next/router';
 import { SideNavigation, tabAtom, TabName } from './SideNavigation';
 import { useAtom } from 'jotai';
 import { MainHeading } from '../../common/MainHeading';
+import { SubmissionsSection } from './SubmissionsSection';
+import { TeacherAssignments } from './TeacherAssignments';
+import { Roles } from '../../../server/utils/constants';
 
 export const ClassroomScreen = ({ classroomId }) => {
   const [selectedTab] = useAtom(tabAtom);
@@ -102,12 +105,19 @@ export const ClassroomScreen = ({ classroomId }) => {
                 <NoAssignments openAssignmentModal={openAssignmentModal} />
               }
               NonEmptyComponent={
-                <Assignments
-                  hasAdminAccess={hasAdminAccess}
-                  classroomId={classroomId}
-                  assignments={assignments ?? []}
-                  openAssignmentModal={openAssignmentModal}
-                />
+                session.data?.user.role === Roles.Teacher ? (
+                  <TeacherAssignments
+                    hasAdminAccess={hasAdminAccess}
+                    classroomId={classroomId}
+                    assignments={assignments ?? []}
+                    openAssignmentModal={openAssignmentModal}
+                  />
+                ) : (
+                  <StudentAssignments
+                    classroomId={classroomId}
+                    assignments={assignments ?? []}
+                  />
+                )
               }
             />
           )}
@@ -116,7 +126,9 @@ export const ClassroomScreen = ({ classroomId }) => {
             <StudentsSection classroomId={classroomId} />
           )}
 
-          {selectedTab === TabName.Homework && <h2>Homework</h2>}
+          {selectedTab === TabName.Submissions && (
+            <SubmissionsSection classroomId={classroomId} />
+          )}
         </section>
       </div>
 
