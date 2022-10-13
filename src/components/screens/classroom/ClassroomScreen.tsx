@@ -107,7 +107,6 @@ export const ClassroomScreen = ({ classroomId }) => {
               NonEmptyComponent={
                 session.data?.user.role === Roles.Teacher ? (
                   <TeacherAssignments
-                    hasAdminAccess={hasAdminAccess}
                     classroomId={classroomId}
                     assignments={assignments ?? []}
                     openAssignmentModal={openAssignmentModal}

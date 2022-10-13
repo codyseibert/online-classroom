@@ -12,7 +12,6 @@ export const TeacherAssignments = ({
   openAssignmentModal,
 }: {
   assignments: Assignment[];
-  hasAdminAccess: boolean;
   classroomId: string;
   openAssignmentModal: () => void;
 }) => {
