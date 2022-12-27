@@ -25,7 +25,7 @@ export const CreateClassroomModal = ({
     formState: { errors },
   } = useForm<CreateClassroomForm>();
 
-  const createClassroom = trpc.useMutation('classroom.createClassroom');
+  const createClassroom = trpc.classroom.createClassroom.useMutation();
 
   const onSubmit = handleSubmit(async (data) => {
     await createClassroom.mutateAsync({ name: data.name });

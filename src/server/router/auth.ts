@@ -1,19 +1,15 @@
 import { TRPCError } from '@trpc/server';
-import { createRouter } from './context';
+import { procedure, router } from './context';
 import z from 'zod';
 import { Roles } from '../utils/constants';
+import { isAuthorized } from './assignmentRouter';
 
-export const authRouter = createRouter()
-  .middleware(async ({ ctx, next }) => {
-    if (!ctx.session) {
-      throw new TRPCError({ code: 'UNAUTHORIZED' });
-    }
-    return next();
-  })
-  .mutation('setRoleAsTeacher', {
-    input: z.object({}).nullish(),
-    async resolve({ ctx }) {
-      if (ctx.session?.user?.role) {
+export const authRouter = router({
+  setRoleAsTeacher: procedure
+    .use(isAuthorized)
+    .input(z.object({}).nullish())
+    .mutation(async ({ ctx }) => {
+      if (ctx.session.user.role) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'you can not change your role once it has been set',
@@ -22,18 +18,18 @@ export const authRouter = createRouter()
 
       await ctx.prisma.user.update({
         where: {
-          id: ctx.session?.user?.id,
+          id: ctx.session.user.id,
         },
         data: {
           role: Roles.Teacher,
         },
       });
       return 'role updated';
-    },
-  })
-  .mutation('setRoleAsStudent', {
-    input: z.object({}).nullish(),
-    async resolve({ ctx }) {
+    }),
+  setRoleAsStudent: procedure
+    .use(isAuthorized)
+    .input(z.object({}).nullish())
+    .mutation(async ({ ctx }) => {
       if (ctx.session?.user?.role) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
@@ -50,5 +46,5 @@ export const authRouter = createRouter()
         },
       });
       return 'role updated';
-    },
-  });
+    }),
+});

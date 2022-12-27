@@ -1,28 +1,20 @@
-import { TRPCError } from '@trpc/server';
-import { createRouter } from './context';
 import z from 'zod';
 import { assertIsStudent } from '../utils/assertIsStudent';
 import { assertIsClassroomAdmin } from '../utils/assertIsClassroomAdmin';
 import { assertIsAssignmentAdmin } from '../utils/assertIsAssignmentAdmin';
 import { assertIsTeacher } from '../utils/assertIsTeacher';
+import { procedure, router } from './context';
+import { isAuthorized } from './assignmentRouter';
 
-export const classroomRouter = createRouter()
-  .middleware(async ({ ctx, next }) => {
-    if (!ctx.session) {
-      throw new TRPCError({ code: 'UNAUTHORIZED' });
-    }
-    return next({
-      ctx: {
-        ...ctx,
-        session: ctx.session,
-      },
-    });
-  })
-  .query('getStudents', {
-    input: z.object({
-      classroomId: z.string(),
-    }),
-    async resolve({ input, ctx }) {
+export const classroomRouter = router({
+  getStudents: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        classroomId: z.string(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
       const classroom = await ctx.prisma.classroom.findUnique({
         where: {
           id: input.classroomId,
@@ -35,64 +27,71 @@ export const classroomRouter = createRouter()
         ...student,
         email: '',
       }));
-    },
-  })
-  .query('getClassroomsForTeacher', {
-    async resolve({ ctx }) {
+    }),
+  getClassroomsForTeacher: procedure
+    .use(isAuthorized)
+    .query(async ({ ctx }) => {
       const classrooms = await ctx.prisma.classroom.findMany({
         where: {
           userId: ctx.session.user?.id,
         },
       });
       return classrooms;
-    },
-  })
-  .query('getAssignments', {
-    input: z.object({
-      classroomId: z.string(),
     }),
-    async resolve({ input, ctx }) {
+  getAssignments: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        classroomId: z.string(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
       const assignments = await ctx.prisma.assignment.findMany({
         where: {
           classroomId: input.classroomId,
         },
       });
       return assignments;
-    },
-  })
-  .query('getAssignment', {
-    input: z.object({
-      assignmentId: z.string(),
     }),
-    async resolve({ input, ctx }) {
+  getAssignment: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        assignmentId: z.string(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
       const assignment = await ctx.prisma.assignment.findUnique({
         where: {
           id: input.assignmentId,
         },
       });
       return assignment;
-    },
-  })
-  .query('getClassroom', {
-    input: z.object({
-      classroomId: z.string(),
     }),
-    async resolve({ input, ctx }) {
+  getClassroom: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        classroomId: z.string(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
       const classroom = await ctx.prisma.classroom.findUnique({
         where: {
           id: input.classroomId,
         },
       });
       return classroom;
-    },
-  })
-  .query('findClassroom', {
-    input: z
-      .object({
-        name: z.string().nullish(),
-      })
-      .nullish(),
-    async resolve({ input, ctx }) {
+    }),
+  findClassroom: procedure
+    .input(
+      z
+        .object({
+          name: z.string().nullish(),
+        })
+        .nullish()
+    )
+    .query(async ({ input, ctx }) => {
       type TWhere = {
         name?: string;
       };
@@ -107,13 +106,15 @@ export const classroomRouter = createRouter()
         },
       });
       return classrooms;
-    },
-  })
-  .mutation('createClassroom', {
-    input: z.object({
-      name: z.string(),
     }),
-    async resolve({ input, ctx }) {
+  createClassroom: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        name: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
       assertIsTeacher(ctx);
 
       const classroom = await ctx.prisma.classroom.create({
@@ -124,13 +125,15 @@ export const classroomRouter = createRouter()
       });
 
       return classroom;
-    },
-  })
-  .mutation('deleteAssignment', {
-    input: z.object({
-      assignmentId: z.string(),
     }),
-    async resolve({ input, ctx }) {
+  deleteAssignment: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        assignmentId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
       assertIsAssignmentAdmin(ctx, input.assignmentId);
 
       await ctx.prisma.assignment.delete({
@@ -138,15 +141,17 @@ export const classroomRouter = createRouter()
           id: input.assignmentId,
         },
       });
-    },
-  })
-  .mutation('createAssignment', {
-    input: z.object({
-      name: z.string(),
-      dueDate: z.string(),
-      classroomId: z.string(),
     }),
-    async resolve({ input, ctx }) {
+  createAssignment: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        name: z.string(),
+        dueDate: z.string(),
+        classroomId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
       assertIsClassroomAdmin(ctx, input.classroomId);
 
       const assignment = await ctx.prisma.assignment.create({
@@ -158,15 +163,17 @@ export const classroomRouter = createRouter()
         },
       });
       return assignment;
-    },
-  })
-  .mutation('editClassroom', {
-    input: z.object({
-      name: z.string(),
-      description: z.string(),
-      classroomId: z.string(),
     }),
-    async resolve({ input, ctx }) {
+  editClassroom: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        name: z.string(),
+        description: z.string(),
+        classroomId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
       assertIsClassroomAdmin(ctx, input.classroomId);
 
       const updatedClassroom = await ctx.prisma.classroom.update({
@@ -180,13 +187,15 @@ export const classroomRouter = createRouter()
       });
 
       return updatedClassroom;
-    },
-  })
-  .mutation('enrollInClassroom', {
-    input: z.object({
-      classroomId: z.string(),
     }),
-    async resolve({ input, ctx }) {
+  enrollInClassroom: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        classroomId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
       const userId = ctx.session.user?.id;
 
       assertIsStudent(ctx);
@@ -204,13 +213,15 @@ export const classroomRouter = createRouter()
         },
       });
       return classroom;
-    },
-  })
-  .mutation('unenroll', {
-    input: z.object({
-      classroomId: z.string(),
     }),
-    async resolve({ input, ctx }) {
+  unenroll: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        classroomId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
       const userId = ctx.session.user?.id;
 
       assertIsStudent(ctx);
@@ -228,5 +239,5 @@ export const classroomRouter = createRouter()
         },
       });
       return classroom;
-    },
-  });
+    }),
+});

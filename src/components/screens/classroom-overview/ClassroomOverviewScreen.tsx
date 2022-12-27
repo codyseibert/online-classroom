@@ -8,15 +8,10 @@ export const ClassroomOverviewScreen = ({
 }: {
   classroomId: string;
 }) => {
-  const classroomQuery = trpc.useQuery([
-    'classroom.getClassroom',
-    { classroomId },
-  ]);
-
-  const userQuery = trpc.useQuery(['user.getUser']);
+  const classroomQuery = trpc.classroom.getClassroom.useQuery({ classroomId });
+  const userQuery = trpc.user.getUser.useQuery();
   const router = useRouter();
-
-  const enrollMutation = trpc.useMutation('classroom.enrollInClassroom');
+  const enrollMutation = trpc.classroom.enrollInClassroom.useMutation();
 
   const classroom = classroomQuery.data;
 

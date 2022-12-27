@@ -5,10 +5,7 @@ import { Students } from './Students';
 import { NoStudents } from './NoStudents';
 
 export const StudentsSection = ({ classroomId }: { classroomId: string }) => {
-  const studentsQuery = trpc.useQuery([
-    'classroom.getStudents',
-    { classroomId },
-  ]);
+  const studentsQuery = trpc.classroom.getStudents.useQuery({ classroomId });
 
   const { data: students, isLoading } = studentsQuery;
 

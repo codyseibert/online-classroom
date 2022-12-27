@@ -6,23 +6,24 @@ import { Badge, BadgeVariant } from '../../common/Badge';
 import { Button, Variant } from '../../common/Button/Button';
 import { MainHeading } from '../../common/MainHeading';
 
-export const AssignmentScreen = ({ classroomId, assignmentId }) => {
+export const AssignmentScreen = ({
+  assignmentId,
+}: {
+  assignmentId: string;
+}) => {
   const [file, setFile] = useState<File>();
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const assignmentQuery = trpc.useQuery([
-    'classroom.getAssignment',
-    { assignmentId },
-  ]);
+  const assignmentQuery = trpc.classroom.getAssignment.useQuery({
+    assignmentId,
+  });
 
-  const submissionQuery = trpc.useQuery([
-    'submission.getSubmission',
-    { assignmentId },
-  ]);
+  const submissionQuery = trpc.submission.getSubmission.useQuery({
+    assignmentId,
+  });
 
-  const { mutateAsync: createPresignedUrl } = trpc.useMutation(
-    'submission.createPresignedUrl'
-  );
+  const { mutateAsync: createPresignedUrl } =
+    trpc.submission.createPresignedUrl.useMutation();
 
   const onFileChange = (e: React.FormEvent<HTMLInputElement>) => {
     setFile(e.currentTarget.files?.[0]);

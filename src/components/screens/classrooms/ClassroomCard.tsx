@@ -12,8 +12,11 @@ export const ClassroomCard = ({ classroom }: { classroom: Classroom }) => {
       nulla! Maiores et perferendis eaque, exercitationem praesentium nihil."
     >
       <div className="flex justify-end">
-        <Link href={`/classrooms/${classroom.id}`}>
-          <a className="text-blue-500">Manage Classroom</a>
+        <Link
+          href={`/classrooms/${classroom.id}`}
+          className="text-blue-500"
+        >
+          Manage Classroom
         </Link>
       </div>
     </Card>

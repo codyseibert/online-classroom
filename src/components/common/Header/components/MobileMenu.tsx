@@ -33,13 +33,12 @@ export const MobileMenu = ({ isLoggedIn, hasRole }) => {
               </>
             )}
             {!hasRole && (
-              <Link href="/welcome">
-                <a
-                  className="link-secondary block px-3 py-2 rounded-md text-base font-medium"
-                  aria-current="page"
-                >
-                  Finish Setup
-                </a>
+              <Link
+                href="/welcome"
+                className="link-secondary block px-3 py-2 rounded-md text-base font-medium"
+                aria-current="page"
+              >
+                Finish Setup
               </Link>
             )}
           </>

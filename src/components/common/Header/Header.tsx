@@ -43,10 +43,7 @@ export const Header = () => {
             <ThemeButton />
 
             {isLoggedIn ? (
-              <LoggedInSection
-                name={userMetadata?.name}
-                image={userMetadata?.image}
-              />
+              <LoggedInSection image={userMetadata?.image} />
             ) : (
               <LoggedOutSection signIn={signIn} />
             )}

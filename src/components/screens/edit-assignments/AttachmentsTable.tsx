@@ -12,7 +12,7 @@ export const AttachmentsTable = ({
   attachments: Attachment[];
   onAttachmentDeleted: () => void;
 }) => {
-  const deleteAttachment = trpc.useMutation('assignment.deleteAttachment');
+  const deleteAttachment = trpc.assignment.deleteAttachment.useMutation();
 
   const handleDeleteAttachment = async (attachmentId: string) => {
     if (!confirm('are you sure?')) return;
