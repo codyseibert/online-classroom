@@ -6,8 +6,8 @@ import Link from 'next/link';
 import { Button, Variant } from '../../common/Button/Button';
 
 export const BrowseClassroomsScreen = () => {
-  const findClassroom = trpc.useQuery(['classroom.findClassroom']);
-  const classrooms = trpc.useQuery(['student.getClassrooms']);
+  const findClassroom = trpc.classroom.findClassroom.useQuery();
+  const classrooms = trpc.student.getClassrooms.useQuery();
 
   const isEnrolled = (classroomId: string) => {
     return classrooms.data?.some(({ id }) => id === classroomId);

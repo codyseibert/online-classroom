@@ -42,10 +42,9 @@ export const LoggedInLinks = ({ role }: { role: string }) => {
           key={link.href}
           href={link.href}
           aria-current="page"
+          className="link-secondary px-3 py-2 rounded-md text-sm font-medium"
         >
-          <a className="link-secondary px-3 py-2 rounded-md text-sm font-medium">
-            {link.title}
-          </a>
+          {link.title}
         </Link>
       ))}
     </>

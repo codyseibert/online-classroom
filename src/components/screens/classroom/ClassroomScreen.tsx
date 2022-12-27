@@ -22,19 +22,15 @@ import { Roles } from '../../../server/utils/constants';
 export const ClassroomScreen = ({ classroomId }) => {
   const [selectedTab] = useAtom(tabAtom);
 
-  const assignmentsQuery = trpc.useQuery([
-    'classroom.getAssignments',
-    { classroomId },
-  ]);
+  const assignmentsQuery = trpc.classroom.getAssignments.useQuery({
+    classroomId,
+  });
 
-  const classroomQuery = trpc.useQuery([
-    'classroom.getClassroom',
-    { classroomId },
-  ]);
+  const classroomQuery = trpc.classroom.getClassroom.useQuery({ classroomId });
 
-  const classrooms = trpc.useQuery(['student.getClassrooms']);
+  const classrooms = trpc.student.getClassrooms.useQuery();
 
-  const unenrollMutation = trpc.useMutation('classroom.unenroll');
+  const unenrollMutation = trpc.classroom.unenroll.useMutation();
 
   const {
     openEditClassroomModal,

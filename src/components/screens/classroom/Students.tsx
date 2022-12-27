@@ -1,4 +1,3 @@
-import { User } from '@prisma/client';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { EyeIcon } from '../../common/Icons/EyeIcon';
@@ -6,7 +5,15 @@ import { Table } from '../../common/Table/Table';
 import profileImage from '../../../assets/profile.jpeg';
 import Image from 'next/image';
 
-export const Students = ({ students }: { students: User[] }) => {
+export const Students = ({
+  students,
+}: {
+  students: {
+    image: string | null;
+    id: string;
+    name: string | null;
+  }[];
+}) => {
   const totalStudents = students.length;
 
   return (
@@ -33,10 +40,11 @@ export const Students = ({ students }: { students: User[] }) => {
             '65% (D)',
             (
               <div className="flex gap-4">
-                <Link href={`/students/${student.id}`}>
-                  <a className="link flex gap-1 items-center">
-                    <EyeIcon /> View
-                  </a>
+                <Link
+                  href={`/students/${student.id}`}
+                  className="link flex gap-1 items-center"
+                >
+                  <EyeIcon /> View
                 </Link>
               </div>
             ) as ReactNode,

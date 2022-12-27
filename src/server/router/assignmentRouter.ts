@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server';
-import { createRouter } from './context';
+import { router, procedure, middleware } from './context';
 import { AWS } from '../../libs/aws';
 import z from 'zod';
 import { assertIsAssignmentAdmin } from '../utils/assertIsAssignmentAdmin';
@@ -12,24 +12,33 @@ export const getObjectKey = ({ assignmentId, attachmentId }) => {
 
 const s3 = new AWS.S3();
 
-export const assignmentRouter = createRouter()
-  .middleware(async ({ ctx, next }) => {
-    if (!ctx.session) {
-      throw new TRPCError({ code: 'UNAUTHORIZED' });
-    }
-    return next({
-      ctx: {
-        ...ctx,
-        session: ctx.session,
+export const isAuthorized = middleware(async ({ ctx, next }) => {
+  if (!ctx.session) {
+    throw new TRPCError({ code: 'UNAUTHORIZED' });
+  }
+  return next({
+    ctx: {
+      ...ctx,
+      session: ctx.session as {
+        user: {
+          role?: string;
+          id: string;
+        };
       },
-    });
-  })
-  .mutation('updateDescription', {
-    input: z.object({
-      description: z.string(),
-      assignmentId: z.string(),
-    }),
-    async resolve({ ctx, input }) {
+    },
+  });
+});
+
+export const assignmentRouter = router({
+  updateDescription: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        description: z.string(),
+        assignmentId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       assertIsAssignmentAdmin(ctx, input.assignmentId);
 
       await ctx.prisma.assignment.update({
@@ -40,14 +49,16 @@ export const assignmentRouter = createRouter()
           description: input.description,
         },
       });
-    },
-  })
-  .mutation('updateTitle', {
-    input: z.object({
-      title: z.string(),
-      assignmentId: z.string(),
     }),
-    async resolve({ ctx, input }) {
+  updateTitle: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        title: z.string(),
+        assignmentId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       assertIsAssignmentAdmin(ctx, input.assignmentId);
 
       await ctx.prisma.assignment.update({
@@ -58,15 +69,16 @@ export const assignmentRouter = createRouter()
           name: input.title,
         },
       });
-    },
-  })
-
-  .mutation('updateDueDate', {
-    input: z.object({
-      dueDate: z.string(),
-      assignmentId: z.string(),
     }),
-    async resolve({ ctx, input }) {
+  updateDueDate: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        dueDate: z.string(),
+        assignmentId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       assertIsAssignmentAdmin(ctx, input.assignmentId);
 
       await ctx.prisma.assignment.update({
@@ -77,13 +89,15 @@ export const assignmentRouter = createRouter()
           dueDate: input.dueDate,
         },
       });
-    },
-  })
-  .mutation('getDownloadUrl', {
-    input: z.object({
-      attachmentId: z.string(),
     }),
-    async resolve({ ctx, input }) {
+  getDownloadUrl: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        attachmentId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       const attachment = await ctx.prisma.attachment.findUnique({
         where: {
           id: input.attachmentId,
@@ -99,40 +113,46 @@ export const assignmentRouter = createRouter()
       });
 
       return downloadUrl;
-    },
-  })
-  .mutation('deleteAssignment', {
-    input: z.object({
-      assignmentId: z.string(),
     }),
-    async resolve({ ctx, input }) {
+  deleteAssignment: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        assignmentId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       // TODO: add auth
       await ctx.prisma.assignment.delete({
         where: {
           id: input.assignmentId,
         },
       });
-    },
-  })
-  .mutation('deleteAttachment', {
-    input: z.object({
-      attachmentId: z.string(),
     }),
-    async resolve({ ctx, input }) {
+  deleteAttachment: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        attachmentId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       // TODO: add auth
       await ctx.prisma.attachment.delete({
         where: {
           id: input.attachmentId,
         },
       });
-    },
-  })
-  .mutation('createPresignedUrl', {
-    input: z.object({
-      assignmentId: z.string(),
-      filename: z.string(),
     }),
-    async resolve({ ctx, input }) {
+  createPresignedUrl: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        assignmentId: z.string(),
+        filename: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       assertIsAssignmentAdmin(ctx, input.assignmentId);
 
       const attachment = await ctx.prisma.attachment.create({
@@ -169,13 +189,15 @@ export const assignmentRouter = createRouter()
         url: string;
         fields: object;
       };
-    },
-  })
-  .query('getAttachments', {
-    input: z.object({
-      assignmentId: z.string(),
     }),
-    async resolve({ ctx, input }) {
+  getAttachments: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        assignmentId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
       const assignment = await ctx.prisma.assignment.findUnique({
         where: {
           id: input.assignmentId,
@@ -186,5 +208,5 @@ export const assignmentRouter = createRouter()
       });
 
       return assignment?.attachments;
-    },
-  });
+    }),
+});

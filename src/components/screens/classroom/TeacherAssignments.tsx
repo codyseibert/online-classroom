@@ -48,10 +48,9 @@ export const TeacherAssignments = ({
               <span className="flex gap-4">
                 <Link
                   href={`/classrooms/${classroomId}/assignments/${assignment.id}/edit`}
+                  className="link flex gap-1 items-center"
                 >
-                  <a className="link flex gap-1 items-center">
-                    <PencilSquare /> Edit
-                  </a>
+                  <PencilSquare /> Edit
                 </Link>
               </span>
             ) as ReactNode,

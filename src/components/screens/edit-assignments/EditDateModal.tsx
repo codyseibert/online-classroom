@@ -36,7 +36,7 @@ export const EditDateModal = ({
     });
   }, [initialDueDate, reset]);
 
-  const updateDueDate = trpc.useMutation('assignment.updateDueDate');
+  const updateDueDate = trpc.assignment.updateDueDate.useMutation();
 
   const onSubmit = handleSubmit(async (data) => {
     const dur = Duration.fromObject({ day: 1, seconds: -1 }); // TODO: this seems like backend business logic

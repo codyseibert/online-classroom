@@ -4,7 +4,7 @@ import { trpc } from '../../../../utils/trpc';
 export const useEditClassroom = ({ refreshClassroom, classroomId }) => {
   const [showEditClassroomModal, setShowEditClassroomModal] = useState(false);
 
-  const editClassroomMutation = trpc.useMutation('classroom.editClassroom');
+  const editClassroomMutation = trpc.classroom.editClassroom.useMutation();
 
   const openEditClassroomModal = () => {
     setShowEditClassroomModal(true);

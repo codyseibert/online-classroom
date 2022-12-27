@@ -1,9 +1,9 @@
 import { TRPCError } from '@trpc/server';
-import { createRouter } from './context';
+import { procedure, router } from './context';
 import { AWS } from '../../libs/aws';
 import z from 'zod';
-import { Submission } from '@prisma/client';
 import { assertIsClassroomAdmin } from '../utils/assertIsClassroomAdmin';
+import { isAuthorized } from './assignmentRouter';
 
 export const BUCKET_NAME = 'online-classroom-uploads';
 
@@ -13,24 +13,16 @@ export const getObjectKey = ({ studentId, submissionId }) => {
 
 const s3 = new AWS.S3();
 
-export const submissionRouter = createRouter()
-  .middleware(async ({ ctx, next }) => {
-    if (!ctx.session) {
-      throw new TRPCError({ code: 'UNAUTHORIZED' });
-    }
-    return next({
-      ctx: {
-        ...ctx,
-        session: ctx.session,
-      },
-    });
-  })
-  .mutation('createPresignedUrl', {
-    input: z.object({
-      assignmentId: z.string(),
-      filename: z.string(),
-    }),
-    async resolve({ ctx, input }) {
+export const submissionRouter = router({
+  createPresignedUrl: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        assignmentId: z.string(),
+        filename: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       const studentId = ctx.session.user.id;
 
       const submission = await ctx.prisma.submission.create({
@@ -63,13 +55,15 @@ export const submissionRouter = createRouter()
           }
         );
       });
-    },
-  })
-  .query('getSubmission', {
-    input: z.object({
-      assignmentId: z.string(),
     }),
-    async resolve({ ctx, input }) {
+  getSubmission: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        assignmentId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
       const studentId = ctx.session.user.id;
 
       const submission = await ctx.prisma.submission.findFirst({
@@ -80,13 +74,15 @@ export const submissionRouter = createRouter()
       });
 
       return submission;
-    },
-  })
-  .query('getSubmissionForClassroom', {
-    input: z.object({
-      classroomId: z.string(),
     }),
-    async resolve({ ctx, input }) {
+  getSubmissionForClassroom: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        classroomId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
       const classroom = await ctx.prisma.classroom.findUnique({
         where: {
           id: input.classroomId,
@@ -124,14 +120,16 @@ export const submissionRouter = createRouter()
       );
 
       return submissions;
-    },
-  })
-  .query('getSubmissionForStudent', {
-    input: z.object({
-      classroomId: z.string(),
-      studentId: z.string(),
     }),
-    async resolve({ ctx, input }) {
+  getSubmissionForStudent: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        classroomId: z.string(),
+        studentId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
       const submissions = await ctx.prisma.submission.findMany({
         where: {
           studentId: input.studentId,
@@ -142,14 +140,16 @@ export const submissionRouter = createRouter()
       });
 
       return submissions;
-    },
-  })
-  .mutation('updateGrade', {
-    input: z.object({
-      submissionId: z.string(),
-      grade: z.number(),
     }),
-    async resolve({ ctx, input }) {
+  updateGrade: procedure
+    .use(isAuthorized)
+    .input(
+      z.object({
+        submissionId: z.string(),
+        grade: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       const submission = await ctx.prisma.submission.findUnique({
         where: {
           id: input.submissionId,
@@ -175,5 +175,5 @@ export const submissionRouter = createRouter()
           grade: input.grade,
         },
       });
-    },
-  });
+    }),
+});

@@ -15,7 +15,7 @@ export const ClassroomsScreen = () => {
     data: classrooms,
     isLoading,
     refetch: refetchClassrooms,
-  } = trpc.useQuery(['classroom.getClassroomsForTeacher']);
+  } = trpc.classroom.getClassroomsForTeacher.useQuery();
 
   const closeClassroomModal = () => {
     setShowCreateClassroomModal(false);

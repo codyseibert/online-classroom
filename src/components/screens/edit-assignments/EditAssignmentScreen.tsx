@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { trpc } from '../../../utils/trpc';
 import { Button, Variant } from '../../common/Button/Button';
 import { EmptyStateWrapper } from '../../common/EmptyStateWrapper';
@@ -28,7 +28,13 @@ type UpdateTitleForm = {
   title: string;
 };
 
-export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
+export const EditAssignmentScreen = ({
+  classroomId,
+  assignmentId,
+}: {
+  classroomId: string;
+  assignmentId: string;
+}) => {
   const [isEditingDescription, toggleIsEditingDescription] = useToggle(false);
   const [isEditingTitle, toggleIsEditingTitle] = useToggle(false);
   const [isEditDueDateModalOpen, toggleIsEditDueDateModalOpen] =
@@ -43,13 +49,11 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
 
   useIsClassroomAdmin(classroomId);
 
-  const { mutateAsync: createPresignedUrl } = trpc.useMutation(
-    'assignment.createPresignedUrl'
-  );
+  const createPresignedUrl = trpc.assignment.createPresignedUrl.useMutation();
 
   const { file, fileRef, handleFileChange, uploadFile } = useFileUpload({
     getUploadUrl: (fileToUpload: File) =>
-      createPresignedUrl({
+      createPresignedUrl.mutateAsync({
         filename: fileToUpload.name,
         assignmentId,
       }),
@@ -58,32 +62,20 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
     },
   });
 
-  const { mutateAsync: deleteAssignment } = trpc.useMutation(
-    'assignment.deleteAssignment'
-  );
+  const deleteAssignment = trpc.assignment.deleteAssignment.useMutation();
 
-  const { mutateAsync: updateDescription } = trpc.useMutation(
-    'assignment.updateDescription'
-  );
+  const updateDescription = trpc.assignment.updateDescription.useMutation();
 
-  const { mutateAsync: updateTitle } = trpc.useMutation(
-    'assignment.updateTitle'
-  );
+  const updateTitle = trpc.assignment.updateTitle.useMutation();
 
-  const attachmentsQuery = trpc.useQuery([
-    'assignment.getAttachments',
+  const attachmentsQuery = trpc.assignment.getAttachments.useQuery({
+    assignmentId,
+  });
+
+  const assignmentQuery = trpc.classroom.getAssignment.useQuery(
     {
       assignmentId,
     },
-  ]);
-
-  const assignmentQuery = trpc.useQuery(
-    [
-      'classroom.getAssignment',
-      {
-        assignmentId,
-      },
-    ],
     {
       refetchOnWindowFocus: false,
       onSuccess(data) {
@@ -94,7 +86,7 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
   );
 
   const handleSaveEditDescription = async (formData: UpdateDescriptionForm) => {
-    await updateDescription({
+    await updateDescription.mutateAsync({
       description: formData.description,
       assignmentId,
     });
@@ -103,7 +95,7 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
   };
 
   const handleSaveEditTitle = async (formData: UpdateTitleForm) => {
-    await updateTitle({
+    await updateTitle.mutateAsync({
       title: formData.title,
       assignmentId,
     });
@@ -113,7 +105,7 @@ export const EditAssignmentScreen = ({ classroomId, assignmentId }) => {
 
   const handleDeleteAssignment = async () => {
     if (!confirm('are you sure?')) return;
-    await deleteAssignment({ assignmentId });
+    await deleteAssignment.mutateAsync({ assignmentId });
     router.push(`/classrooms/${classroomId}`);
   };
 

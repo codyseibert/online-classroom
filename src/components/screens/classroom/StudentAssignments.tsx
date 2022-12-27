@@ -19,14 +19,11 @@ export const StudentAssignments = ({
 
   const session = useSession();
 
-  const submissionsQuery = trpc.useQuery(
-    [
-      'submission.getSubmissionForStudent',
-      {
-        classroomId,
-        studentId: session.data?.user.id,
-      },
-    ],
+  const submissionsQuery = trpc.submission.getSubmissionForStudent.useQuery(
+    {
+      classroomId,
+      studentId: session.data?.user.id,
+    },
     {
       enabled: !!session.data,
     }
@@ -64,10 +61,9 @@ export const StudentAssignments = ({
               <span className="flex gap-4">
                 <Link
                   href={`/classrooms/${classroomId}/assignments/${assignment.id}`}
+                  className="link flex gap-1 items-center"
                 >
-                  <a className="link flex gap-1 items-center">
-                    <EyeIcon /> View
-                  </a>
+                  <EyeIcon /> View
                 </Link>
               </span>
             ) as ReactNode,

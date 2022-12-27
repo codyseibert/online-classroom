@@ -8,12 +8,9 @@ export const useIsClassroomAdmin = (classroomId: string) => {
   const session = useSession();
   const router = useRouter();
 
-  const classroomQuery = trpc.useQuery([
-    'classroom.getClassroom',
-    {
-      classroomId,
-    },
-  ]);
+  const classroomQuery = trpc.classroom.getClassroom.useQuery({
+    classroomId,
+  });
 
   useEffect(() => {
     if (!router) return;

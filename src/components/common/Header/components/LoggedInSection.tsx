@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { useRef, useState } from 'react';
-import { BellIcon } from '../../Icons/BellIcon';
 import { useClickOutside } from '../hooks/useClickOutside';
 import AccountMenu from './AccountMenu';
 import profileImage from '../../../../assets/profile.jpeg';
@@ -8,15 +7,13 @@ import { trpc } from '../../../../utils/trpc';
 
 export const LoggedInSection = ({
   image,
-  name,
 }: {
   image: string | undefined | null;
-  name: string | undefined | null;
 }) => {
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
   const openAccountMenuButtonRef = useRef<HTMLButtonElement>(null);
 
-  const userQuery = trpc.useQuery(['user.getUser']);
+  const userQuery = trpc.user.getUser.useQuery();
 
   function toggleAccountMenu() {
     setIsAccountMenuOpen(!isAccountMenuOpen);

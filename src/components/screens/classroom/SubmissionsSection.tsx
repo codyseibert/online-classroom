@@ -12,11 +12,11 @@ const GradeEditable = ({ submission, onUpdate }) => {
 
   const { register, handleSubmit } = useForm<{ grade: number }>();
 
-  const updateGradeMutation = trpc.useMutation('submission.updateGrade');
+  const updateGradeMutation = trpc.submission.updateGrade.useMutation();
 
   const handleGradeSave = async ({ grade }) => {
     await updateGradeMutation.mutateAsync({
-      grade,
+      grade: parseInt(grade),
       submissionId: submission.id,
     });
     toggleIsEditing();
@@ -59,12 +59,9 @@ const GradeEditable = ({ submission, onUpdate }) => {
 };
 
 export const SubmissionsSection = ({ classroomId }) => {
-  const submissionsQuery = trpc.useQuery([
-    'submission.getSubmissionForClassroom',
-    {
-      classroomId,
-    },
-  ]);
+  const submissionsQuery = trpc.submission.getSubmissionForClassroom.useQuery({
+    classroomId,
+  });
 
   return (
     <section>

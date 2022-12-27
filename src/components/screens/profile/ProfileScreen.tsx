@@ -17,9 +17,9 @@ export const ProfileScreen = () => {
     setValue,
   } = useForm();
 
-  const updateDisplayName = trpc.useMutation('user.updateDisplayName');
+  const updateDisplayName = trpc.user.updateDisplayName.useMutation();
 
-  trpc.useQuery(['user.getUser'], {
+  trpc.user.getUser.useQuery(undefined, {
     onSuccess(userData: User) {
       setValue('displayName', userData.displayName ?? userData?.name);
     },
@@ -31,7 +31,7 @@ export const ProfileScreen = () => {
     await updateDisplayName.mutateAsync({
       displayName: data.displayName,
     });
-    queryClient.invalidateQueries(['user.getUser']);
+    queryClient.user.getUser.invalidate();
     show();
   };
 
